@@ -1,5 +1,10 @@
-import { Welcome } from "../welcome/welcome";
 import type { Route } from "./+types/_index";
+
+export function clientLoader() {
+  return {
+    message: "Hello, world!",
+  };
+}
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -8,6 +13,6 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-export default function Home() {
-  return <Welcome />;
+export default function Home({ loaderData }: Route.ComponentProps) {
+  return <div>{loaderData.message}</div>;
 }
