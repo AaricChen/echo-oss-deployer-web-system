@@ -8,8 +8,18 @@ import {
 } from "react-router";
 
 import "@ant-design/v5-patch-for-react-19";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import React from "react";
 import type { Route } from "./+types/root";
 import "./app.css";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -43,7 +53,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  return (
+    <React.StrictMode>
+      <QueryClientProvider client={queryClient}>
+        <Outlet />
+      </QueryClientProvider>
+    </React.StrictMode>
+  );
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
