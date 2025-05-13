@@ -9,7 +9,7 @@ export function useCurrentAccount() {
 
   const result = useGet<CurrentAccountResponse>({
     queryKey: ["current-account"],
-    url: "/accounts/current",
+    url: "/account/current",
     options: {
       retry: false,
     },

@@ -12,6 +12,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
 import type { Route } from "./+types/root";
 import "./app.css";
+import { ProConfigProvider } from "@ant-design/pro-components";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -56,7 +57,9 @@ export default function App() {
   return (
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>
-        <Outlet />
+        <ProConfigProvider>
+          <Outlet />
+        </ProConfigProvider>
       </QueryClientProvider>
     </React.StrictMode>
   );
