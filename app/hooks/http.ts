@@ -15,6 +15,7 @@ import type {
   EntityQuery,
   EntityResponse,
 } from "~/types/entity.js";
+import type { HttpResponse } from "~/types/http";
 import type { PaginationData, PaginationQuery } from "~/types/pagination.js";
 
 export interface HttpMutationRequestParams<Request, Response> {
@@ -102,25 +103,23 @@ export function useGet<Res, GetResponse = Res>(
           }
           const contentType = res.headers.get("Content-Type");
           if (contentType && contentType.indexOf("application/json") !== -1) {
-            return res.json() as Promise<GetResponse>;
+            return res.json() as Promise<HttpResponse<GetResponse>>;
           } else {
-            return res.text() as Promise<GetResponse>;
+            return res.text() as unknown as Promise<HttpResponse<GetResponse>>;
           }
         })
         .then((res) => {
-          if (request.converter) {
-            return request.converter(res);
+          if (res.code === "0") {
+            if (request.converter) {
+              return request.converter(res.data);
+            }
+            return res.data as Promise<Res>;
+          } else {
+            throw new Error(res.message, { cause: res });
           }
-          return res as Promise<Res>;
         })
         .catch(async (err) => {
-          let content;
-          try {
-            content = await err.json();
-          } catch {
-            throw new Error("Network Error");
-          }
-          throw new Error(content.error);
+          throw new Error(err.message, { cause: err });
         });
     },
     ...request.options,
@@ -174,19 +173,20 @@ export function useHttpMutation<Request, Response>({
           }
           const contentType = res.headers.get("Content-Type");
           if (contentType && contentType.indexOf("application/json") !== -1) {
-            return res.json() as Promise<Response>;
+            return res.json() as Promise<HttpResponse<Response>>;
           } else {
-            return res.text() as Promise<Response>;
+            return res.text() as unknown as Promise<HttpResponse<Response>>;
+          }
+        })
+        .then((res) => {
+          if (res.code === "0") {
+            return res.data;
+          } else {
+            throw new Error(res.message, { cause: res });
           }
         })
         .catch(async (err) => {
-          let content;
-          try {
-            content = await err.json();
-          } catch {
-            throw new Error("Network Error");
-          }
-          throw new Error(content.error);
+          throw new Error(err.message, { cause: err });
         });
     },
     onSuccess: async (response, request) => {
