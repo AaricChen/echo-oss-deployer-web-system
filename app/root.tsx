@@ -13,6 +13,7 @@ import React from "react";
 import type { Route } from "./+types/root";
 import "./app.css";
 import { ProConfigProvider } from "@ant-design/pro-components";
+import { message } from "antd";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -54,10 +55,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
+  const [_, contextHolder] = message.useMessage();
   return (
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>
         <ProConfigProvider>
+          {contextHolder}
           <Outlet />
         </ProConfigProvider>
       </QueryClientProvider>

@@ -5,18 +5,14 @@ import {
   useMutation,
   useQuery,
 } from "@tanstack/react-query";
+import { message } from "antd";
 import { pickBy } from "lodash";
 import { type ReactNode, useMemo } from "react";
-import { useSnackbar } from "~/hooks/snackbar";
-import { useApiStore } from "~/stores/api.js";
-import { useAuthStore } from "~/stores/auth.js";
-import type {
-  EntityIdType,
-  EntityQuery,
-  EntityResponse,
-} from "~/types/entity.js";
+import { useApiStore } from "~/stores/api";
+import { useAuthStore } from "~/stores/auth";
+import type { EntityIdType, EntityQuery, EntityResponse } from "~/types/entity";
 import type { HttpResponse } from "~/types/http";
-import type { PaginationData, PaginationQuery } from "~/types/pagination.js";
+import type { PaginationData, PaginationQuery } from "~/types/pagination";
 
 export interface HttpMutationRequestParams<Request, Response> {
   method: "POST" | "PUT" | "DELETE";
@@ -136,7 +132,6 @@ export function useHttpMutation<Request, Response>({
   onSuccess,
   onError,
 }: HttpMutationRequestParams<Request, Response>) {
-  const { info, success, warning, error } = useSnackbar();
   const { endpoint } = useApiStore();
   const { accessToken } = useAuthStore();
 
@@ -186,7 +181,7 @@ export function useHttpMutation<Request, Response>({
           }
         })
         .catch(async (err) => {
-          throw new Error(err.message, { cause: err });
+          throw new Error(err.message);
         });
     },
     onSuccess: async (response, request) => {
@@ -196,16 +191,16 @@ export function useHttpMutation<Request, Response>({
         if (finalAction) {
           switch (actionLevel) {
             case "info":
-              info(`${finalAction}${actionSuffix}`);
+              message.info(`${finalAction}${actionSuffix}`);
               break;
             case "success":
-              success(`${finalAction}${actionSuffix}`);
+              message.success(`${finalAction}${actionSuffix}`);
               break;
             case "warning":
-              warning(`${finalAction}${actionSuffix}`);
+              message.warning(`${finalAction}${actionSuffix}`);
               break;
             case "error":
-              error(`${finalAction}${actionSuffix}`);
+              message.error(`${finalAction}${actionSuffix}`);
               break;
           }
         }
@@ -217,6 +212,8 @@ export function useHttpMutation<Request, Response>({
     onError: async (requestError, request) => {
       if (onError) {
         onError(requestError, request);
+      } else {
+        message.error(requestError.message);
       }
     },
   });
