@@ -4,12 +4,12 @@ import { useCurrentAccount } from "~/apis/account";
 import { useAdminSidebar } from "~/apis/menu";
 import { appConfig } from "~/configs/app";
 export default function AdminLayout() {
-  useCurrentAccount();
-
+  const { data: account } = useCurrentAccount();
   const { menuItems } = useAdminSidebar();
 
   return (
     <ProLayout
+      layout="mix"
       title={appConfig.name}
       logo={appConfig.logo}
       menuDataRender={() => menuItems}
@@ -24,6 +24,10 @@ export default function AdminLayout() {
           return dom;
         }
         return <Link to={item.path ?? "/"}>{dom}</Link>;
+      }}
+      avatarProps={{
+        src: account?.avatar,
+        title: account?.nickname,
       }}
     >
       <Outlet />
