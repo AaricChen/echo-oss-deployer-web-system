@@ -1,3 +1,4 @@
+import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import { useSearchParam } from "react-use";
 import { useHttpMutation } from "~/hooks/http";
@@ -17,6 +18,19 @@ export function useLogin() {
     onSuccess: async (data) => {
       updateAuthToken(data);
       navigate(redirect || "/");
+    },
+  });
+}
+
+export function useLogout() {
+  const navigate = useNavigate();
+  const { logout: logoutTokens } = useAuthStore();
+  return useMutation({
+    mutationFn: async () => {
+      logoutTokens();
+    },
+    onSuccess: () => {
+      navigate("/login");
     },
   });
 }
