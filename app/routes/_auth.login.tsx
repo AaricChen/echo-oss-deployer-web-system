@@ -2,14 +2,15 @@ import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { LoginFormPage, ProFormText } from "@ant-design/pro-components";
 import { theme } from "antd";
 import { useLogin } from "~/apis/auth";
+import { appConfig } from "~/configs/app";
 import type { LoginRequest } from "~/types/auth";
-
 export default function Login() {
   const { token } = theme.useToken();
   const login = useLogin();
   return (
     <LoginFormPage<LoginRequest>
       backgroundVideoUrl="https://gw.alipayobjects.com/v/huamei_gcee1x/afts/video/jXRBRK_VAwoAAAAAAAAAAAAAK4eUAQBr"
+      logo={appConfig.logo}
       title="欢迎"
       subTitle="登录到你的账户"
       containerStyle={{

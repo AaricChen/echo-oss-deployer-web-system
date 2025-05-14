@@ -1,14 +1,32 @@
-import { Button } from "antd";
-import { Outlet } from "react-router";
+import { ProLayout } from "@ant-design/pro-components";
+import { Link, Outlet } from "react-router";
 import { useCurrentAccount } from "~/apis/account";
-
+import { useAdminSidebar } from "~/apis/menu";
+import { appConfig } from "~/configs/app";
 export default function AdminLayout() {
   useCurrentAccount();
+
+  const { menuItems } = useAdminSidebar();
+
   return (
-    <div className="flex h-screen flex-col items-center justify-center gap-1">
-      <h1 className="text-2xl font-bold">Admin</h1>
-      <Button>Go</Button>
+    <ProLayout
+      title={appConfig.name}
+      logo={appConfig.logo}
+      menuDataRender={() => menuItems}
+      menuItemRender={(item, dom) => {
+        if (!item.path) {
+          return dom;
+        }
+        return <Link to={item.path ?? "/"}>{dom}</Link>;
+      }}
+      subMenuItemRender={(item, dom) => {
+        if (!item.path) {
+          return dom;
+        }
+        return <Link to={item.path ?? "/"}>{dom}</Link>;
+      }}
+    >
       <Outlet />
-    </div>
+    </ProLayout>
   );
 }
