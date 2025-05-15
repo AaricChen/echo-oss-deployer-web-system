@@ -1,13 +1,15 @@
-import { Link, Outlet } from "react-router";
+import { PageContainer } from "@ant-design/pro-components";
+import { Button } from "antd";
+import { Link } from "react-router";
+import Icon from "~/components/icon";
 import type { Route } from "./+types/_admin._index";
 
 export default function Home({ loaderData }: Route.ComponentProps) {
   return (
-    <div className="flex h-screen flex-col items-center justify-center gap-1">
-      <h1 className="text-2xl font-bold">Home</h1>
-      <Link to={"/accounts"}>Accounts</Link>
-      <Link to={"/login"}>Login</Link>
-      <Outlet />
-    </div>
+    <PageContainer title="首页">
+      <Button>
+        <Link to="/accounts">账户管理</Link>
+      </Button>
+    </PageContainer>
   );
 }
