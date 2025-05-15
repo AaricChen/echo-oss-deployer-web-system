@@ -8,7 +8,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
   return (
     <PageContainer title="首页">
       <Button>
-        <Link to="/accounts">账户管理</Link>
+        <Link to="/account">账户管理</Link>
       </Button>
     </PageContainer>
   );

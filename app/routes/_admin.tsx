@@ -6,6 +6,7 @@ import { useCurrentAccount } from "~/apis/account";
 import { useLogout } from "~/apis/auth";
 import { useAdminSidebar } from "~/apis/menu";
 import { appConfig } from "~/configs/app";
+import Icon from "~/components/icon";
 export default function AdminLayout() {
   const { data: account } = useCurrentAccount();
   const { menuItems } = useAdminSidebar();
@@ -15,6 +16,12 @@ export default function AdminLayout() {
       layout="mix"
       title={appConfig.name}
       logo={appConfig.logo}
+      headerTitleRender={(logo, title) => (
+        <Link to="/" className="flex items-center gap-2">
+          {logo}
+          {title}
+        </Link>
+      )}
       menu={{
         type: "group",
       }}
