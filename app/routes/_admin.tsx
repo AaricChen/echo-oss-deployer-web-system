@@ -15,6 +15,9 @@ export default function AdminLayout() {
       layout="mix"
       title={appConfig.name}
       logo={appConfig.logo}
+      menu={{
+        type: "group",
+      }}
       menuDataRender={() => menuItems}
       menuItemRender={(item, dom) => {
         if (!item.path) {
