@@ -3,4 +3,5 @@ export interface HttpResponse<T> {
   code: string;
   message: string;
   data: T;
+  success: boolean;
 }

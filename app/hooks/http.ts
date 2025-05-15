@@ -94,9 +94,6 @@ export function useGet<Res, GetResponse = Res>(
         headers,
       })
         .then((res) => {
-          if (!res.ok) {
-            throw res;
-          }
           const contentType = res.headers.get("Content-Type");
           if (contentType && contentType.indexOf("application/json") !== -1) {
             return res.json() as Promise<HttpResponse<GetResponse>>;
@@ -105,7 +102,7 @@ export function useGet<Res, GetResponse = Res>(
           }
         })
         .then((res) => {
-          if (res.code === "0") {
+          if (res.success) {
             if (request.converter) {
               return request.converter(res.data);
             }
@@ -163,9 +160,6 @@ export function useHttpMutation<Request, Response>({
         body: data,
       })
         .then((res) => {
-          if (!res.ok) {
-            throw res;
-          }
           const contentType = res.headers.get("Content-Type");
           if (contentType && contentType.indexOf("application/json") !== -1) {
             return res.json() as Promise<HttpResponse<Response>>;
@@ -174,7 +168,7 @@ export function useHttpMutation<Request, Response>({
           }
         })
         .then((res) => {
-          if (res.code === "0") {
+          if (res.success) {
             return res.data;
           } else {
             throw new Error(res.message, { cause: res });
