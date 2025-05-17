@@ -9,11 +9,12 @@ export default function Accounts() {
     <PageContainer title="账户管理">
       <ProTable<AccountEntity>
         rowKey="id"
-        search={false}
+        search={{}}
         columns={[
           {
             title: "用户名",
             dataIndex: "username",
+            search: true,
           },
         ]}
         request={async (params, sort, filter) => {
