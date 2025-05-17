@@ -1,3 +1,4 @@
+import type { ParamsType } from "@ant-design/pro-components";
 import {
   type DefaultError,
   type QueryKey,
@@ -6,6 +7,7 @@ import {
   useQuery,
 } from "@tanstack/react-query";
 import { message } from "antd";
+import type { SortOrder } from "antd/lib/table/interface";
 import { pickBy } from "lodash";
 import { type ReactNode, useMemo } from "react";
 import { useApiStore } from "~/stores/api";
@@ -46,7 +48,7 @@ export function usePaginationQuery<
     return {
       page: request.page - 1,
       size: request.size,
-      sort: request.sort.map((it) => `${it.field},${it.direction}`),
+      sort: request.sort?.map((it) => `${it.field},${it.direction}`),
       ...query,
     };
   }, [request]);
@@ -229,4 +231,98 @@ export function useDelete<Request, Response>(
   params: Omit<HttpMutationRequestParams<Request, Response>, "method">,
 ) {
   return useHttpMutation({ method: "DELETE", ...params });
+}
+
+export function useTableRequest<
+  Response extends EntityResponse<EntityIdType>,
+  Params extends ParamsType = ParamsType,
+>(url: string) {
+  const { endpoint } = useApiStore();
+  const { accessToken } = useAuthStore();
+
+  return useMutation<
+    {
+      data: Response[];
+      success: boolean;
+      total: number;
+    },
+    DefaultError,
+    {
+      params: Params & {
+        pageSize?: number;
+        current?: number;
+        keyword?: string;
+      };
+      sort: Record<string, SortOrder>;
+      filter: Record<string, (string | number)[] | null>;
+    }
+  >({
+    mutationFn: async (request) => {
+      const headers: HeadersInit = {};
+      headers["Authorization"] = `Bearer ${accessToken}`;
+      let finalUrl = `${endpoint}${url}`;
+
+      const { pageSize, current, keyword, ...params } = request.params;
+
+      const requestObject = {
+        ...params,
+        page: current ? current - 1 : 0,
+        size: pageSize,
+        keyword,
+        ...request.sort,
+        ...request.filter,
+      };
+
+      const requestParams: { name: string; value: string }[] = [];
+      if (requestObject) {
+        Object.keys(pickBy(requestObject, (v) => !!v)).forEach((k) => {
+          const value = requestObject[k];
+          if (Array.isArray(value)) {
+            value.forEach((v: any) =>
+              requestParams.push({ name: k, value: v }),
+            );
+          } else {
+            requestParams.push({ name: k, value: String(value) });
+          }
+        });
+      }
+
+      finalUrl += `?${new URLSearchParams(requestParams.map((it) => `${it.name}=${it.value}`).join("&")).toString()}`;
+
+      return fetch(finalUrl, {
+        method: "GET",
+        headers,
+      })
+        .then((res) => {
+          const contentType = res.headers.get("Content-Type");
+          if (contentType && contentType.indexOf("application/json") !== -1) {
+            return res.json() as Promise<
+              HttpResponse<PaginationData<Response>>
+            >;
+          } else {
+            return res.text() as unknown as Promise<
+              HttpResponse<PaginationData<Response>>
+            >;
+          }
+        })
+        .then((res) => {
+          if (res.success) {
+            return {
+              data: res.data.content,
+              success: res.success,
+              total: res.data.page.totalElements,
+            };
+          } else {
+            return {
+              data: [],
+              success: false,
+              total: 0,
+            };
+          }
+        })
+        .catch(async (err) => {
+          throw new Error(err.message, { cause: err });
+        });
+    },
+  });
 }

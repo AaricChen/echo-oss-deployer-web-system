@@ -1,7 +1,25 @@
-import { PageContainer } from "@ant-design/pro-components";
-import { Button } from "antd";
-import { Link } from "react-router";
+import { PageContainer, ProTable } from "@ant-design/pro-components";
+import { useTableRequest } from "~/hooks/http";
+import type { AccountEntity } from "~/types/account";
 
 export default function Accounts() {
-  return <PageContainer title="账户管理"></PageContainer>;
+  const { mutateAsync: getAccounts } =
+    useTableRequest<AccountEntity>("/account");
+  return (
+    <PageContainer title="账户管理">
+      <ProTable<AccountEntity>
+        rowKey="id"
+        search={false}
+        columns={[
+          {
+            title: "用户名",
+            dataIndex: "username",
+          },
+        ]}
+        request={async (params, sort, filter) => {
+          return getAccounts({ params, sort, filter });
+        }}
+      />
+    </PageContainer>
+  );
 }

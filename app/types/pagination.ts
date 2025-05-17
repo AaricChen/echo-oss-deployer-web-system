@@ -2,18 +2,20 @@ import type { EntityQuery } from "~/types/entity";
 
 export interface PaginationData<Resp> {
   content: Resp[];
+  page: PageInfo;
+}
+
+export interface PageInfo {
+  number: number;
   size: number;
-  totalPages: number;
   totalElements: number;
-  empty: boolean;
-  first: true;
-  last: true;
+  totalPages: number;
 }
 
 export interface PaginationQuery<Query extends EntityQuery> {
   page: number;
   size: number;
-  sort: PaginationSort[];
+  sort?: PaginationSort[];
   query?: Query;
 }
 
