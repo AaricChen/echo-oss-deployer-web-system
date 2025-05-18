@@ -3,6 +3,7 @@ import {
   ControlOutlined,
   FileSearchOutlined,
   HomeOutlined,
+  LockOutlined,
   ProductOutlined,
   ProfileOutlined,
   SecurityScanOutlined,
@@ -22,6 +23,7 @@ export const iconMap = {
   ControlOutlined: ControlOutlined,
   AppstoreOutlined: AppstoreOutlined,
   SolutionOutlined: SolutionOutlined,
+  LockOutlined: LockOutlined,
 };
 
 export interface IconProps {
