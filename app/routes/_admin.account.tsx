@@ -10,7 +10,6 @@ export default function Accounts() {
     <PageContainer title="账户管理">
       <ProTable<AccountEntity>
         rowKey="id"
-        search={{}}
         columns={[
           {
             title: "账户资料",

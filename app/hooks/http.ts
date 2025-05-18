@@ -313,11 +313,7 @@ export function useTableRequest<
               total: res.data.page.totalElements,
             };
           } else {
-            return {
-              data: [],
-              success: false,
-              total: 0,
-            };
+            throw new Error(res.message, { cause: res });
           }
         })
         .catch(async (err) => {
