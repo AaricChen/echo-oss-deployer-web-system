@@ -10,31 +10,34 @@ export interface AccountQuery extends EntityQuery {
 }
 
 export interface AccountEntity extends EntityResponse<string> {
+  id: string;
   admin: boolean;
-  enabled: boolean;
-  authorities: string[];
-  displayName: string;
-  avatar: string;
+  disabled: boolean;
   email: string;
-  identity: string;
-  language: string;
-  location: string;
-  name: string;
-  nation: string;
+  phone: string;
+  loginAt: string;
+  permissions: string[];
+  roles: string[];
+  departments: string[];
+  accountInfo: AccountInfo;
+}
+
+export interface AccountInfo {
+  avatar: string;
   nickname: string;
-  username: string;
+  realname: string;
   address: string;
   bio: string;
-  mobile: string;
-  province: string;
-  city: string;
-  country: string;
   birthday: string;
-  sex: string;
+  countryCode: string;
+  provinceCode: string;
+  cityCode: string;
+  nationCode: string;
+  genderCode: string;
+  idCard: string;
+  languageCode: string;
+  postalCode: string;
   remark: string;
-  createAt: string;
-  loginAt: string;
-  roles: [];
 }
 
 export interface CurrentAccountResponse {
