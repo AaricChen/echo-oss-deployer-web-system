@@ -72,6 +72,22 @@ export default function Accounts() {
             },
           },
           {
+            title: "管理员",
+            dataIndex: "admin",
+            hideInTable: true,
+            valueType: "select",
+            valueEnum: {
+              true: {
+                text: "是",
+                status: "Success",
+              },
+              false: {
+                text: "否",
+                status: "Error",
+              },
+            },
+          },
+          {
             title: "登录时间",
             dataIndex: "loginAt",
             valueType: "dateTime",
