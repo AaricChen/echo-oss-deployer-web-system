@@ -4,6 +4,13 @@ import type {
   EntityResponse,
 } from "~/types/entity";
 
+export type DataScope =
+  | "ALL"
+  | "DEPARTMENT_AND_LOWER"
+  | "DEPARTMENT_ONLY"
+  | "CUSTOM"
+  | "SELF";
+
 export interface AccountQuery extends EntityQuery {
   search?: string;
   department?: number;
