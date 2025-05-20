@@ -1,10 +1,16 @@
 import type { DataScope } from "~/types/account";
 import type {
+  EntityConfig,
   EntityCreateRequest,
   EntityDeleteRequest,
   EntityQuery,
   EntityResponse,
 } from "~/types/entity";
+
+export const RoleEntity: EntityConfig = {
+  name: "角色",
+  baseUrl: "/role",
+};
 
 export interface RoleQuery extends EntityQuery {}
 

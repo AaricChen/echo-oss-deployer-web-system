@@ -9,8 +9,13 @@ import {
 import { Button, Modal } from "antd";
 import { useRef, useState } from "react";
 import { useCreateRole, useDeleteRole } from "~/apis/role";
+import EntityTable from "~/components/entity/EntityTable";
 import { useTableRequest } from "~/hooks/http";
-import type { RoleCreateRequest, RoleResponse } from "~/types/role";
+import {
+  RoleEntity,
+  type RoleCreateRequest,
+  type RoleResponse,
+} from "~/types/role";
 
 export default function Accounts() {
   const tableRef = useRef<ActionType>(null);
@@ -20,6 +25,20 @@ export default function Accounts() {
   const [open, setOpen] = useState(false);
   return (
     <PageContainer title="角色管理">
+      <EntityTable
+        entityConfig={RoleEntity}
+        columns={[
+          {
+            title: "名称",
+            dataIndex: "name",
+          },
+          {
+            title: "备注",
+            dataIndex: "remark",
+          },
+        ]}
+      />
+      <div className="my-4"></div>
       <ProTable<RoleResponse>
         actionRef={tableRef}
         rowKey="id"
@@ -54,6 +73,7 @@ export default function Accounts() {
         }}
         rowSelection={{
           type: "checkbox",
+          align: "right",
         }}
         tableAlertOptionRender={({ selectedRows }) => (
           <>
@@ -79,16 +99,9 @@ export default function Accounts() {
         toolBarRender={() => [
           <ModalForm<RoleCreateRequest>
             title="新增角色"
-            trigger={
-              <Button type="primary" onClick={() => setOpen(true)}>
-                新增
-              </Button>
-            }
-            open={open}
-            onOpenChange={setOpen}
+            trigger={<Button type="primary">新增</Button>}
             onFinish={async (values) => {
               await createRole(values);
-              setOpen(false);
               tableRef.current?.reload();
             }}
           >

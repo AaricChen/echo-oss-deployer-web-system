@@ -1,8 +1,13 @@
 export type EntityIdType = string | number;
 export type EntityQueryFieldType = string | number | boolean | undefined | null;
 
+export interface EntityConfig {
+  name: string; // 实体名称
+  baseUrl: string; // 实体基础路径
+  entityIdField?: string; // 实体ID字段
+}
+
 export interface EntityQuery {
-  content?: string;
   [key: string]: EntityQueryFieldType;
 }
 
