@@ -32,6 +32,7 @@ export interface EntityTableProps<
   headerTitle?: React.ReactNode;
   createAction?: EntityTableAction<CreateRequest>;
   updateAction?: EntityTableAction<UpdateRequest>;
+  resetAfterCreate?: boolean;
 }
 
 export type EntityTableAction<EntityRequest> =
@@ -56,6 +57,7 @@ export default function EntityTable<
   headerTitle,
   createAction = {},
   updateAction = {},
+  resetAfterCreate = true,
 }: EntityTableProps<
   Entity,
   Query,
@@ -143,7 +145,9 @@ export default function EntityTable<
                 onFinish={async (values) => {
                   await createEntity(values);
                   tableAction.current?.reload();
-                  createFormRef.current?.resetFields();
+                  if (resetAfterCreate) {
+                    createFormRef.current?.resetFields();
+                  }
                   setOpenCreateModal(false);
                 }}
               />
@@ -168,7 +172,11 @@ export default function EntityTable<
         },
       }}
       request={async (params, sort, filter) => {
-        return getEntities({ params, sort, filter });
+        return getEntities({
+          params,
+          sort,
+          filter,
+        });
       }}
       columns={tableColumns as ProColumns<Entity, "text">[]}
     />

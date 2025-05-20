@@ -64,6 +64,7 @@ export default function Accounts() {
             colProps: {
               xs: 12,
             },
+            sorter: true,
           },
         ]}
       />

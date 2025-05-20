@@ -269,7 +269,9 @@ export function useTableRequest<
         page: current ? current - 1 : 0,
         size: pageSize,
         keyword,
-        ...request.sort,
+        sort: Object.entries(request.sort).map(
+          ([key, value]) => `${key},${value === "ascend" ? "asc" : "desc"}`,
+        ),
         ...request.filter,
       };
 
