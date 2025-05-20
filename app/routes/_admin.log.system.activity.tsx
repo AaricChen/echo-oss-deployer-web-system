@@ -1,14 +1,15 @@
 import { PageContainer, ProTable } from "@ant-design/pro-components";
-import { Button, Card, Tree } from "antd";
-import { genActionStyle } from "antd/es/alert/style";
-import { useGetPermissions } from "~/apis/permission";
+import { Button } from "antd";
+import { useState } from "react";
+import LogDetails from "~/components/log/logDetails";
 import { useTableRequest } from "~/hooks/http";
 import type { SystemLogResponse } from "~/types/log";
-import type { PermissionResponse } from "~/types/permission";
 
 export default function Accounts() {
   const { mutateAsync: getLogs } =
     useTableRequest<SystemLogResponse>("/log/system");
+  const [open, setOpen] = useState(false);
+  const [log, setLog] = useState<SystemLogResponse | null>(null);
   return (
     <PageContainer title="系统活动日志">
       <ProTable<SystemLogResponse>
@@ -18,10 +19,14 @@ export default function Accounts() {
         scroll={{ x: "max-content" }}
         columns={[
           {
-            title: "请求ID",
-            dataIndex: "requestId",
+            title: "描述",
+            dataIndex: "description",
             fixed: "left",
             align: "center",
+          },
+          {
+            title: "请求ID",
+            dataIndex: "requestId",
           },
           {
             title: "头像",
@@ -34,21 +39,26 @@ export default function Accounts() {
           {
             title: "昵称",
             dataIndex: ["createBy", "nickname"],
-            search: false,
             align: "center",
-          },
-          {
-            title: "描述",
-            dataIndex: "description",
+            search: {
+              transform: (value) => {
+                return {
+                  accountName: value,
+                };
+              },
+            },
           },
           {
             title: "请求地址",
             dataIndex: "url",
           },
           {
-            title: "耗时",
-            dataIndex: "duration",
-            hideInSearch: true,
+            title: "开始时间",
+            dataIndex: "startAt",
+            valueType: "dateTimeRange",
+            render(dom, entity, index, action, schema) {
+              return entity.startAt;
+            },
           },
           {
             title: "成功",
@@ -65,8 +75,9 @@ export default function Accounts() {
             },
           },
           {
-            title: "方法",
-            dataIndex: "method",
+            title: "耗时",
+            dataIndex: "duration",
+            search: false,
           },
           {
             title: "请求IP",
@@ -85,40 +96,41 @@ export default function Accounts() {
                 status: "Default",
               },
             },
+            search: false,
+          },
+          {
+            title: "方法",
+            dataIndex: "method",
           },
           {
             title: "浏览器",
             dataIndex: "browser",
+            search: false,
           },
           {
             title: "浏览器版本",
             dataIndex: "browserVersion",
+            search: false,
           },
           {
             title: "浏览器引擎",
             dataIndex: "browserEngine",
+            search: false,
           },
           {
             title: "浏览器引擎版本",
             dataIndex: "browserEngineVersion",
+            search: false,
           },
           {
             title: "操作系统",
             dataIndex: "os",
+            search: false,
           },
           {
             title: "操作系统版本",
             dataIndex: "osVersion",
-          },
-          {
-            title: "开始时间",
-            dataIndex: "startAt",
-            valueType: "dateTime",
-          },
-          {
-            title: "结束时间",
-            dataIndex: "endAt",
-            valueType: "dateTime",
+            search: false,
           },
           {
             title: "操作",
@@ -126,7 +138,16 @@ export default function Accounts() {
             valueType: "option",
             width: 50,
             render: (text, record) => {
-              return <Button>查看</Button>;
+              return (
+                <Button
+                  onClick={() => {
+                    setLog(record);
+                    setOpen(true);
+                  }}
+                >
+                  查看
+                </Button>
+              );
             },
             fixed: "right",
             align: "center",
@@ -136,7 +157,16 @@ export default function Accounts() {
         request={async (params, sort, filter) => {
           return getLogs({ params, sort, filter });
         }}
-      ></ProTable>
+      />
+      {log && (
+        <LogDetails
+          open={open}
+          log={log}
+          onClose={() => {
+            setOpen(false);
+          }}
+        />
+      )}
     </PageContainer>
   );
 }

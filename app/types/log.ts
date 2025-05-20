@@ -33,4 +33,8 @@ export interface SystemLogResponse extends EntityResponse<string> {
   exception: string;
   exceptions: string;
   duration: string;
+  createBy: {
+    avatar: string;
+    nickname: string;
+  };
 }
