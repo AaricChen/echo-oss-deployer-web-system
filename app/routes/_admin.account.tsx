@@ -9,15 +9,15 @@ import {
 import { Button, Tag } from "antd";
 import { useState } from "react";
 import { useTableRequest } from "~/hooks/http";
-import type { AccountCreateRequest, AccountEntity } from "~/types/account";
+import type { AccountCreateRequest, AccountResponse } from "~/types/account";
 
 export default function Accounts() {
   const [open, setOpen] = useState(false);
   const { mutateAsync: getAccounts } =
-    useTableRequest<AccountEntity>("/account");
+    useTableRequest<AccountResponse>("/account");
   return (
     <PageContainer title="账户管理">
-      <ProTable<AccountEntity>
+      <ProTable<AccountResponse>
         rowKey="id"
         bordered
         headerTitle="账户管理"
@@ -54,7 +54,7 @@ export default function Accounts() {
           {
             title: "用户名",
             dataIndex: "username",
-            render: (text: React.ReactNode, record: AccountEntity) => (
+            render: (text: React.ReactNode, record: AccountResponse) => (
               <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
                 <span>{text}</span>
                 {record.admin && (

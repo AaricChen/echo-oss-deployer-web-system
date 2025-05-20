@@ -9,7 +9,7 @@ export interface AccountQuery extends EntityQuery {
   department?: number;
 }
 
-export interface AccountEntity extends EntityResponse<string> {
+export interface AccountResponse extends EntityResponse<string> {
   id: string;
   admin: boolean;
   disabled: boolean;
@@ -52,4 +52,4 @@ export interface AccountCreateRequest extends EntityCreateRequest {
   passwordConfirm: string;
 }
 
-export interface AccountUpdateRequest extends AccountEntity {}
+export interface AccountUpdateRequest extends AccountResponse {}
