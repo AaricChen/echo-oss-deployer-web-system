@@ -11,11 +11,11 @@ export default function Accounts() {
   const [open, setOpen] = useState(false);
   const [log, setLog] = useState<SystemLogResponse | null>(null);
   return (
-    <PageContainer title="系统活动日志">
+    <PageContainer title="系统操作日志">
       <ProTable<SystemLogResponse>
         rowKey="id"
         bordered
-        headerTitle="系统活动日志"
+        headerTitle="系统操作日志"
         scroll={{ x: "max-content" }}
         columns={[
           {
@@ -147,7 +147,7 @@ export default function Accounts() {
             align: "center",
           },
         ]}
-        params={{ type: "ACTIVITY" }}
+        params={{ type: "OPERATION" }}
         request={async (params, sort, filter) => {
           return getLogs({ params, sort, filter });
         }}
