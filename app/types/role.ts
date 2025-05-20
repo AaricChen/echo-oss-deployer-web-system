@@ -1,6 +1,7 @@
 import type { DataScope } from "~/types/account";
 import type {
   EntityCreateRequest,
+  EntityDeleteRequest,
   EntityQuery,
   EntityResponse,
 } from "~/types/entity";
@@ -24,4 +25,6 @@ export interface RoleCreateRequest extends EntityCreateRequest {
   departments: string[];
 }
 
-export interface RoleUpdateRequest extends RoleResponse {}
+export interface RoleUpdateRequest extends RoleCreateRequest {}
+
+export interface RoleDeleteRequest extends EntityDeleteRequest<string> {}

@@ -17,6 +17,6 @@ export interface EntityUpdateRequest<Id extends EntityIdType> {
 }
 
 export interface EntityDeleteRequest<Id extends EntityIdType> {
-  id: Id;
-  ids: Id[];
+  id?: Id;
+  ids?: Id[];
 }
