@@ -5,6 +5,7 @@ import type {
   EntityDeleteRequest,
   EntityQuery,
   EntityResponse,
+  EntityUpdateRequest,
 } from "~/types/entity";
 
 export const RoleEntity: EntityConfig = {
@@ -31,6 +32,6 @@ export interface RoleCreateRequest extends EntityCreateRequest {
   departments: string[];
 }
 
-export interface RoleUpdateRequest extends RoleCreateRequest {}
+export type RoleUpdateRequest = RoleCreateRequest & EntityUpdateRequest<string>;
 
 export interface RoleDeleteRequest extends EntityDeleteRequest<string> {}
