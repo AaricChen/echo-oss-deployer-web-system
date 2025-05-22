@@ -24,7 +24,7 @@ export function useUpdateDepartment() {
 export function useUpdateDepartmentParent() {
   return usePut<DepartmentUpdateParentRequest, DepartmentResponse>({
     url: (request) => `/department/${request.id}/parent`,
-    action: "更新部门父级",
+    action: "更新部门上级",
   });
 }
 

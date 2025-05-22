@@ -154,17 +154,35 @@ export default function Accounts() {
             setSelectedDepartment(selected ? node : null);
           }}
           onDrop={async ({ node, dragNode, dropToGap, dropPosition }) => {
-            if (dropToGap && dropPosition === -1) {
-              // 拖拽到节点之间
-              await updateDepartmentParent({
-                id: dragNode.id,
-                parent: "",
-              });
-            } else {
-              // 拖拽到节点内部 成为子部门
+            const dropPos = node.pos.split("-");
+            const sequence = Number(dropPos[dropPos.length - 1]);
+            const dropType = dropPosition - sequence;
+
+            /**
+             * -1 是移动到和dropKey的平级 并在其上面(即info.dropPosition比dropKey的下标小一个)。
+             * 1 是移动到和dropKey的平级 并在其下面(info.dropPosition比dropKey的下标大一个)。
+             * 0 是移动到dropKey下面作为他的子级(info.dropPosition和dropKey的下标同样大)。
+             */
+
+            if (dropType === 0) {
+              // 将Drop的部门设为父级
               await updateDepartmentParent({
                 id: dragNode.id,
                 parent: node.id,
+                sequence,
+              });
+            } else if (dropType === -1) {
+              // 将Drop的部门设为同级，并且Sequence小一个
+              await updateDepartmentParent({
+                id: dragNode.id,
+                parent: node.parent,
+                sequence: node.sequence - 1,
+              });
+            } else if (dropType === 1) {
+              await updateDepartmentParent({
+                id: dragNode.id,
+                parent: node.parent,
+                sequence: node.sequence + 1,
               });
             }
 

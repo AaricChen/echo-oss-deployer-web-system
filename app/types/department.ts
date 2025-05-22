@@ -26,6 +26,7 @@ export interface DepartmentResponse extends EntityResponse<string> {
   name: string;
   remark: string;
   sequence: number;
+  parent: string;
   children: DepartmentResponse[];
 }
 
@@ -42,6 +43,7 @@ export type DepartmentUpdateRequest = DepartmentCreateRequest &
 export type DepartmentUpdateParentRequest = {
   id: string;
   parent: string;
+  sequence: number;
 };
 
 export interface DepartmentDeleteRequest extends EntityDeleteRequest<string> {}
