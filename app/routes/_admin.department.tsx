@@ -3,10 +3,12 @@ import {
   PageContainer,
   ProFormText,
 } from "@ant-design/pro-components";
-import { Button, Card, Space, Tree, Typography } from "antd";
+import { Button, Card, Modal, Space, Tree, Typography } from "antd";
 import { useEffect, useState } from "react";
+import { useDebounce } from "react-use";
 import {
   useCreateDepartment,
+  useDeleteDepartment,
   useUpdateDepartment,
   useUpdateDepartmentParent,
 } from "~/apis/department";
@@ -27,6 +29,7 @@ export default function Accounts() {
   const { mutateAsync: createDepartment } = useCreateDepartment();
   const { mutateAsync: updateDepartment } = useUpdateDepartment();
   const { mutateAsync: updateDepartmentParent } = useUpdateDepartmentParent();
+  const { mutateAsync: deleteDepartment } = useDeleteDepartment();
   const [departments, setDepartments] = useState<DepartmentResponse[]>([]);
   const [selectedDepartment, setSelectedDepartment] =
     useState<DepartmentResponse | null>(null);
@@ -130,6 +133,25 @@ export default function Accounts() {
                 formItemProps={{ rules: [{ max: 64 }] }}
               />
             </ModalForm>
+            <Button
+              type="primary"
+              danger
+              disabled={!selectedDepartment}
+              onClick={async () => {
+                Modal.confirm({
+                  title: `确定要删除部门${selectedDepartment?.name} ？`,
+                  onOk: async () => {
+                    await deleteDepartment({
+                      id: selectedDepartment?.id,
+                    });
+                    setSelectedDepartment(null);
+                    await refresh();
+                  },
+                });
+              }}
+            >
+              删除
+            </Button>
           </Space>
         }
       >
