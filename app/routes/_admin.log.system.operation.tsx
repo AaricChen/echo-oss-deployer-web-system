@@ -80,6 +80,7 @@ export default function Accounts() {
           {
             title: "移动端",
             dataIndex: "mobile",
+            align: "center",
             valueEnum: {
               true: {
                 text: "是",

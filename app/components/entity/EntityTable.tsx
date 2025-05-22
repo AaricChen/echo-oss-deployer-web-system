@@ -162,6 +162,25 @@ export default function EntityTable<
             }
           : undefined
       }
+      tableAlertOptionRender={({ selectedRowKeys }) => [
+        <Button
+          type="link"
+          danger
+          onClick={() => {
+            Modal.confirm({
+              title: "确定删除选中的数据吗？",
+              onOk: async () => {
+                await deleteEntities({
+                  ids: selectedRowKeys,
+                });
+                tableAction.current?.reload();
+              },
+            });
+          }}
+        >
+          批量删除
+        </Button>,
+      ]}
       editable={{
         type: "multiple",
         onDelete: async (key) => {
