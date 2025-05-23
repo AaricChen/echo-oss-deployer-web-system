@@ -1,15 +1,14 @@
 import {
-  BetaSchemaForm,
   ProTable,
   type ActionType,
   type ProColumns,
   type ProFormColumnsType,
 } from "@ant-design/pro-components";
 import type { DefaultError, UseMutationResult } from "@tanstack/react-query";
-import { Button, Modal, Popconfirm, type FormInstance } from "antd";
+import { Button, Modal, Popconfirm } from "antd";
 import { useMemo, useRef, useState } from "react";
 import EntityCreateForm from "~/components/entity/EntityCreateForm";
-import { useDelete, usePost, useTableRequest } from "~/hooks/http";
+import { useDelete, useTableRequest } from "~/hooks/http";
 import type {
   EntityConfig,
   EntityCreateRequest,
@@ -74,17 +73,11 @@ export default function EntityTable<
   const { mutateAsync: getEntities } = useTableRequest<Entity>(
     entityConfig.baseUrl,
   );
-  const { mutateAsync: createEntity } = usePost({
-    url: entityConfig.baseUrl,
-    action: `新增${entityConfig.name}`,
-  });
   const { mutateAsync: deleteEntities } = useDelete({
     url: entityConfig.baseUrl,
     action: `删除${entityConfig.name}`,
   });
 
-  const createFormRef = useRef<FormInstance>(null);
-  const [openCreateModal, setOpenCreateModal] = useState(false);
   const [openUpdateModal, setOpenUpdateModal] = useState(false);
 
   const hasRowAction = useMemo(() => {
@@ -177,42 +170,15 @@ export default function EntityTable<
       rowKey={entityConfig.entityIdField ?? "id"}
       headerTitle={headerTitle ?? `${entityConfig.name}管理`}
       toolBarRender={() => [
-        createAction && (
-          <>
-            <EntityCreateForm<Entity, CreateRequest>
-              entityConfig={entityConfig}
-              columns={createFormColumns}
-              action={createAction}
-            />
-            <Button type="primary" onClick={() => setOpenCreateModal(true)}>
-              新增
-            </Button>
-            <Modal
-              open={openCreateModal}
-              onCancel={() => setOpenCreateModal(false)}
-              title={`新增${createAction.name ?? entityConfig.name}`}
-              footer={false}
-            >
-              <BetaSchemaForm
-                formRef={createFormRef}
-                grid
-                columns={createFormColumns}
-                onFinish={async (values) => {
-                  if (createAction.mutation) {
-                    await createAction.mutation.mutateAsync(values);
-                  } else {
-                    await createEntity(values);
-                  }
-                  tableAction.current?.reload();
-                  if (resetAfterCreate) {
-                    createFormRef.current?.resetFields();
-                  }
-                  setOpenCreateModal(false);
-                }}
-              />
-            </Modal>
-          </>
-        ),
+        <EntityCreateForm<Entity, CreateRequest>
+          entityConfig={entityConfig}
+          columns={createFormColumns}
+          action={createAction}
+          onFinish={async () => {
+            tableAction.current?.reload();
+          }}
+          resetOnFinish={resetAfterCreate}
+        />,
       ]}
       rowSelection={
         hasRowSelection
