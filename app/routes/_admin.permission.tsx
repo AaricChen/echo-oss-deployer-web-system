@@ -3,7 +3,7 @@ import { Card, Tree } from "antd";
 import { useGetPermissions } from "~/apis/permission";
 import type { PermissionResponse } from "~/types/permission";
 
-export default function Accounts() {
+export default function PermissionPage() {
   const { data: permissions, isPending } = useGetPermissions();
 
   return (

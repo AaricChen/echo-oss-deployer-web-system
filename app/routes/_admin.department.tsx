@@ -21,7 +21,7 @@ import type {
 } from "~/types/department";
 import { DepartmentEntity } from "~/types/department";
 
-export default function Accounts() {
+export default function DepartmentPage() {
   const { mutateAsync: getDepartments, isPending } = useTableRequest<
     DepartmentResponse,
     DepartmentQuery

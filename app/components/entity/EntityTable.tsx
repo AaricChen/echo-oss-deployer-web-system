@@ -5,7 +5,8 @@ import {
   type ProColumns,
   type ProFormColumnsType,
 } from "@ant-design/pro-components";
-import { Button, Modal, type FormInstance } from "antd";
+import type { DefaultError, UseMutationResult } from "@tanstack/react-query";
+import { Button, Modal, Popconfirm, type FormInstance } from "antd";
 import { useMemo, useRef, useState } from "react";
 import { useDelete, usePost, useTableRequest } from "~/hooks/http";
 import type {
@@ -30,15 +31,17 @@ export interface EntityTableProps<
   entityConfig: EntityConfig;
   columns: ProFormColumnsType<Entity, "text">[] & ProColumns<Entity, "text">[];
   headerTitle?: React.ReactNode;
-  createAction?: EntityTableAction<CreateRequest>;
-  updateAction?: EntityTableAction<UpdateRequest>;
+  createAction?: EntityTableAction<CreateRequest, Entity>;
+  updateAction?: EntityTableAction<UpdateRequest, Entity>;
+  deleteAction?: EntityTableAction<DeleteRequest, void>;
   resetAfterCreate?: boolean;
 }
 
-export type EntityTableAction<EntityRequest> =
+export type EntityTableAction<EntityRequest, Response> =
   | false
   | {
-      columns?: ProFormColumnsType<EntityRequest>[];
+      columns?: ProFormColumnsType<EntityRequest>[]; // 表单项的配置
+      mutation?: UseMutationResult<Response, DefaultError, EntityRequest>;
       name?: string;
       url?: string;
     };
@@ -57,6 +60,7 @@ export default function EntityTable<
   headerTitle,
   createAction = {},
   updateAction = {},
+  deleteAction = {},
   resetAfterCreate = true,
 }: EntityTableProps<
   Entity,
@@ -71,13 +75,16 @@ export default function EntityTable<
   );
   const { mutateAsync: createEntity } = usePost({
     url: entityConfig.baseUrl,
+    action: `新增${entityConfig.name}`,
   });
   const { mutateAsync: deleteEntities } = useDelete({
     url: entityConfig.baseUrl,
+    action: `删除${entityConfig.name}`,
   });
 
   const createFormRef = useRef<FormInstance>(null);
   const [openCreateModal, setOpenCreateModal] = useState(false);
+  const [openUpdateModal, setOpenUpdateModal] = useState(false);
 
   const hasRowSelection = useMemo(() => {
     return true;
@@ -99,15 +106,43 @@ export default function EntityTable<
           valueType: "option",
           width: 180,
           align: "center",
-          render: (text, record, _, action) => {
+          render: (text, record) => {
             return (
               <div className="flex items-center gap-1">
-                <Button
-                  type="link"
-                  onClick={() => action?.startEditable(record.id)}
-                >
-                  编辑
-                </Button>
+                {updateAction && (
+                  <>
+                    <Button
+                      type="link"
+                      onClick={() => {
+                        setOpenUpdateModal(true);
+                      }}
+                    >
+                      编辑
+                    </Button>
+                  </>
+                )}
+                {deleteAction && (
+                  <Popconfirm
+                    title={`确定删除该 ${entityConfig.name} 吗？`}
+                    onConfirm={async () => {
+                      if (deleteAction.mutation) {
+                        const payload = { id: record.id };
+                        await deleteAction.mutation.mutateAsync(
+                          payload as DeleteRequest,
+                        );
+                      } else {
+                        await deleteEntities({
+                          id: record.id,
+                        });
+                      }
+                      tableAction.current?.reload();
+                    }}
+                  >
+                    <Button type="link" danger>
+                      删除
+                    </Button>
+                  </Popconfirm>
+                )}
               </div>
             );
           },
@@ -143,7 +178,11 @@ export default function EntityTable<
                   (tableColumns as ProFormColumnsType<CreateRequest>[])
                 }
                 onFinish={async (values) => {
-                  await createEntity(values);
+                  if (createAction.mutation) {
+                    await createAction.mutation.mutateAsync(values);
+                  } else {
+                    await createEntity(values);
+                  }
                   tableAction.current?.reload();
                   if (resetAfterCreate) {
                     createFormRef.current?.resetFields();
@@ -163,23 +202,33 @@ export default function EntityTable<
           : undefined
       }
       tableAlertOptionRender={({ selectedRowKeys }) => [
-        <Button
-          type="link"
-          danger
-          onClick={() => {
-            Modal.confirm({
-              title: "确定删除选中的数据吗？",
-              onOk: async () => {
-                await deleteEntities({
-                  ids: selectedRowKeys,
-                });
-                tableAction.current?.reload();
-              },
-            });
-          }}
-        >
-          批量删除
-        </Button>,
+        deleteAction && (
+          <Button
+            key="batchDelete"
+            type="link"
+            danger
+            onClick={() => {
+              Modal.confirm({
+                title: `确定删除选中的 ${selectedRowKeys.length} 条${entityConfig.name ?? "数据"}吗？`,
+                onOk: async () => {
+                  if (deleteAction.mutation) {
+                    const payload = { ids: selectedRowKeys };
+                    await deleteAction.mutation.mutateAsync(
+                      payload as DeleteRequest,
+                    );
+                  } else {
+                    await deleteEntities({
+                      ids: selectedRowKeys,
+                    });
+                  }
+                  tableAction.current?.reload();
+                },
+              });
+            }}
+          >
+            批量删除
+          </Button>
+        ),
       ]}
       editable={{
         type: "multiple",

@@ -1,4 +1,6 @@
-export type EntityIdType = string | number;
+import type React from "react";
+
+export type EntityIdType = React.Key;
 export type EntityQueryFieldType = string | number | boolean | undefined | null;
 
 export interface EntityConfig {

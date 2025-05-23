@@ -11,7 +11,7 @@ import { useState } from "react";
 import { useTableRequest } from "~/hooks/http";
 import type { AccountCreateRequest, AccountResponse } from "~/types/account";
 
-export default function Accounts() {
+export default function AccountPage() {
   const [open, setOpen] = useState(false);
   const { mutateAsync: getAccounts } =
     useTableRequest<AccountResponse>("/account");

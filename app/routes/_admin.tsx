@@ -6,6 +6,7 @@ import { useCurrentAccount } from "~/apis/account";
 import { useLogout } from "~/apis/auth";
 import { useAdminSidebar } from "~/apis/menu";
 import { appConfig } from "~/configs/app";
+
 export default function AdminLayout() {
   const { data: account } = useCurrentAccount();
   const { menuItems } = useAdminSidebar();

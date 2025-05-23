@@ -11,7 +11,7 @@ import {
   type RoleUpdateRequest,
 } from "~/types/role";
 
-export default function Accounts() {
+export default function RolePage() {
   return (
     <PageContainer title="角色管理">
       <EntityTable<
@@ -26,6 +26,7 @@ export default function Accounts() {
           {
             title: "名称",
             dataIndex: "name",
+            align: "center",
             formItemProps: {
               rules: [
                 { required: true, message: "请输入名称" },
@@ -33,7 +34,8 @@ export default function Accounts() {
               ],
             },
             colProps: {
-              xs: 8,
+              xs: 24,
+              lg: 8,
             },
           },
           {
@@ -42,7 +44,7 @@ export default function Accounts() {
             valueType: "select",
             align: "center",
             formItemProps: {
-              rules: [{ required: true, message: "请输入名称" }],
+              rules: [{ required: true, message: "请选择数据范围" }],
             },
             fieldProps: {
               options: [
@@ -54,25 +56,29 @@ export default function Accounts() {
               ],
             },
             colProps: {
-              xs: 8,
+              xs: 24,
+              lg: 8,
             },
             sorter: true,
           },
           {
             title: "备注",
             dataIndex: "remark",
+            align: "center",
             formItemProps: {
               rules: [{ max: 64, message: "备注长度不能超过255个字符" }],
             },
             colProps: {
-              xs: 8,
+              xs: 24,
+              lg: 8,
             },
           },
           {
             title: "权限数量",
             dataIndex: "permissions",
+            align: "right",
             hideInSearch: true,
-            renderText(text, record, index, action) {
+            renderText(_, record) {
               return record.permissions.length;
             },
             renderFormItem: (_) => {

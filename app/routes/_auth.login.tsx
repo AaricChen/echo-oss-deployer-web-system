@@ -4,7 +4,8 @@ import { theme } from "antd";
 import { useLogin } from "~/apis/auth";
 import { appConfig } from "~/configs/app";
 import type { LoginRequest } from "~/types/auth";
-export default function Login() {
+
+export default function LoginPage() {
   const { token } = theme.useToken();
   const login = useLogin();
   return (
