@@ -201,6 +201,21 @@ export default function EntityTable<
             }
           : undefined
       }
+      tableAlertRender={({ selectedRowKeys }) => {
+        return (
+          <div>
+            <span>已选择 {selectedRowKeys.length} 项</span>
+            <Button
+              type="link"
+              onClick={() => {
+                tableAction.current?.clearSelected?.();
+              }}
+            >
+              取消选择
+            </Button>
+          </div>
+        );
+      }}
       tableAlertOptionRender={({ selectedRowKeys }) => [
         deleteAction && (
           <Button
