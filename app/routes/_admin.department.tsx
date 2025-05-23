@@ -3,9 +3,8 @@ import {
   PageContainer,
   ProFormText,
 } from "@ant-design/pro-components";
-import { Button, Card, Empty, Modal, Space, Tree, Typography } from "antd";
+import { Button, Card, Empty, Popconfirm, Space, Tree, Typography } from "antd";
 import { useEffect, useState } from "react";
-import { useDebounce } from "react-use";
 import {
   useCreateDepartment,
   useDeleteDepartment,
@@ -133,25 +132,20 @@ export default function DepartmentPage() {
                 formItemProps={{ rules: [{ max: 64 }] }}
               />
             </ModalForm>
-            <Button
-              type="primary"
-              danger
-              disabled={!selectedDepartment}
-              onClick={async () => {
-                Modal.confirm({
-                  title: `确定要删除部门${selectedDepartment?.name} ？`,
-                  onOk: async () => {
-                    await deleteDepartment({
-                      id: selectedDepartment?.id,
-                    });
-                    setSelectedDepartment(null);
-                    await refresh();
-                  },
+            <Popconfirm
+              title={`确定要删除该部门？`}
+              onConfirm={async () => {
+                await deleteDepartment({
+                  id: selectedDepartment?.id,
                 });
+                setSelectedDepartment(null);
+                await refresh();
               }}
             >
-              删除
-            </Button>
+              <Button type="primary" danger disabled={!selectedDepartment}>
+                删除
+              </Button>
+            </Popconfirm>
           </Space>
         }
       >
