@@ -104,7 +104,7 @@ export default function EntityTable<
           title: "操作",
           dataIndex: "action",
           valueType: "option",
-          width: 180,
+          width: 128,
           align: "center",
           render: (text, record) => {
             return (

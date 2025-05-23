@@ -76,8 +76,8 @@ export default function RolePage() {
           {
             title: "权限数量",
             dataIndex: "permissions",
+            valueType: "treeSelect",
             align: "right",
-            hideInSearch: true,
             renderText(_, record) {
               return record.permissions.length;
             },
