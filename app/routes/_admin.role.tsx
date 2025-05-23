@@ -1,5 +1,6 @@
 import { PageContainer } from "@ant-design/pro-components";
 import EntityTable from "~/components/entity/EntityTable";
+import PermissionSelect from "~/components/form/PermissionSelect";
 import {
   RoleEntity,
   type RoleCreateRequest,
@@ -25,22 +26,13 @@ export default function Accounts() {
             title: "名称",
             dataIndex: "name",
             formItemProps: {
-              required: true,
-              rules: [{ required: true, message: "请输入名称" }],
+              rules: [
+                { required: true, message: "请输入名称" },
+                { max: 32, message: "名称长度不能超过32个字符" },
+              ],
             },
             colProps: {
-              xs: 12,
-            },
-          },
-          {
-            title: "备注",
-            dataIndex: "remark",
-            formItemProps: {
-              required: true,
-              rules: [{ required: true, message: "请输入名称" }],
-            },
-            colProps: {
-              xs: 12,
+              xs: 8,
             },
           },
           {
@@ -49,7 +41,6 @@ export default function Accounts() {
             valueType: "select",
             align: "center",
             formItemProps: {
-              required: true,
               rules: [{ required: true, message: "请输入名称" }],
             },
             fieldProps: {
@@ -62,9 +53,36 @@ export default function Accounts() {
               ],
             },
             colProps: {
-              xs: 12,
+              xs: 8,
             },
             sorter: true,
+          },
+          {
+            title: "备注",
+            dataIndex: "remark",
+            formItemProps: {
+              rules: [{ max: 64, message: "备注长度不能超过255个字符" }],
+            },
+            colProps: {
+              xs: 8,
+            },
+          },
+          {
+            title: "权限数量",
+            dataIndex: "permissions",
+            hideInSearch: true,
+            width: 256,
+            renderText(text, record, index, action) {
+              return record.permissions.length;
+            },
+            renderFormItem: (_) => {
+              return (
+                <PermissionSelect
+                  name="permissions"
+                  fieldProps={{ multiple: true }}
+                />
+              );
+            },
           },
         ]}
       />

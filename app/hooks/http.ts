@@ -17,7 +17,7 @@ import type { HttpResponse } from "~/types/http";
 import type { PaginationData, PaginationQuery } from "~/types/pagination";
 
 export interface HttpMutationRequestParams<Request, Response> {
-  method: "POST" | "PUT" | "DELETE";
+  method: "GET" | "POST" | "PUT" | "DELETE";
   url: string | ((request: Request) => string);
   noAuth?: boolean;
   action?: string | ((response: Response, request: Request) => string);

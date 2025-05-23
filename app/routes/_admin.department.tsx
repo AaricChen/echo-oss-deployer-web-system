@@ -3,7 +3,7 @@ import {
   PageContainer,
   ProFormText,
 } from "@ant-design/pro-components";
-import { Button, Card, Modal, Space, Tree, Typography } from "antd";
+import { Button, Card, Empty, Modal, Space, Tree, Typography } from "antd";
 import { useEffect, useState } from "react";
 import { useDebounce } from "react-use";
 import {
@@ -155,65 +155,69 @@ export default function Accounts() {
           </Space>
         }
       >
-        <Tree<DepartmentResponse>
-          showLine
-          defaultExpandAll
-          blockNode
-          draggable
-          selectable
-          titleRender={(node) => {
-            return (
-              <div className="flex items-center gap-2">
-                <Typography.Text>{node.name}</Typography.Text>
-                <Typography.Text type="secondary" style={{ fontSize: 12 }}>
-                  {node.remark}
-                </Typography.Text>
-              </div>
-            );
-          }}
-          onSelect={async (_, info) => {
-            const { node, selected } = info;
-            setSelectedDepartment(selected ? node : null);
-          }}
-          onDrop={async ({ node, dragNode, dropToGap, dropPosition }) => {
-            const dropPos = node.pos.split("-");
-            const sequence = Number(dropPos[dropPos.length - 1]);
-            const dropType = dropPosition - sequence;
+        {departments.length > 0 ? (
+          <Tree<DepartmentResponse>
+            showLine
+            defaultExpandAll
+            blockNode
+            draggable
+            selectable
+            titleRender={(node) => {
+              return (
+                <div className="flex items-center gap-2">
+                  <Typography.Text>{node.name}</Typography.Text>
+                  <Typography.Text type="secondary" style={{ fontSize: 12 }}>
+                    {node.remark}
+                  </Typography.Text>
+                </div>
+              );
+            }}
+            onSelect={async (_, info) => {
+              const { node, selected } = info;
+              setSelectedDepartment(selected ? node : null);
+            }}
+            onDrop={async ({ node, dragNode, dropToGap, dropPosition }) => {
+              const dropPos = node.pos.split("-");
+              const sequence = Number(dropPos[dropPos.length - 1]);
+              const dropType = dropPosition - sequence;
 
-            /**
-             * -1 是移动到和dropKey的平级 并在其上面(即info.dropPosition比dropKey的下标小一个)。
-             * 1 是移动到和dropKey的平级 并在其下面(info.dropPosition比dropKey的下标大一个)。
-             * 0 是移动到dropKey下面作为他的子级(info.dropPosition和dropKey的下标同样大)。
-             */
+              /**
+               * -1 是移动到和dropKey的平级 并在其上面(即info.dropPosition比dropKey的下标小一个)。
+               * 1 是移动到和dropKey的平级 并在其下面(info.dropPosition比dropKey的下标大一个)。
+               * 0 是移动到dropKey下面作为他的子级(info.dropPosition和dropKey的下标同样大)。
+               */
 
-            if (dropType === 0) {
-              // 将Drop的部门设为父级
-              await updateDepartmentParent({
-                id: dragNode.id,
-                parent: node.id,
-                sequence,
-              });
-            } else if (dropType === -1) {
-              // 将Drop的部门设为同级，并且Sequence小一个
-              await updateDepartmentParent({
-                id: dragNode.id,
-                parent: node.parent,
-                sequence: node.sequence - 1,
-              });
-            } else if (dropType === 1) {
-              await updateDepartmentParent({
-                id: dragNode.id,
-                parent: node.parent,
-                sequence: node.sequence + 1,
-              });
-            }
+              if (dropType === 0) {
+                // 将Drop的部门设为父级
+                await updateDepartmentParent({
+                  id: dragNode.id,
+                  parent: node.id,
+                  sequence,
+                });
+              } else if (dropType === -1) {
+                // 将Drop的部门设为同级，并且Sequence小一个
+                await updateDepartmentParent({
+                  id: dragNode.id,
+                  parent: node.parent,
+                  sequence: node.sequence - 1,
+                });
+              } else if (dropType === 1) {
+                await updateDepartmentParent({
+                  id: dragNode.id,
+                  parent: node.parent,
+                  sequence: node.sequence + 1,
+                });
+              }
 
-            await refresh();
-            return true;
-          }}
-          treeData={departments}
-          fieldNames={{ title: "name", key: "id", children: "children" }}
-        />
+              await refresh();
+              return true;
+            }}
+            treeData={departments}
+            fieldNames={{ title: "name", key: "id", children: "children" }}
+          />
+        ) : (
+          <Empty />
+        )}
       </Card>
     </PageContainer>
   );
