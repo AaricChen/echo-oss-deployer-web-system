@@ -10,7 +10,9 @@ import {
 import { ProConfigProvider } from "@ant-design/pro-components";
 import "@ant-design/v5-patch-for-react-19";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { App, ConfigProvider } from "antd";
 import React from "react";
+import { valueTypeMap } from "~/components/valueType";
 import type { Route } from "./+types/root";
 import "./app.css";
 
@@ -53,13 +55,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default function App() {
+export default function Application() {
   return (
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>
-        <ProConfigProvider>
-          <Outlet />
-        </ProConfigProvider>
+        <ConfigProvider theme={{}}>
+          <ProConfigProvider valueTypeMap={valueTypeMap}>
+            <App>
+              <Outlet />
+            </App>
+          </ProConfigProvider>
+        </ConfigProvider>
       </QueryClientProvider>
     </React.StrictMode>
   );

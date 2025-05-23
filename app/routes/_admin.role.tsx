@@ -1,7 +1,6 @@
 import { PageContainer } from "@ant-design/pro-components";
 import EntityTable from "~/components/entity/EntityTable";
 import DepartmentSelect from "~/components/form/DepartmentSelect";
-import PermissionSelect from "~/components/form/PermissionSelect";
 import {
   RoleEntity,
   type RoleCreateRequest,
@@ -43,6 +42,7 @@ export default function RolePage() {
             dataIndex: "dataScope",
             valueType: "select",
             align: "center",
+            width: 128,
             formItemProps: {
               rules: [{ required: true, message: "请选择数据范围" }],
             },
@@ -54,6 +54,9 @@ export default function RolePage() {
                 { label: "自定义", value: "CUSTOM" },
                 { label: "本人", value: "SELF" },
               ],
+              style: {
+                width: "100%",
+              },
             },
             colProps: {
               xs: 24,
@@ -66,7 +69,7 @@ export default function RolePage() {
             dataIndex: "remark",
             align: "center",
             formItemProps: {
-              rules: [{ max: 64, message: "备注长度不能超过255个字符" }],
+              rules: [{ max: 64, message: "备注长度不能超过64个字符" }],
             },
             colProps: {
               xs: 24,
@@ -76,13 +79,15 @@ export default function RolePage() {
           {
             title: "权限数量",
             dataIndex: "permissions",
-            valueType: "treeSelect",
+            valueType: "permissions" as any,
             align: "right",
-            renderText(_, record) {
-              return record.permissions.length;
+            width: 96,
+            formItemProps: {
+              label: "权限",
+              rules: [{ required: true, message: "请选择角色权限" }],
             },
-            renderFormItem: (_) => {
-              return <PermissionSelect multiple />;
+            fieldProps: {
+              multiple: true,
             },
           },
           {

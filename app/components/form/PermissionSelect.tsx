@@ -1,19 +1,24 @@
-import { TreeSelect, type TreeSelectProps } from "antd";
+import { TreeSelect, type FormItemProps, type TreeSelectProps } from "antd";
 import { useGetPermissions } from "~/apis/permission";
 
-export interface PermissionSelectProps extends TreeSelectProps {}
+export interface PermissionSelectProps {
+  formItemProps?: FormItemProps;
+  fieldProps: TreeSelectProps;
+}
 
-export default function PermissionSelect(props: TreeSelectProps) {
+export default function PermissionSelect({
+  fieldProps,
+}: PermissionSelectProps) {
   const { data, isPending } = useGetPermissions();
   return (
     <TreeSelect
+      loading={isPending}
       fieldNames={{ label: "name", value: "id" }}
       treeNodeFilterProp="name"
       treeData={data?.children}
-      {...props}
+      {...fieldProps}
       style={{
         width: "100%",
-        ...props.style,
       }}
       showSearch
       autoClearSearchValue={false}

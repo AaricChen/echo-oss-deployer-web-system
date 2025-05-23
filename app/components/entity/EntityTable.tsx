@@ -8,6 +8,7 @@ import {
 import type { DefaultError, UseMutationResult } from "@tanstack/react-query";
 import { Button, Modal, Popconfirm, type FormInstance } from "antd";
 import { useMemo, useRef, useState } from "react";
+import EntityCreateForm from "~/components/entity/EntityCreateForm";
 import { useDelete, usePost, useTableRequest } from "~/hooks/http";
 import type {
   EntityConfig,
@@ -86,13 +87,13 @@ export default function EntityTable<
   const [openCreateModal, setOpenCreateModal] = useState(false);
   const [openUpdateModal, setOpenUpdateModal] = useState(false);
 
-  const hasRowSelection = useMemo(() => {
-    return true;
-  }, []);
-
   const hasRowAction = useMemo(() => {
     return updateAction !== false;
   }, [updateAction]);
+
+  const hasRowSelection = useMemo(() => {
+    return true;
+  }, []);
 
   const tableColumns: ProFormColumnsType<Entity, "text">[] = useMemo(() => {
     if (!hasRowAction) {
@@ -106,6 +107,7 @@ export default function EntityTable<
           valueType: "option",
           width: 128,
           align: "center",
+          fixed: "right",
           render: (text, record) => {
             return (
               <div className="flex items-center gap-1">
@@ -151,6 +153,22 @@ export default function EntityTable<
     }
   }, [columns, hasRowAction]);
 
+  const createFormColumns: ProFormColumnsType<CreateRequest>[] = useMemo(() => {
+    if (createAction && createAction.columns) {
+      return createAction.columns;
+    } else {
+      return tableColumns as ProFormColumnsType<CreateRequest>[];
+    }
+  }, [createAction, tableColumns]);
+
+  const updateFormColumns: ProFormColumnsType<UpdateRequest>[] = useMemo(() => {
+    if (updateAction && updateAction.columns) {
+      return updateAction.columns;
+    } else {
+      return createFormColumns as ProFormColumnsType<UpdateRequest>[];
+    }
+  }, [updateAction, createFormColumns]);
+
   return (
     <ProTable<Entity>
       cardBordered
@@ -161,6 +179,11 @@ export default function EntityTable<
       toolBarRender={() => [
         createAction && (
           <>
+            <EntityCreateForm<Entity, CreateRequest>
+              entityConfig={entityConfig}
+              columns={createFormColumns}
+              action={createAction}
+            />
             <Button type="primary" onClick={() => setOpenCreateModal(true)}>
               新增
             </Button>
@@ -173,10 +196,7 @@ export default function EntityTable<
               <BetaSchemaForm
                 formRef={createFormRef}
                 grid
-                columns={
-                  createAction.columns ??
-                  (tableColumns as ProFormColumnsType<CreateRequest>[])
-                }
+                columns={createFormColumns}
                 onFinish={async (values) => {
                   if (createAction.mutation) {
                     await createAction.mutation.mutateAsync(values);

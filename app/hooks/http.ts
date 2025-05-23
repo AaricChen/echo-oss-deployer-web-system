@@ -6,7 +6,7 @@ import {
   useMutation,
   useQuery,
 } from "@tanstack/react-query";
-import { message } from "antd";
+import { App } from "antd";
 import type { SortOrder } from "antd/lib/table/interface";
 import { pickBy } from "lodash";
 import { type ReactNode, useMemo } from "react";
@@ -131,6 +131,7 @@ export function useHttpMutation<Request, Response>({
   onSuccess,
   onError,
 }: HttpMutationRequestParams<Request, Response>) {
+  const { message } = App.useApp();
   const { endpoint } = useApiStore();
   const { accessToken } = useAuthStore();
 
