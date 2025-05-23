@@ -1,5 +1,6 @@
 import { PageContainer } from "@ant-design/pro-components";
 import EntityTable from "~/components/entity/EntityTable";
+import DepartmentSelect from "~/components/form/DepartmentSelect";
 import PermissionSelect from "~/components/form/PermissionSelect";
 import {
   RoleEntity,
@@ -71,17 +72,32 @@ export default function Accounts() {
             title: "权限数量",
             dataIndex: "permissions",
             hideInSearch: true,
-            width: 256,
             renderText(text, record, index, action) {
               return record.permissions.length;
             },
             renderFormItem: (_) => {
-              return (
-                <PermissionSelect
-                  name="permissions"
-                  fieldProps={{ multiple: true }}
-                />
-              );
+              return <PermissionSelect multiple />;
+            },
+          },
+          {
+            valueType: "dependency",
+            name: ["dataScope"],
+            hideInTable: true,
+            columns: ({ dataScope }) => {
+              if (dataScope === "CUSTOM") {
+                return [
+                  {
+                    title: "自定义部门",
+                    dataIndex: "departments",
+                    hideInTable: true,
+                    renderFormItem: (_) => {
+                      return <DepartmentSelect multiple />;
+                    },
+                  },
+                ];
+              } else {
+                return [];
+              }
             },
           },
         ]}

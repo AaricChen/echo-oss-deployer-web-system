@@ -1,15 +1,15 @@
 import { TreeSelect, type TreeSelectProps } from "antd";
-import { useGetPermissions } from "~/apis/permission";
+import { useGetDepartments } from "~/apis/department";
 
-export interface PermissionSelectProps extends TreeSelectProps {}
+export interface DepartmentSelectProps extends TreeSelectProps {}
 
-export default function PermissionSelect(props: TreeSelectProps) {
-  const { data, isPending } = useGetPermissions();
+export default function DepartmentSelect(props: DepartmentSelectProps) {
+  const { data } = useGetDepartments();
   return (
     <TreeSelect
       fieldNames={{ label: "name", value: "id" }}
       treeNodeFilterProp="name"
-      treeData={data?.children}
+      treeData={data?.content}
       {...props}
       style={{
         width: "100%",

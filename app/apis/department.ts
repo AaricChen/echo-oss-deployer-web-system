@@ -1,11 +1,24 @@
-import { useDelete, usePost, usePut } from "~/hooks/http";
+import { useDelete, usePaginationQuery, usePost, usePut } from "~/hooks/http";
 import type {
   DepartmentCreateRequest,
   DepartmentDeleteRequest,
+  DepartmentQuery,
   DepartmentResponse,
   DepartmentUpdateParentRequest,
   DepartmentUpdateRequest,
 } from "~/types/department";
+
+export function useGetDepartments() {
+  return usePaginationQuery<DepartmentQuery, DepartmentResponse>(
+    "/department",
+    "departments",
+    {
+      query: { root: true },
+      page: 1,
+      size: 1000,
+    },
+  );
+}
 
 export function useCreateDepartment() {
   return usePost<DepartmentCreateRequest, DepartmentResponse>({
