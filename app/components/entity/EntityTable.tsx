@@ -40,14 +40,14 @@ export interface EntityTableProps<
   deleteAction?: EntityTableAction<DeleteRequest, void>;
   createInitialValues?: CreateRequest;
   resetAfterCreate?: boolean;
-  toolbarRender?: ({
-    action,
-    selectedRowKeys,
-    selectedRows,
-  }: {
+  toolbarRender?: ({}: {
     action?: ActionType;
     selectedRowKeys?: React.Key[];
     selectedRows?: Entity[];
+  }) => React.ReactNode[];
+  rowActionRender?: ({}: {
+    action: ActionType | null;
+    entity: Entity;
   }) => React.ReactNode[];
 }
 
@@ -79,6 +79,7 @@ export default function EntityTable<
   createInitialValues,
   resetAfterCreate = true,
   toolbarRender,
+  rowActionRender,
 }: EntityTableProps<
   Entity,
   Query,
@@ -95,8 +96,8 @@ export default function EntityTable<
   const [openUpdateModal, setOpenUpdateModal] = useState(false);
 
   const hasRowAction = useMemo(() => {
-    return updateAction !== false || deleteAction !== false;
-  }, [updateAction, deleteAction]);
+    return updateAction !== false || deleteAction !== false || rowActionRender;
+  }, [updateAction, deleteAction, rowActionRender]);
 
   const hasRowSelection = useMemo(() => {
     return true;
@@ -116,6 +117,13 @@ export default function EntityTable<
           align: "center",
           fixed: "right",
           render: (_, record: Entity) => {
+            let rowActions: React.ReactNode[] = [];
+            if (rowActionRender) {
+              rowActions = rowActionRender({
+                action: tableAction.current,
+                entity: record,
+              });
+            }
             return (
               <div className="flex items-center gap-1">
                 {updateAction && (
@@ -137,6 +145,7 @@ export default function EntityTable<
                     tableAction.current?.reload();
                   }}
                 />
+                {rowActions.map((action) => action)}
               </div>
             );
           },
