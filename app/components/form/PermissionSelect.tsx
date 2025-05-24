@@ -16,6 +16,7 @@ export default function PermissionSelect({
       treeNodeFilterProp="name"
       treeData={data?.children}
       showSearch
+      treeDefaultExpandAll
       autoClearSearchValue={false}
       placeholder="请选择权限"
       {...fieldProps}

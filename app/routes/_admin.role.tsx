@@ -20,6 +20,13 @@ export default function RolePage() {
         RoleDeleteRequest
       >
         entityConfig={RoleEntity}
+        createInitialValues={{
+          name: "",
+          remark: "",
+          dataScope: "SELF",
+          permissions: [],
+          departments: [],
+        }}
         columns={[
           {
             dataIndex: "id",

@@ -37,6 +37,7 @@ export interface EntityTableProps<
   createAction?: EntityTableAction<CreateRequest, Entity>;
   updateAction?: EntityTableAction<UpdateRequest, Entity>;
   deleteAction?: EntityTableAction<DeleteRequest, void>;
+  createInitialValues?: CreateRequest;
   resetAfterCreate?: boolean;
 }
 
@@ -64,6 +65,7 @@ export default function EntityTable<
   createAction = {},
   updateAction = {},
   deleteAction = {},
+  createInitialValues,
   resetAfterCreate = true,
 }: EntityTableProps<
   Entity,
@@ -161,6 +163,7 @@ export default function EntityTable<
         headerTitle={headerTitle ?? `${entityConfig.name}管理`}
         toolBarRender={() => [
           <EntityCreateForm<Entity, CreateRequest>
+            initialValues={createInitialValues}
             entityConfig={entityConfig}
             columns={createFormColumns}
             action={createAction}

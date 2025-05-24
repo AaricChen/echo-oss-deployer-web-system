@@ -17,6 +17,7 @@ export default function DepartmentSelect({
       loading={isPending}
       placeholder="请选择部门"
       showSearch
+      treeDefaultExpandAll
       autoClearSearchValue={false}
       {...fieldProps}
       style={{

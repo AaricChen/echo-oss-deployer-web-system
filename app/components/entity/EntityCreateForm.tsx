@@ -17,6 +17,7 @@ export interface EntityCreateFormProps<
   Entity extends EntityResponse<EntityIdType> = EntityResponse<EntityIdType>,
   CreateRequest extends EntityCreateRequest = EntityCreateRequest,
 > {
+  initialValues?: CreateRequest;
   entityConfig: EntityConfig;
   columns: ProFormColumnsType<CreateRequest>[];
   action?: EntityTableAction<CreateRequest, Entity>;
@@ -28,6 +29,7 @@ export default function EntityCreateForm<
   Entity extends EntityResponse<EntityIdType> = EntityResponse<EntityIdType>,
   CreateRequest extends EntityCreateRequest = EntityCreateRequest,
 >({
+  initialValues,
   entityConfig,
   columns,
   action,
@@ -58,6 +60,7 @@ export default function EntityCreateForm<
         <BetaSchemaForm
           formRef={formRef}
           grid
+          initialValues={initialValues}
           columns={columns}
           onFinish={async (values) => {
             if (action.mutation) {
