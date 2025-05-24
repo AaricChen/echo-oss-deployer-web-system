@@ -11,7 +11,7 @@ import EntityBatchDeleteForm from "~/components/entity/EntityBatchDeleteForm";
 import EntityCreateForm from "~/components/entity/EntityCreateForm";
 import EntityDeleteForm from "~/components/entity/EntityDeleteForm";
 import EntityUpdateForm from "~/components/entity/EntityUpdateForm";
-import { useDelete, useTableRequest } from "~/hooks/http";
+import { useTableRequest } from "~/hooks/http";
 import type {
   EntityConfig,
   EntityCreateRequest,
@@ -34,6 +34,7 @@ export interface EntityTableProps<
   entityConfig: EntityConfig;
   columns: ProFormColumnsType<Entity, "text">[] & ProColumns<Entity, "text">[];
   headerTitle?: React.ReactNode;
+  query?: Query;
   createAction?: EntityTableAction<CreateRequest, Entity>;
   updateAction?: EntityTableAction<UpdateRequest, Entity>;
   deleteAction?: EntityTableAction<DeleteRequest, void>;
@@ -71,6 +72,7 @@ export default function EntityTable<
   entityConfig,
   columns,
   headerTitle,
+  query,
   createAction = {},
   updateAction = {},
   deleteAction = {},
@@ -88,10 +90,6 @@ export default function EntityTable<
   const { mutateAsync: getEntities } = useTableRequest<Entity>(
     entityConfig.baseUrl,
   );
-  const { mutateAsync: deleteEntities } = useDelete({
-    url: entityConfig.baseUrl,
-    action: `删除${entityConfig.name}`,
-  });
 
   const [selectEntity, setSelectEntity] = useState<Entity>();
   const [openUpdateModal, setOpenUpdateModal] = useState(false);
@@ -227,6 +225,7 @@ export default function EntityTable<
             }}
           />,
         ]}
+        params={query}
         request={async (params, sort, filter) => {
           return getEntities({
             params,
