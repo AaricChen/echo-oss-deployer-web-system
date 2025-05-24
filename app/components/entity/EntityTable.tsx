@@ -39,6 +39,15 @@ export interface EntityTableProps<
   deleteAction?: EntityTableAction<DeleteRequest, void>;
   createInitialValues?: CreateRequest;
   resetAfterCreate?: boolean;
+  toolbarRender?: ({
+    action,
+    selectedRowKeys,
+    selectedRows,
+  }: {
+    action?: ActionType;
+    selectedRowKeys?: React.Key[];
+    selectedRows?: Entity[];
+  }) => React.ReactNode[];
 }
 
 export type EntityTableAction<EntityRequest, Response> =
@@ -67,6 +76,7 @@ export default function EntityTable<
   deleteAction = {},
   createInitialValues,
   resetAfterCreate = true,
+  toolbarRender,
 }: EntityTableProps<
   Entity,
   Query,
@@ -161,18 +171,29 @@ export default function EntityTable<
         scroll={{ x: "max-content" }}
         rowKey={entityConfig.entityIdField ?? "id"}
         headerTitle={headerTitle ?? `${entityConfig.name}管理`}
-        toolBarRender={() => [
-          <EntityCreateForm<Entity, CreateRequest>
-            initialValues={createInitialValues}
-            entityConfig={entityConfig}
-            columns={createFormColumns}
-            action={createAction}
-            onFinish={async () => {
-              tableAction.current?.reload();
-            }}
-            resetOnFinish={resetAfterCreate}
-          />,
-        ]}
+        toolBarRender={(action, { selectedRowKeys, selectedRows }) => {
+          let otherActions: React.ReactNode[] = [];
+          if (toolbarRender) {
+            otherActions = toolbarRender({
+              action,
+              selectedRowKeys,
+              selectedRows,
+            });
+          }
+          return [
+            <EntityCreateForm<Entity, CreateRequest>
+              initialValues={createInitialValues}
+              entityConfig={entityConfig}
+              columns={createFormColumns}
+              action={createAction}
+              onFinish={async () => {
+                tableAction.current?.reload();
+              }}
+              resetOnFinish={resetAfterCreate}
+            />,
+            ...otherActions,
+          ];
+        }}
         rowSelection={
           hasRowSelection
             ? {
