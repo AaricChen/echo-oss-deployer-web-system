@@ -64,7 +64,11 @@ export default function LogDetails({ open, log, onClose }: LogDetailsProps) {
           </Card>
         )}
         {log.exceptions && (
-          <Card title="异常堆栈" size="small">
+          <Card
+            title="异常堆栈"
+            size="small"
+            className="max-h-80 overflow-y-auto"
+          >
             <div className="overflow-x-auto">
               <pre>{log.exceptions}</pre>
             </div>
