@@ -105,7 +105,7 @@ export default function EntityTable<
           width: 128,
           align: "center",
           fixed: "right",
-          render: (text, record) => {
+          render: (_, record: Entity) => {
             return (
               <div className="flex items-center gap-1">
                 {updateAction && (
@@ -197,7 +197,10 @@ export default function EntityTable<
             selectedRowKeys={selectedRowKeys}
             entityConfig={entityConfig}
             action={deleteAction}
-            onFinish={async () => tableAction.current?.reload()}
+            onFinish={async () => {
+              tableAction.current?.clearSelected?.();
+              await tableAction.current?.reload();
+            }}
           />,
         ]}
         request={async (params, sort, filter) => {
