@@ -49,6 +49,11 @@ export interface EntityTableProps<
     action: ActionType | null;
     entity: Entity;
   }) => React.ReactNode[];
+  tableAlertRender?: ({}: {
+    action: ActionType | null;
+    selectedRowKeys: React.Key[];
+    selectedRows: Entity[];
+  }) => React.ReactNode[];
 }
 
 export type EntityTableAction<EntityRequest, Response> =
@@ -80,6 +85,7 @@ export default function EntityTable<
   resetAfterCreate = true,
   toolbarRender,
   rowActionRender,
+  tableAlertRender,
 }: EntityTableProps<
   Entity,
   Query,
@@ -208,23 +214,35 @@ export default function EntityTable<
               }
             : undefined
         }
-        tableAlertRender={({ selectedRowKeys }) => {
+        tableAlertRender={({ selectedRowKeys, selectedRows }) => {
+          let tableAlertContents: React.ReactNode[] = [];
+          if (tableAlertRender) {
+            tableAlertContents = tableAlertRender({
+              action: tableAction.current,
+              selectedRowKeys,
+              selectedRows,
+            });
+          }
           return (
-            <div>
-              <span>已选择 {selectedRowKeys.length} 项</span>
-              <Button
-                type="link"
-                onClick={() => {
-                  tableAction.current?.clearSelected?.();
-                }}
-              >
-                取消选择
-              </Button>
+            <div className="flex items-center gap-2">
+              <div>
+                <span>已选择 {selectedRowKeys.length} 项</span>
+                <Button
+                  type="link"
+                  onClick={() => {
+                    tableAction.current?.clearSelected?.();
+                  }}
+                >
+                  取消选择
+                </Button>
+              </div>
+              {tableAlertContents.map((content) => content)}
             </div>
           );
         }}
         tableAlertOptionRender={({ selectedRowKeys }) => [
           <EntityBatchDeleteForm
+            key="batchDeleteForm"
             selectedRowKeys={selectedRowKeys}
             entityConfig={entityConfig}
             action={deleteAction}
