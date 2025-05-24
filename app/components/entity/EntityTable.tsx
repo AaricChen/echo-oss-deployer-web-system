@@ -54,6 +54,11 @@ export interface EntityTableProps<
     selectedRowKeys: React.Key[];
     selectedRows: Entity[];
   }) => React.ReactNode[];
+  tableAlertOptionRender?: ({}: {
+    action: ActionType | null;
+    selectedRowKeys: React.Key[];
+    selectedRows: Entity[];
+  }) => React.ReactNode[];
 }
 
 export type EntityTableAction<EntityRequest, Response> =
@@ -86,6 +91,7 @@ export default function EntityTable<
   toolbarRender,
   rowActionRender,
   tableAlertRender,
+  tableAlertOptionRender,
 }: EntityTableProps<
   Entity,
   Query,
@@ -240,18 +246,29 @@ export default function EntityTable<
             </div>
           );
         }}
-        tableAlertOptionRender={({ selectedRowKeys }) => [
-          <EntityBatchDeleteForm
-            key="batchDeleteForm"
-            selectedRowKeys={selectedRowKeys}
-            entityConfig={entityConfig}
-            action={deleteAction}
-            onFinish={async () => {
-              tableAction.current?.clearSelected?.();
-              await tableAction.current?.reload();
-            }}
-          />,
-        ]}
+        tableAlertOptionRender={({ selectedRowKeys, selectedRows }) => {
+          let options: React.ReactNode[] = [];
+          if (tableAlertOptionRender) {
+            options = tableAlertOptionRender({
+              action: tableAction.current,
+              selectedRowKeys,
+              selectedRows,
+            });
+          }
+          return [
+            <EntityBatchDeleteForm
+              key="batchDeleteForm"
+              selectedRowKeys={selectedRowKeys}
+              entityConfig={entityConfig}
+              action={deleteAction}
+              onFinish={async () => {
+                tableAction.current?.clearSelected?.();
+                await tableAction.current?.reload();
+              }}
+            />,
+            ...options,
+          ];
+        }}
         params={query}
         request={async (params, sort, filter) => {
           return getEntities({
