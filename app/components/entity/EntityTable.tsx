@@ -5,10 +5,11 @@ import {
   type ProFormColumnsType,
 } from "@ant-design/pro-components";
 import type { DefaultError, UseMutationResult } from "@tanstack/react-query";
-import { Button, Modal, Popconfirm } from "antd";
+import { Button, Modal } from "antd";
 import { useMemo, useRef, useState } from "react";
 import EntityCreateForm from "~/components/entity/EntityCreateForm";
 import EntityDeleteForm from "~/components/entity/EntityDeleteForm";
+import EntityUpdateForm from "~/components/entity/EntityUpdateForm";
 import { useDelete, useTableRequest } from "~/hooks/http";
 import type {
   EntityConfig,
@@ -79,11 +80,12 @@ export default function EntityTable<
     action: `删除${entityConfig.name}`,
   });
 
+  const [selectEntity, setSelectEntity] = useState<Entity>();
   const [openUpdateModal, setOpenUpdateModal] = useState(false);
 
   const hasRowAction = useMemo(() => {
-    return updateAction !== false;
-  }, [updateAction]);
+    return updateAction !== false || deleteAction !== false;
+  }, [updateAction, deleteAction]);
 
   const hasRowSelection = useMemo(() => {
     return true;
@@ -106,16 +108,15 @@ export default function EntityTable<
             return (
               <div className="flex items-center gap-1">
                 {updateAction && (
-                  <>
-                    <Button
-                      type="link"
-                      onClick={() => {
-                        setOpenUpdateModal(true);
-                      }}
-                    >
-                      编辑
-                    </Button>
-                  </>
+                  <Button
+                    type="link"
+                    onClick={() => {
+                      setSelectEntity(record);
+                      setOpenUpdateModal(true);
+                    }}
+                  >
+                    编辑
+                  </Button>
                 )}
                 <EntityDeleteForm
                   entity={record}
@@ -150,91 +151,93 @@ export default function EntityTable<
   }, [updateAction, createFormColumns]);
 
   return (
-    <ProTable<Entity>
-      cardBordered
-      actionRef={tableAction}
-      scroll={{ x: "max-content" }}
-      rowKey={entityConfig.entityIdField ?? "id"}
-      headerTitle={headerTitle ?? `${entityConfig.name}管理`}
-      toolBarRender={() => [
-        <EntityCreateForm<Entity, CreateRequest>
-          entityConfig={entityConfig}
-          columns={createFormColumns}
-          action={createAction}
-          onFinish={async () => {
-            tableAction.current?.reload();
-          }}
-          resetOnFinish={resetAfterCreate}
-        />,
-      ]}
-      rowSelection={
-        hasRowSelection
-          ? {
-              type: "checkbox",
-            }
-          : undefined
-      }
-      tableAlertRender={({ selectedRowKeys }) => {
-        return (
-          <div>
-            <span>已选择 {selectedRowKeys.length} 项</span>
+    <>
+      <ProTable<Entity>
+        cardBordered
+        actionRef={tableAction}
+        scroll={{ x: "max-content" }}
+        rowKey={entityConfig.entityIdField ?? "id"}
+        headerTitle={headerTitle ?? `${entityConfig.name}管理`}
+        toolBarRender={() => [
+          <EntityCreateForm<Entity, CreateRequest>
+            entityConfig={entityConfig}
+            columns={createFormColumns}
+            action={createAction}
+            onFinish={async () => {
+              tableAction.current?.reload();
+            }}
+            resetOnFinish={resetAfterCreate}
+          />,
+        ]}
+        rowSelection={
+          hasRowSelection
+            ? {
+                type: "checkbox",
+              }
+            : undefined
+        }
+        tableAlertRender={({ selectedRowKeys }) => {
+          return (
+            <div>
+              <span>已选择 {selectedRowKeys.length} 项</span>
+              <Button
+                type="link"
+                onClick={() => {
+                  tableAction.current?.clearSelected?.();
+                }}
+              >
+                取消选择
+              </Button>
+            </div>
+          );
+        }}
+        tableAlertOptionRender={({ selectedRowKeys }) => [
+          deleteAction && (
             <Button
+              key="batchDelete"
               type="link"
+              danger
               onClick={() => {
-                tableAction.current?.clearSelected?.();
+                Modal.confirm({
+                  title: `确定删除选中的 ${selectedRowKeys.length} 条${entityConfig.name ?? "数据"}吗？`,
+                  onOk: async () => {
+                    if (deleteAction.mutation) {
+                      const payload = { ids: selectedRowKeys };
+                      await deleteAction.mutation.mutateAsync(
+                        payload as DeleteRequest,
+                      );
+                    } else {
+                      await deleteEntities({
+                        ids: selectedRowKeys,
+                      });
+                    }
+                    tableAction.current?.reload();
+                  },
+                });
               }}
             >
-              取消选择
+              批量删除
             </Button>
-          </div>
-        );
-      }}
-      tableAlertOptionRender={({ selectedRowKeys }) => [
-        deleteAction && (
-          <Button
-            key="batchDelete"
-            type="link"
-            danger
-            onClick={() => {
-              Modal.confirm({
-                title: `确定删除选中的 ${selectedRowKeys.length} 条${entityConfig.name ?? "数据"}吗？`,
-                onOk: async () => {
-                  if (deleteAction.mutation) {
-                    const payload = { ids: selectedRowKeys };
-                    await deleteAction.mutation.mutateAsync(
-                      payload as DeleteRequest,
-                    );
-                  } else {
-                    await deleteEntities({
-                      ids: selectedRowKeys,
-                    });
-                  }
-                  tableAction.current?.reload();
-                },
-              });
-            }}
-          >
-            批量删除
-          </Button>
-        ),
-      ]}
-      editable={{
-        type: "multiple",
-        onDelete: async (key) => {
-          await deleteEntities({
-            id: key,
+          ),
+        ]}
+        request={async (params, sort, filter) => {
+          return getEntities({
+            params,
+            sort,
+            filter,
           });
-          tableAction.current?.reload();
-        },
-      }}
-      request={async (params, sort, filter) => {
-        return getEntities({
-          params,
-          sort,
-          filter,
-        });
-      }}
-      columns={tableColumns as ProColumns<Entity, "text">[]}
-    />
+        }}
+        columns={tableColumns as ProColumns<Entity, "text">[]}
+      />
+      <EntityUpdateForm
+        columns={updateFormColumns}
+        entityConfig={entityConfig}
+        open={openUpdateModal}
+        onClose={() => setOpenUpdateModal(false)}
+        entity={selectEntity}
+        action={updateAction}
+        onFinish={async () => tableAction.current?.reload()}
+      />
+    </>
   );
 }

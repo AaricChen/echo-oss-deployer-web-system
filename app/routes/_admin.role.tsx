@@ -23,6 +23,14 @@ export default function RolePage() {
         entityConfig={RoleEntity}
         columns={[
           {
+            dataIndex: "id",
+            hideInSearch: true,
+            hideInTable: true,
+            formItemProps: {
+              hidden: true,
+            },
+          },
+          {
             title: "名称",
             dataIndex: "name",
             align: "center",

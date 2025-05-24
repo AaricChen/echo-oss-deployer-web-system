@@ -35,7 +35,7 @@ export default function EntityCreateForm<
   onFinish,
 }: EntityCreateFormProps<Entity, CreateRequest>) {
   const formRef = useRef<FormInstance>(null);
-  const { mutateAsync: createEntity } = usePost({
+  const { mutateAsync: createEntity } = usePost<CreateRequest, Entity>({
     url: entityConfig.baseUrl,
     action: `新增${entityConfig.name}`,
   });

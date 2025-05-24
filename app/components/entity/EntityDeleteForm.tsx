@@ -29,7 +29,7 @@ export default function EntityDeleteForm<
   action,
   onFinish,
 }: EntityDeleteFormProps<Entity, DeleteRequest>) {
-  const { mutateAsync: deleteEntities } = useDelete({
+  const { mutateAsync: deleteEntities } = useDelete<DeleteRequest, void>({
     url: entityConfig.baseUrl,
     action: `删除${entityConfig.name}`,
   });
@@ -41,13 +41,11 @@ export default function EntityDeleteForm<
     <Popconfirm
       title={`确定删除该 ${entityConfig.name} 吗？`}
       onConfirm={async () => {
+        const payload = { id: entity.id } as DeleteRequest;
         if (action.mutation) {
-          const payload = { id: entity.id };
-          await action.mutation.mutateAsync(payload as DeleteRequest);
+          await action.mutation.mutateAsync(payload);
         } else {
-          await deleteEntities({
-            id: entity.id,
-          });
+          await deleteEntities(payload);
         }
         if (onFinish) {
           await onFinish();
