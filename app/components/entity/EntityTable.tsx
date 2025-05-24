@@ -8,6 +8,7 @@ import type { DefaultError, UseMutationResult } from "@tanstack/react-query";
 import { Button, Modal, Popconfirm } from "antd";
 import { useMemo, useRef, useState } from "react";
 import EntityCreateForm from "~/components/entity/EntityCreateForm";
+import EntityDeleteForm from "~/components/entity/EntityDeleteForm";
 import { useDelete, useTableRequest } from "~/hooks/http";
 import type {
   EntityConfig,
@@ -116,28 +117,14 @@ export default function EntityTable<
                     </Button>
                   </>
                 )}
-                {deleteAction && (
-                  <Popconfirm
-                    title={`确定删除该 ${entityConfig.name} 吗？`}
-                    onConfirm={async () => {
-                      if (deleteAction.mutation) {
-                        const payload = { id: record.id };
-                        await deleteAction.mutation.mutateAsync(
-                          payload as DeleteRequest,
-                        );
-                      } else {
-                        await deleteEntities({
-                          id: record.id,
-                        });
-                      }
-                      tableAction.current?.reload();
-                    }}
-                  >
-                    <Button type="link" danger>
-                      删除
-                    </Button>
-                  </Popconfirm>
-                )}
+                <EntityDeleteForm
+                  entity={record}
+                  entityConfig={entityConfig}
+                  action={deleteAction}
+                  onFinish={async () => {
+                    tableAction.current?.reload();
+                  }}
+                />
               </div>
             );
           },
