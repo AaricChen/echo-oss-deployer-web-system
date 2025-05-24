@@ -12,7 +12,7 @@ import "@ant-design/v5-patch-for-react-19";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { App, ConfigProvider } from "antd";
 import React from "react";
-import { valueTypeMap } from "~/components/valueType";
+import { valueTypeMap } from "~/components/form/valueType";
 import type { Route } from "./+types/root";
 import "./app.css";
 

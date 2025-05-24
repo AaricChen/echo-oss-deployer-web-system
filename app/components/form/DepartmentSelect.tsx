@@ -1,23 +1,27 @@
 import { TreeSelect, type TreeSelectProps } from "antd";
 import { useGetDepartments } from "~/apis/department";
 
-export interface DepartmentSelectProps extends TreeSelectProps {}
+export interface DepartmentSelectProps {
+  fieldProps: TreeSelectProps;
+}
 
-export default function DepartmentSelect(props: DepartmentSelectProps) {
-  const { data } = useGetDepartments();
+export default function DepartmentSelect({
+  fieldProps,
+}: DepartmentSelectProps) {
+  const { data, isPending } = useGetDepartments();
   return (
     <TreeSelect
       fieldNames={{ label: "name", value: "id" }}
       treeNodeFilterProp="name"
       treeData={data?.content}
-      {...props}
-      style={{
-        width: "100%",
-        ...props.style,
-      }}
+      loading={isPending}
+      placeholder="请选择部门"
       showSearch
       autoClearSearchValue={false}
-      placeholder="请选择权限"
+      {...fieldProps}
+      style={{
+        ...fieldProps.style,
+      }}
     />
   );
 }

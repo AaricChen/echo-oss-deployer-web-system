@@ -1,6 +1,5 @@
 import { PageContainer } from "@ant-design/pro-components";
 import EntityTable from "~/components/entity/EntityTable";
-import DepartmentSelect from "~/components/form/DepartmentSelect";
 import {
   RoleEntity,
   type RoleCreateRequest,
@@ -85,20 +84,6 @@ export default function RolePage() {
             },
           },
           {
-            title: "权限数量",
-            dataIndex: "permissions",
-            valueType: "permissions" as any,
-            align: "right",
-            width: 96,
-            formItemProps: {
-              label: "权限",
-              rules: [{ required: true, message: "请选择角色权限" }],
-            },
-            fieldProps: {
-              multiple: true,
-            },
-          },
-          {
             valueType: "dependency",
             name: ["dataScope"],
             hideInTable: true,
@@ -108,15 +93,35 @@ export default function RolePage() {
                   {
                     title: "自定义部门",
                     dataIndex: "departments",
-                    hideInTable: true,
-                    renderFormItem: (_) => {
-                      return <DepartmentSelect multiple />;
+                    valueType: "department" as any,
+                    formItemProps: {
+                      rules: [{ required: true, message: "请选择部门" }],
+                    },
+                    fieldProps: {
+                      multiple: true,
                     },
                   },
                 ];
               } else {
                 return [];
               }
+            },
+          },
+          {
+            title: "权限数量",
+            dataIndex: "permissions",
+            valueType: "permission" as any,
+            align: "right",
+            width: 96,
+            formItemProps: {
+              label: "权限",
+              rules: [{ required: true, message: "请选择角色权限" }],
+            },
+            fieldProps: {
+              multiple: true,
+              style: {
+                width: "100%",
+              },
             },
           },
         ]}
