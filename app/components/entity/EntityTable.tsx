@@ -6,7 +6,7 @@ import {
 } from "@ant-design/pro-components";
 import type { DefaultError, UseMutationResult } from "@tanstack/react-query";
 import { Button } from "antd";
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef } from "react";
 import EntityBatchDeleteForm from "~/components/entity/EntityBatchDeleteForm";
 import EntityCreateForm from "~/components/entity/EntityCreateForm";
 import EntityDeleteForm from "~/components/entity/EntityDeleteForm";
@@ -104,9 +104,6 @@ export default function EntityTable<
     entityConfig.baseUrl,
   );
 
-  const [selectEntity, setSelectEntity] = useState<Entity>();
-  const [openUpdateModal, setOpenUpdateModal] = useState(false);
-
   const hasRowAction = useMemo(() => {
     return updateAction !== false || deleteAction !== false || rowActionRender;
   }, [updateAction, deleteAction, rowActionRender]);
@@ -138,17 +135,13 @@ export default function EntityTable<
             }
             return (
               <div className="flex items-center gap-1">
-                {updateAction && (
-                  <Button
-                    type="link"
-                    onClick={() => {
-                      setSelectEntity(record);
-                      setOpenUpdateModal(true);
-                    }}
-                  >
-                    编辑
-                  </Button>
-                )}
+                <EntityUpdateForm
+                  columns={updateFormColumns}
+                  entityConfig={entityConfig}
+                  entity={record}
+                  action={updateAction}
+                  onFinish={async () => tableAction.current?.reload()}
+                />
                 <EntityDeleteForm
                   entity={record}
                   entityConfig={entityConfig}
@@ -278,15 +271,6 @@ export default function EntityTable<
           });
         }}
         columns={tableColumns as ProColumns<Entity, "text">[]}
-      />
-      <EntityUpdateForm
-        columns={updateFormColumns}
-        entityConfig={entityConfig}
-        open={openUpdateModal}
-        onClose={() => setOpenUpdateModal(false)}
-        entity={selectEntity}
-        action={updateAction}
-        onFinish={async () => tableAction.current?.reload()}
       />
     </>
   );

@@ -2,8 +2,8 @@ import {
   BetaSchemaForm,
   type ProFormColumnsType,
 } from "@ant-design/pro-components";
-import { Modal, type FormInstance } from "antd";
-import { useRef } from "react";
+import { Button, Modal, type FormInstance } from "antd";
+import { useRef, useState } from "react";
 import type { EntityTableAction } from "~/components/entity/EntityTable";
 import { usePut } from "~/hooks/http";
 import type {
@@ -18,13 +18,11 @@ export interface EntityUpdateFormProps<
   UpdateRequest extends
     EntityUpdateRequest<EntityIdType> = EntityUpdateRequest<EntityIdType>,
 > {
-  entity?: Entity;
+  entity: Entity;
   entityConfig: EntityConfig;
   columns: ProFormColumnsType<UpdateRequest>[];
   action?: EntityTableAction<UpdateRequest, Entity>;
-  open: boolean;
   onFinish?: () => Promise<void>;
-  onClose: () => void;
 }
 
 export default function EntityUpdateForm<
@@ -36,16 +34,13 @@ export default function EntityUpdateForm<
   entityConfig,
   columns,
   action,
-  open,
   onFinish,
-  onClose,
 }: EntityUpdateFormProps<Entity, UpdateRequest>) {
   const formRef = useRef<FormInstance>(null);
+
+  const [open, setOpen] = useState(false);
   const { mutateAsync: updateEntity } = usePut<UpdateRequest, Entity>({
-    url: (request) => {
-      console.log("🚀 ~ request:", request);
-      return `${entityConfig.baseUrl}/${request.id}`;
-    },
+    url: (request) => `${entityConfig.baseUrl}/${request.id}`,
     action: `编辑${entityConfig.name}`,
   });
 
@@ -53,29 +48,35 @@ export default function EntityUpdateForm<
     return null;
   }
   return (
-    <Modal
-      open={open}
-      onCancel={() => onClose()}
-      title={`编辑${action.name ?? entityConfig.name}`}
-      footer={false}
-    >
-      <BetaSchemaForm
-        formRef={formRef}
-        grid
-        columns={columns}
-        initialValues={entity}
-        onFinish={async (values) => {
-          if (action.mutation) {
-            await action.mutation.mutateAsync(values);
-          } else {
-            await updateEntity(values);
-          }
-          if (onFinish) {
-            await onFinish();
-          }
-          onClose();
-        }}
-      />
-    </Modal>
+    <>
+      <Button type="link" onClick={() => setOpen(true)}>
+        编辑
+      </Button>
+      <Modal
+        open={open}
+        onCancel={() => setOpen(false)}
+        title={`编辑${action.name ?? entityConfig.name}`}
+        footer={false}
+        destroyOnHidden
+      >
+        <BetaSchemaForm
+          formRef={formRef}
+          grid
+          columns={columns}
+          initialValues={entity}
+          onFinish={async (values) => {
+            if (action.mutation) {
+              await action.mutation.mutateAsync(values);
+            } else {
+              await updateEntity(values);
+            }
+            if (onFinish) {
+              await onFinish();
+            }
+            setOpen(false);
+          }}
+        />
+      </Modal>
+    </>
   );
 }
