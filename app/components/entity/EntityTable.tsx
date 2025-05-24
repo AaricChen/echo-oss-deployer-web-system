@@ -5,8 +5,9 @@ import {
   type ProFormColumnsType,
 } from "@ant-design/pro-components";
 import type { DefaultError, UseMutationResult } from "@tanstack/react-query";
-import { Button, Modal } from "antd";
+import { Button } from "antd";
 import { useMemo, useRef, useState } from "react";
+import EntityBatchDeleteForm from "~/components/entity/EntityBatchDeleteForm";
 import EntityCreateForm from "~/components/entity/EntityCreateForm";
 import EntityDeleteForm from "~/components/entity/EntityDeleteForm";
 import EntityUpdateForm from "~/components/entity/EntityUpdateForm";
@@ -192,33 +193,12 @@ export default function EntityTable<
           );
         }}
         tableAlertOptionRender={({ selectedRowKeys }) => [
-          deleteAction && (
-            <Button
-              key="batchDelete"
-              type="link"
-              danger
-              onClick={() => {
-                Modal.confirm({
-                  title: `确定删除选中的 ${selectedRowKeys.length} 条${entityConfig.name ?? "数据"}吗？`,
-                  onOk: async () => {
-                    if (deleteAction.mutation) {
-                      const payload = { ids: selectedRowKeys };
-                      await deleteAction.mutation.mutateAsync(
-                        payload as DeleteRequest,
-                      );
-                    } else {
-                      await deleteEntities({
-                        ids: selectedRowKeys,
-                      });
-                    }
-                    tableAction.current?.reload();
-                  },
-                });
-              }}
-            >
-              批量删除
-            </Button>
-          ),
+          <EntityBatchDeleteForm
+            selectedRowKeys={selectedRowKeys}
+            entityConfig={entityConfig}
+            action={deleteAction}
+            onFinish={async () => tableAction.current?.reload()}
+          />,
         ]}
         request={async (params, sort, filter) => {
           return getEntities({
