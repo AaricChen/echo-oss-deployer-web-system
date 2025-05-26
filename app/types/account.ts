@@ -1,5 +1,7 @@
 import type {
+  EntityConfig,
   EntityCreateRequest,
+  EntityDeleteRequest,
   EntityQuery,
   EntityResponse,
 } from "~/types/entity";
@@ -10,6 +12,11 @@ export type DataScope =
   | "DEPARTMENT_ONLY"
   | "CUSTOM"
   | "SELF";
+
+export const AccountEntity: EntityConfig = {
+  name: "账户",
+  baseUrl: "/account",
+};
 
 export interface AccountQuery extends EntityQuery {
   search?: string;
@@ -60,3 +67,5 @@ export interface AccountCreateRequest extends EntityCreateRequest {
 }
 
 export interface AccountUpdateRequest extends AccountResponse {}
+
+export interface AccountDeleteRequest extends EntityDeleteRequest<string> {}

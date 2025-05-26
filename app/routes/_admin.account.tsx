@@ -1,32 +1,40 @@
-import {
-  ModalForm,
-  PageContainer,
-  ProFormSelect,
-  ProFormSwitch,
-  ProFormText,
-  ProTable,
-} from "@ant-design/pro-components";
-import { Button, Tag } from "antd";
-import { useState } from "react";
-import { useTableRequest } from "~/hooks/http";
-import type { AccountCreateRequest, AccountResponse } from "~/types/account";
+import { PageContainer } from "@ant-design/pro-components";
+import { Tag } from "antd";
+import EntityTable from "~/components/entity/EntityTable";
+import type {
+  AccountCreateRequest,
+  AccountDeleteRequest,
+  AccountQuery,
+  AccountResponse,
+  AccountUpdateRequest,
+} from "~/types/account";
+import { AccountEntity } from "~/types/account";
 
 export default function AccountPage() {
-  const [open, setOpen] = useState(false);
-  const { mutateAsync: getAccounts } =
-    useTableRequest<AccountResponse>("/account");
   return (
     <PageContainer title="账户管理">
-      <ProTable<AccountResponse>
-        rowKey="id"
-        bordered
-        headerTitle="账户管理"
-        scroll={{ x: "max-content" }}
+      <EntityTable<
+        AccountResponse,
+        AccountQuery,
+        AccountCreateRequest,
+        AccountUpdateRequest,
+        AccountDeleteRequest
+      >
+        entityConfig={AccountEntity}
         columns={[
+          {
+            dataIndex: "id",
+            hideInSearch: true,
+            hideInTable: true,
+            formItemProps: {
+              hidden: true,
+            },
+          },
           {
             title: "账户资料",
             dataIndex: ["accountInfo", "info"],
             hideInTable: true,
+            hideInForm: true,
             search: {
               transform: (value) => {
                 return {
@@ -43,6 +51,7 @@ export default function AccountPage() {
             width: 48,
             fixed: "left",
             align: "center",
+            hideInForm: true,
           },
           {
             title: "昵称",
@@ -50,6 +59,7 @@ export default function AccountPage() {
             search: false,
             fixed: "left",
             align: "center",
+            hideInForm: true,
           },
           {
             title: "用户名",
@@ -64,45 +74,41 @@ export default function AccountPage() {
                 )}
               </div>
             ),
+            colProps: { xs: 24, lg: 8 },
           },
           {
             title: "邮箱",
             dataIndex: "email",
+            colProps: { xs: 24, lg: 8 },
           },
           {
             title: "手机号",
             dataIndex: "phone",
+            colProps: { xs: 24, lg: 8 },
           },
           {
             title: "状态",
             dataIndex: "disabled",
-            valueEnum: {
-              true: {
-                text: "禁用",
-                status: "Error",
-              },
-              false: {
-                text: "正常",
-                status: "Success",
-              },
+            valueType: "switch",
+            fieldProps: {
+              checkedChildren: "禁用",
+              unCheckedChildren: "正常",
             },
-            editable: () => true,
+            formItemProps: {
+              label: "是否禁用",
+            },
+            colProps: { xs: 24, lg: 12 },
           },
           {
             title: "管理员",
             dataIndex: "admin",
             hideInTable: true,
-            valueType: "select",
-            valueEnum: {
-              true: {
-                text: "是",
-                status: "Success",
-              },
-              false: {
-                text: "否",
-                status: "Error",
-              },
+            valueType: "switch",
+            fieldProps: {
+              checkedChildren: "是",
+              unCheckedChildren: "否",
             },
+            colProps: { xs: 24, lg: 12 },
           },
           {
             title: "登录时间",
@@ -110,20 +116,24 @@ export default function AccountPage() {
             valueType: "dateTime",
             hideInSearch: true,
             sorter: true,
+            hideInForm: true,
           },
           {
             title: "备注",
             dataIndex: ["accountInfo", "remark"],
+            hideInForm: true,
           },
           {
             title: "真实姓名",
             dataIndex: ["accountInfo", "realname"],
             hideInSearch: true,
+            hideInForm: true,
           },
           {
             title: "身份证号",
             dataIndex: ["accountInfo", "idCard"],
             hideInSearch: true,
+            hideInForm: true,
           },
           {
             title: "生日",
@@ -131,81 +141,71 @@ export default function AccountPage() {
             valueType: "date",
             hideInSearch: true,
             sorter: true,
+            hideInForm: true,
           },
           {
             title: "性别",
             dataIndex: ["accountInfo", "genderCode"],
             hideInSearch: true,
+            hideInForm: true,
           },
           {
             title: "国家",
             dataIndex: ["accountInfo", "nationCode"],
             hideInSearch: true,
+            hideInForm: true,
           },
           {
             title: "省份",
             dataIndex: ["accountInfo", "provinceCode"],
             hideInSearch: true,
+            hideInForm: true,
           },
           {
             title: "城市",
             dataIndex: ["accountInfo", "cityCode"],
             hideInSearch: true,
+            hideInForm: true,
           },
           {
             title: "民族",
             dataIndex: ["accountInfo", "nationCode"],
             hideInSearch: true,
+            hideInForm: true,
           },
           {
             title: "语言",
             dataIndex: ["accountInfo", "languageCode"],
             hideInSearch: true,
+            hideInForm: true,
           },
           {
-            title: "操作",
-            dataIndex: "action",
-            fixed: "right",
-            valueType: "option",
-            width: 150,
-            render: (text, record) => [<Button type="link">编辑</Button>],
+            title: "账户部门",
+            dataIndex: "departments",
+            valueType: "department" as any,
+            hideInTable: true,
+            fieldProps: {
+              multiple: true,
+            },
           },
-        ]}
-        request={async (params, sort, filter) => {
-          return getAccounts({ params, sort, filter });
-        }}
-        rowSelection={{
-          type: "checkbox",
-          onChange: (selectedRowKeys, selectedRows) => {},
-        }}
-        editable={{
-          type: "multiple",
-          onSave: async (row) => {
-            console.log(row);
+          {
+            title: "账户角色",
+            dataIndex: "roles",
+            valueType: "role" as any,
+            hideInTable: true,
+            fieldProps: {
+              mode: "multiple",
+            },
           },
-        }}
-        toolBarRender={() => [
-          <ModalForm<AccountCreateRequest>
-            title="新增账户"
-            trigger={
-              <Button type="primary" onClick={() => setOpen(true)}>
-                新增
-              </Button>
-            }
-            open={open}
-            onOpenChange={setOpen}
-            onFinish={async (values) => {
-              console.log(values);
-            }}
-          >
-            <ProFormText name="username" label="用户名" />
-            <ProFormText name="password" label="密码" />
-            <ProFormText name="passwordConfirm" label="确认密码" />
-            <ProFormSelect name="department" label="部门" />
-            <ProFormText name="email" label="邮箱" />
-            <ProFormText name="phone" label="手机号" />
-            <ProFormSwitch name="admin" label="管理员" />
-          </ModalForm>,
+          {
+            title: "账户权限",
+            dataIndex: " permissions",
+            valueType: "permission" as any,
+            hideInTable: true,
+            fieldProps: {
+              multiple: true,
+            },
+          },
         ]}
       />
     </PageContainer>
