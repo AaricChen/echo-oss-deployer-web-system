@@ -65,3 +65,11 @@ export default function LoginPage() {
     </LoginFormPage>
   );
 }
+
+export function meta() {
+  return [
+    {
+      title: "登录",
+    },
+  ];
+}
