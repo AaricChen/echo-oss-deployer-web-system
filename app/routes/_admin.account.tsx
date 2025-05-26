@@ -1,5 +1,6 @@
 import { PageContainer } from "@ant-design/pro-components";
 import { Tag } from "antd";
+import AccountInfoForm from "~/components/account/AccountInfoForm";
 import EntityTable from "~/components/entity/EntityTable";
 import type {
   AccountCreateRequest,
@@ -21,6 +22,18 @@ export default function AccountPage() {
         AccountDeleteRequest
       >
         entityConfig={AccountEntity}
+        disableRowDelete
+        rowActionRender={({ entity, action }) => {
+          return [
+            <AccountInfoForm
+              key="editAccountInfo"
+              entity={{ ...entity.accountInfo, id: entity.id }}
+              onFinish={async () => {
+                await action?.reload();
+              }}
+            />,
+          ];
+        }}
         columns={[
           {
             dataIndex: "id",
@@ -119,6 +132,14 @@ export default function AccountPage() {
             hideInForm: true,
           },
           {
+            title: "创建时间",
+            dataIndex: "createAt",
+            valueType: "dateTime",
+            hideInSearch: true,
+            sorter: true,
+            hideInForm: true,
+          },
+          {
             title: "备注",
             dataIndex: ["accountInfo", "remark"],
             hideInForm: true,
@@ -183,6 +204,7 @@ export default function AccountPage() {
             title: "账户部门",
             dataIndex: "departments",
             valueType: "department" as any,
+            hideInSearch: true,
             hideInTable: true,
             fieldProps: {
               multiple: true,
@@ -192,6 +214,7 @@ export default function AccountPage() {
             title: "账户角色",
             dataIndex: "roles",
             valueType: "role" as any,
+            hideInSearch: true,
             hideInTable: true,
             fieldProps: {
               mode: "multiple",
@@ -201,6 +224,7 @@ export default function AccountPage() {
             title: "账户权限",
             dataIndex: " permissions",
             valueType: "permission" as any,
+            hideInSearch: true,
             hideInTable: true,
             fieldProps: {
               multiple: true,

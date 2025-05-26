@@ -40,6 +40,7 @@ export interface EntityTableProps<
   deleteAction?: EntityTableAction<DeleteRequest, void>;
   createInitialValues?: CreateRequest;
   resetAfterCreate?: boolean;
+  disableRowDelete?: boolean;
   toolbarRender?: ({}: {
     action?: ActionType;
     selectedRowKeys?: React.Key[];
@@ -88,6 +89,7 @@ export default function EntityTable<
   deleteAction = {},
   createInitialValues,
   resetAfterCreate = true,
+  disableRowDelete = false,
   toolbarRender,
   rowActionRender,
   tableAlertRender,
@@ -142,14 +144,16 @@ export default function EntityTable<
                   action={updateAction}
                   onFinish={async () => tableAction.current?.reload()}
                 />
-                <EntityDeleteForm
-                  entity={record}
-                  entityConfig={entityConfig}
-                  action={deleteAction}
-                  onFinish={async () => {
-                    tableAction.current?.reload();
-                  }}
-                />
+                {!disableRowDelete && (
+                  <EntityDeleteForm
+                    entity={record}
+                    entityConfig={entityConfig}
+                    action={deleteAction}
+                    onFinish={async () => {
+                      tableAction.current?.reload();
+                    }}
+                  />
+                )}
                 {rowActions.map((action) => action)}
               </div>
             );

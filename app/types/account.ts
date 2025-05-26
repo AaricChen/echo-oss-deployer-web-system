@@ -50,7 +50,6 @@ export interface AccountInfo {
   genderCode: string;
   idCard: string;
   languageCode: string;
-  postalCode: string;
   remark: string;
 }
 
@@ -69,3 +68,21 @@ export interface AccountCreateRequest extends EntityCreateRequest {
 export interface AccountUpdateRequest extends AccountResponse {}
 
 export interface AccountDeleteRequest extends EntityDeleteRequest<string> {}
+
+export interface AccountInfoUpdateRequest {
+  id: string;
+  avatar: string;
+  nickname: string;
+  realname: string;
+  address: string;
+  bio: string;
+  birthday: string;
+  countryCode: string;
+  provinceCode: string;
+  cityCode: string;
+  nationCode: string;
+  genderCode: string;
+  idCard: string;
+  languageCode: string;
+  remark: string;
+}

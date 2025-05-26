@@ -1,7 +1,11 @@
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router";
-import { useGet } from "~/hooks/http";
-import type { CurrentAccountResponse } from "~/types/account";
+import { useGet, usePut } from "~/hooks/http";
+import type {
+  AccountInfoUpdateRequest,
+  AccountResponse,
+  CurrentAccountResponse,
+} from "~/types/account";
 
 export function useCurrentAccount() {
   const navigate = useNavigate();
@@ -22,4 +26,11 @@ export function useCurrentAccount() {
   }, [result]);
 
   return result;
+}
+
+export function useUpdateAccountInfo() {
+  return usePut<AccountInfoUpdateRequest, AccountResponse>({
+    url: (request) => `/account/${request.id}/info`,
+    action: "更新基本资料",
+  });
 }
