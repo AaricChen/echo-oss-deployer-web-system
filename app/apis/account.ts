@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router";
 import { useGet, usePut } from "~/hooks/http";
 import type {
   AccountInfoUpdateRequest,
+  AccountPasswordUpdateRequest,
   AccountResponse,
   CurrentAccountResponse,
 } from "~/types/account";
@@ -32,5 +33,12 @@ export function useUpdateAccountInfo() {
   return usePut<AccountInfoUpdateRequest, AccountResponse>({
     url: (request) => `/account/${request.id}/info`,
     action: "更新基本资料",
+  });
+}
+
+export function useUpdateAccountPassword() {
+  return usePut<AccountPasswordUpdateRequest, AccountResponse>({
+    url: (request) => `/account/${request.id}/password`,
+    action: "更新密码",
   });
 }

@@ -86,3 +86,8 @@ export interface AccountInfoUpdateRequest {
   languageCode: string;
   remark: string;
 }
+
+export interface AccountPasswordUpdateRequest {
+  id: string;
+  password: string;
+}

@@ -1,6 +1,7 @@
 import { PageContainer } from "@ant-design/pro-components";
 import { Tag } from "antd";
 import AccountInfoForm from "~/components/account/AccountInfoForm";
+import AccountPasswordForm from "~/components/account/AccountPasswordForm";
 import EntityTable from "~/components/entity/EntityTable";
 import type {
   AccountCreateRequest,
@@ -22,12 +23,19 @@ export default function AccountPage() {
         AccountDeleteRequest
       >
         entityConfig={AccountEntity}
-        disableRowDelete
+        deleteAction={false}
         rowActionRender={({ entity, action }) => {
           return [
             <AccountInfoForm
               key="editAccountInfo"
               entity={{ ...entity.accountInfo, id: entity.id }}
+              onFinish={async () => {
+                await action?.reload();
+              }}
+            />,
+            <AccountPasswordForm
+              key="editAccountPassword"
+              id={entity.id}
               onFinish={async () => {
                 await action?.reload();
               }}
@@ -222,7 +230,7 @@ export default function AccountPage() {
           },
           {
             title: "账户权限",
-            dataIndex: " permissions",
+            dataIndex: "permissions",
             valueType: "permission" as any,
             hideInSearch: true,
             hideInTable: true,
