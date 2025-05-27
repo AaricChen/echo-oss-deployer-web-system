@@ -3,6 +3,7 @@ import {
   ProForm,
   ProFormDatePicker,
   ProFormText,
+  ProFormUploadButton,
 } from "@ant-design/pro-components";
 import { Typography } from "antd";
 import {
@@ -45,6 +46,17 @@ export default function UserInfoForm() {
               label="备注"
               placeholder="请输入备注"
               colProps={{ xs: 24, lg: 8 }}
+            />
+            <ProFormUploadButton
+              label="更换头像"
+              name="avatar"
+              colProps={{ xs: 24, lg: 12 }}
+              action="/file/upload"
+              max={1}
+              accept="image/*"
+              fieldProps={{
+                listType: "picture-card",
+              }}
             />
           </ProForm.Group>
           <ProForm.Group>
@@ -112,18 +124,22 @@ export default function UserInfoForm() {
               colProps={{ xs: 24, lg: 4 }}
             />
           </ProForm.Group>
-          <ProFormText
-            name="bio"
-            label="简介"
-            placeholder="请输入简介"
-            colProps={{ xs: 24 }}
-          />
-          <ProFormText
-            name="address"
-            label="地址"
-            placeholder="请输入地址"
-            colProps={{ xs: 24 }}
-          />
+          <ProForm.Group>
+            <ProFormText
+              name="bio"
+              label="简介"
+              placeholder="请输入简介"
+              colProps={{ xs: 24, lg: 12 }}
+            />
+          </ProForm.Group>
+          <ProForm.Group>
+            <ProFormText
+              name="address"
+              label="地址"
+              placeholder="请输入地址"
+              colProps={{ xs: 24, lg: 12 }}
+            />
+          </ProForm.Group>
         </ProForm>
       )}
     </div>
