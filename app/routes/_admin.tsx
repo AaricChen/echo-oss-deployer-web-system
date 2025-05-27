@@ -1,7 +1,7 @@
-import { LogoutOutlined } from "@ant-design/icons";
+import { LogoutOutlined, UserOutlined } from "@ant-design/icons";
 import { ProLayout } from "@ant-design/pro-components";
 import { Dropdown } from "antd";
-import { Link, Outlet } from "react-router";
+import { Link, Outlet, useNavigate } from "react-router";
 import { useCurrentAccount } from "~/apis/account";
 import { useLogout } from "~/apis/auth";
 import { useAdminSidebar } from "~/apis/menu";
@@ -11,6 +11,7 @@ export default function AdminLayout() {
   const { data: account } = useCurrentAccount();
   const { menuItems } = useAdminSidebar();
   const { mutate: logout } = useLogout();
+  const navigate = useNavigate();
   return (
     <ProLayout
       loading={!account || !menuItems}
@@ -48,6 +49,17 @@ export default function AdminLayout() {
             <Dropdown
               menu={{
                 items: [
+                  {
+                    key: "info",
+                    icon: <UserOutlined />,
+                    label: "账户设置",
+                    onClick: () => {
+                      navigate("/user");
+                    },
+                  },
+                  {
+                    type: "divider",
+                  },
                   {
                     key: "logout",
                     icon: <LogoutOutlined />,

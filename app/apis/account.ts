@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { useGet, usePut } from "~/hooks/http";
 import type {
+  AccountInfo,
   AccountInfoUpdateRequest,
   AccountPasswordUpdateRequest,
   AccountResponse,
@@ -40,5 +41,19 @@ export function useUpdateAccountPassword() {
   return usePut<AccountPasswordUpdateRequest, AccountResponse>({
     url: (request) => `/account/${request.id}/password`,
     action: "更新密码",
+  });
+}
+
+export function useCurrentAccountInfo() {
+  return useGet<AccountInfo>({
+    queryKey: ["current-account-info"],
+    url: "/account/current/info",
+  });
+}
+
+export function useUpdateCurrentAccountInfo() {
+  return usePut<AccountInfo, AccountResponse>({
+    url: "/account/current/info",
+    action: "更新基本资料",
   });
 }
