@@ -5,11 +5,12 @@ import {
   ProFormText,
   ProFormUploadButton,
 } from "@ant-design/pro-components";
-import { Typography } from "antd";
+import { Form, Typography } from "antd";
 import {
   useCurrentAccountInfo,
   useUpdateCurrentAccountInfo,
 } from "~/apis/account";
+import FileUploadButton from "~/components/form/FileUploadButton";
 import type { AccountInfo } from "~/types/account";
 
 export default function UserInfoForm() {
@@ -34,6 +35,12 @@ export default function UserInfoForm() {
             await refetch();
           }}
         >
+          <Form.Item name="avatar" label="头像">
+            <FileUploadButton name="avatar" />
+          </Form.Item>
+          <Form.Item name="avatar" label="头像多">
+            <FileUploadButton name="avatar" multiple />
+          </Form.Item>
           <ProForm.Group>
             <ProFormText
               name="nickname"
@@ -46,17 +53,6 @@ export default function UserInfoForm() {
               label="备注"
               placeholder="请输入备注"
               colProps={{ xs: 24, lg: 8 }}
-            />
-            <ProFormUploadButton
-              label="更换头像"
-              name="avatar"
-              colProps={{ xs: 24, lg: 12 }}
-              action="/file/upload"
-              max={1}
-              accept="image/*"
-              fieldProps={{
-                listType: "picture-card",
-              }}
             />
           </ProForm.Group>
           <ProForm.Group>
