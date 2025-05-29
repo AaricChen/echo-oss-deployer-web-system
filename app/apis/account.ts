@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router";
-import { useGet, usePut } from "~/hooks/http";
+import { useGet, useHttpMutation, usePut } from "~/hooks/http";
 import type {
   AccountInfo,
   AccountInfoUpdateRequest,
@@ -45,9 +45,9 @@ export function useUpdateAccountPassword() {
 }
 
 export function useCurrentAccountInfo() {
-  return useGet<AccountInfo>({
-    queryKey: ["current-account-info"],
+  return useHttpMutation<void, AccountInfo>({
     url: "/account/current/info",
+    method: "GET",
   });
 }
 

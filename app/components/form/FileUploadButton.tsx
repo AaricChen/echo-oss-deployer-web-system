@@ -1,14 +1,8 @@
-import { UploadOutlined } from "@ant-design/icons";
+import { PlusOutlined, UploadOutlined } from "@ant-design/icons";
 import { Button, Upload, type ButtonProps, type UploadProps } from "antd";
 import type React from "react";
 import { useMemo } from "react";
 import { useApiStore } from "~/stores/api";
-import type { FileUploadResponse } from "~/types/file";
-
-type PickUploadProps = Pick<
-  UploadProps<any>,
-  "listType" | "action" | "accept" | "fileList" | "onChange"
->;
 
 export type FileUploadButtonProps = Omit<UploadProps, "onChange"> & {
   value?: string[];
@@ -78,7 +72,7 @@ export default function FileUploadButton(props: FileUploadButtonProps) {
     >
       {showUploadButton &&
         (isPictureCard ? (
-          <span></span>
+          <PlusOutlined />
         ) : (
           <Button icon={icon} disabled={disabled} {...buttonProps}>
             {title}
