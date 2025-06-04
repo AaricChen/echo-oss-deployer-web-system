@@ -1,6 +1,7 @@
 import {
   ApartmentOutlined,
   AppstoreOutlined,
+  BarsOutlined,
   ControlOutlined,
   FileSearchOutlined,
   HomeOutlined,
@@ -26,6 +27,7 @@ export const iconMap = {
   SolutionOutlined: SolutionOutlined,
   LockOutlined: LockOutlined,
   ApartmentOutlined: ApartmentOutlined,
+  BarsOutlined: BarsOutlined,
 };
 
 export interface IconProps {

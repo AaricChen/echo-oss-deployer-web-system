@@ -3,6 +3,7 @@ import {
   type ActionType,
   type ProColumns,
   type ProFormColumnsType,
+  type ProTableProps,
 } from "@ant-design/pro-components";
 import type { DefaultError, UseMutationResult } from "@tanstack/react-query";
 import { Button } from "antd";
@@ -41,6 +42,7 @@ export interface EntityTableProps<
   createInitialValues?: CreateRequest;
   resetAfterCreate?: boolean;
   disableRowDelete?: boolean;
+  postData?: ProTableProps<Entity, Query>["postData"];
   toolbarRender?: ({}: {
     action?: ActionType;
     selectedRowKeys?: React.Key[];
@@ -90,6 +92,7 @@ export default function EntityTable<
   createInitialValues,
   resetAfterCreate = true,
   disableRowDelete = false,
+  postData,
   toolbarRender,
   rowActionRender,
   tableAlertRender,
@@ -187,6 +190,7 @@ export default function EntityTable<
         scroll={{ x: "max-content" }}
         rowKey={entityConfig.entityIdField ?? "id"}
         headerTitle={headerTitle ?? `${entityConfig.name}管理`}
+        postData={postData}
         toolBarRender={(action, { selectedRowKeys, selectedRows }) => {
           let otherActions: React.ReactNode[] = [];
           if (toolbarRender) {
