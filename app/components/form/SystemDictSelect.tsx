@@ -21,7 +21,6 @@ export default function SystemDictSelect(props: SystemDictSelectProps) {
   >("/system/dict/item");
 
   const [search, setSearch] = useState("");
-  console.log("🚀 ~ SystemDictSelect ~ search:", search);
 
   return (
     <ProFormSelect
@@ -33,6 +32,7 @@ export default function SystemDictSelect(props: SystemDictSelectProps) {
           params: {
             dict,
             name: search,
+            pageSize: 999,
           },
           sort: {},
           filter: {},
@@ -51,21 +51,5 @@ export default function SystemDictSelect(props: SystemDictSelectProps) {
         ...formProps.fieldProps,
       }}
     />
-    // <Select<SystemDictItemResponse>
-    //   fieldNames={{ label: "name", value: "code" }}
-    //   options={data?.data ?? []}
-    //   loading={isPending}
-    //   placeholder="请选择项"
-    //   value={value}
-    //   onChange={(v) => {
-    //     if (onChange) {
-    //       onChange(v.code);
-    //     }
-    //   }}
-    //   {...fieldProps}
-    //   style={{
-    //     ...fieldProps?.style,
-    //   }}
-    // />
   );
 }

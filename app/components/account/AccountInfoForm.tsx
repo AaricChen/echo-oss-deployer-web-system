@@ -8,6 +8,7 @@ import {
 import { Button } from "antd";
 import { useRef } from "react";
 import { useUpdateAccountInfo } from "~/apis/account";
+import DistrictSelect from "~/components/form/DistrictSelect";
 import SystemDictSelect from "~/components/form/SystemDictSelect";
 import { type AccountInfoUpdateRequest } from "~/types/account";
 
@@ -31,7 +32,6 @@ export default function AccountInfoForm({
       title="编辑基本资料"
       grid
       onFinish={async (values) => {
-        console.log("🚀 ~ onFinish={ ~ values:", values);
         await updateAccountInfo(values);
         await onFinish?.();
         return true;
@@ -84,54 +84,44 @@ export default function AccountInfoForm({
           name="idCard"
           label="身份证号"
           placeholder="请输入身份证号"
-          colProps={{ xs: 24, lg: 16 }}
+          colProps={{ xs: 24, lg: 8 }}
+        />
+        <DistrictSelect
+          name="district"
+          label="行政区"
+          placeholder="请选择行政区"
+          colProps={{ xs: 24, lg: 8 }}
         />
       </ProForm.Group>
-      <ProFormText
-        name="country"
-        label="国家"
-        placeholder="请输入国家"
-        colProps={{ xs: 24, lg: 8 }}
-      />
-      <ProFormText
-        name="province"
-        label="省份"
-        placeholder="请输入省份"
-        colProps={{ xs: 24, lg: 8 }}
-      />
-      <ProFormText
-        name="city"
-        label="城市"
-        placeholder="请输入城市"
-        colProps={{ xs: 24, lg: 8 }}
-      />
-      <SystemDictSelect
-        dict="gender"
-        name="gender"
-        label="性别"
-        fieldProps={{
-          placeholder: "请选择性别",
-        }}
-        colProps={{ xs: 24, lg: 8 }}
-      />
-      <SystemDictSelect
-        dict="nation"
-        name="nation"
-        label="民族"
-        fieldProps={{
-          placeholder: "请选择民族",
-        }}
-        colProps={{ xs: 24, lg: 8 }}
-      />
-      <SystemDictSelect
-        dict="language"
-        name="language"
-        label="语言"
-        fieldProps={{
-          placeholder: "请选择语言",
-        }}
-        colProps={{ xs: 24, lg: 8 }}
-      />
+      <ProForm.Group>
+        <SystemDictSelect
+          dict="gender"
+          name="gender"
+          label="性别"
+          fieldProps={{
+            placeholder: "请选择性别",
+          }}
+          colProps={{ xs: 24, lg: 8 }}
+        />
+        <SystemDictSelect
+          dict="nation"
+          name="nation"
+          label="民族"
+          fieldProps={{
+            placeholder: "请选择民族",
+          }}
+          colProps={{ xs: 24, lg: 8 }}
+        />
+        <SystemDictSelect
+          dict="language"
+          name="language"
+          label="语言"
+          fieldProps={{
+            placeholder: "请选择语言",
+          }}
+          colProps={{ xs: 24, lg: 8 }}
+        />
+      </ProForm.Group>
       <ProFormText
         name="bio"
         label="简介"

@@ -91,6 +91,7 @@ export default function AccountPage() {
           {
             title: "用户名",
             dataIndex: "username",
+            align: "center",
             render: (text: React.ReactNode, record: AccountResponse) => (
               <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
                 <span>{text}</span>
@@ -106,16 +107,19 @@ export default function AccountPage() {
           {
             title: "邮箱",
             dataIndex: "email",
+            align: "center",
             colProps: { xs: 24, lg: 8 },
           },
           {
             title: "手机号",
             dataIndex: "phone",
+            align: "center",
             colProps: { xs: 24, lg: 8 },
           },
           {
             title: "状态",
             dataIndex: "disabled",
+            align: "center",
             valueType: "switch",
             fieldProps: {
               checkedChildren: "禁用",
@@ -141,6 +145,7 @@ export default function AccountPage() {
             title: "登录时间",
             dataIndex: "loginAt",
             valueType: "dateTime",
+            align: "center",
             hideInSearch: true,
             sorter: true,
             hideInForm: true,
@@ -149,29 +154,34 @@ export default function AccountPage() {
             title: "创建时间",
             dataIndex: "createAt",
             valueType: "dateTime",
+            align: "center",
             hideInSearch: true,
             sorter: true,
             hideInForm: true,
           },
           {
             title: "备注",
+            align: "center",
             dataIndex: ["accountInfo", "remark"],
             hideInForm: true,
           },
           {
             title: "真实姓名",
+            align: "center",
             dataIndex: ["accountInfo", "realname"],
             hideInSearch: true,
             hideInForm: true,
           },
           {
             title: "身份证号",
+            align: "center",
             dataIndex: ["accountInfo", "idCard"],
             hideInSearch: true,
             hideInForm: true,
           },
           {
             title: "生日",
+            align: "center",
             dataIndex: ["accountInfo", "birthday"],
             valueType: "date",
             hideInSearch: true,
@@ -180,36 +190,28 @@ export default function AccountPage() {
           },
           {
             title: "性别",
+            align: "center",
             dataIndex: ["accountInfo", "gender", "name"],
             hideInSearch: true,
             hideInForm: true,
           },
           {
-            title: "国家",
-            dataIndex: ["accountInfo", "country"],
-            hideInSearch: true,
-            hideInForm: true,
-          },
-          {
-            title: "省份",
-            dataIndex: ["accountInfo", "province"],
-            hideInSearch: true,
-            hideInForm: true,
-          },
-          {
-            title: "城市",
-            dataIndex: ["accountInfo", "city"],
+            title: "行政区",
+            align: "center",
+            dataIndex: ["accountInfo", "district", "path"],
             hideInSearch: true,
             hideInForm: true,
           },
           {
             title: "民族",
+            align: "center",
             dataIndex: ["accountInfo", "nation", "name"],
             hideInSearch: true,
             hideInForm: true,
           },
           {
             title: "语言",
+            align: "center",
             dataIndex: ["accountInfo", "language", "name"],
             hideInSearch: true,
             hideInForm: true,

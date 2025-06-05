@@ -1,3 +1,4 @@
+import type { DistrictResponse } from "~/types/district";
 import type {
   EntityConfig,
   EntityCreateRequest,
@@ -44,9 +45,7 @@ export interface AccountInfo {
   address: string;
   bio: string;
   birthday: string;
-  country: string;
-  province: string;
-  city: string;
+  district: DistrictResponse;
   nation: SystemDictItemResponse;
   gender: SystemDictItemResponse;
   idCard: string;
@@ -78,9 +77,7 @@ export interface AccountInfoUpdateRequest {
   address: string;
   bio: string;
   birthday: string;
-  country: string;
-  province: string;
-  city: string;
+  district: DistrictResponse;
   nation: string;
   gender: string;
   idCard: string;
