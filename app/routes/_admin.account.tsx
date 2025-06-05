@@ -28,7 +28,13 @@ export default function AccountPage() {
           return [
             <AccountInfoForm
               key="editAccountInfo"
-              entity={{ ...entity.accountInfo, id: entity.id }}
+              entity={{
+                ...entity.accountInfo,
+                id: entity.id,
+                gender: entity.accountInfo.gender?.code,
+                nation: entity.accountInfo.nation?.code,
+                language: entity.accountInfo.language?.code,
+              }}
               onFinish={async () => {
                 await action?.reload();
               }}
@@ -174,37 +180,37 @@ export default function AccountPage() {
           },
           {
             title: "性别",
-            dataIndex: ["accountInfo", "genderCode"],
+            dataIndex: ["accountInfo", "gender", "name"],
             hideInSearch: true,
             hideInForm: true,
           },
           {
             title: "国家",
-            dataIndex: ["accountInfo", "nationCode"],
+            dataIndex: ["accountInfo", "country"],
             hideInSearch: true,
             hideInForm: true,
           },
           {
             title: "省份",
-            dataIndex: ["accountInfo", "provinceCode"],
+            dataIndex: ["accountInfo", "province"],
             hideInSearch: true,
             hideInForm: true,
           },
           {
             title: "城市",
-            dataIndex: ["accountInfo", "cityCode"],
+            dataIndex: ["accountInfo", "city"],
             hideInSearch: true,
             hideInForm: true,
           },
           {
             title: "民族",
-            dataIndex: ["accountInfo", "nationCode"],
+            dataIndex: ["accountInfo", "nation", "name"],
             hideInSearch: true,
             hideInForm: true,
           },
           {
             title: "语言",
-            dataIndex: ["accountInfo", "languageCode"],
+            dataIndex: ["accountInfo", "language", "name"],
             hideInSearch: true,
             hideInForm: true,
           },

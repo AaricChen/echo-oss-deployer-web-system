@@ -5,6 +5,7 @@ import type {
   EntityQuery,
   EntityResponse,
 } from "~/types/entity";
+import type { SystemDictItemResponse } from "~/types/systemDict";
 
 export type DataScope =
   | "ALL"
@@ -43,13 +44,13 @@ export interface AccountInfo {
   address: string;
   bio: string;
   birthday: string;
-  countryCode: string;
-  provinceCode: string;
-  cityCode: string;
-  nationCode: string;
-  genderCode: string;
+  country: string;
+  province: string;
+  city: string;
+  nation: SystemDictItemResponse;
+  gender: SystemDictItemResponse;
   idCard: string;
-  languageCode: string;
+  language: SystemDictItemResponse;
   remark: string;
 }
 
@@ -77,13 +78,13 @@ export interface AccountInfoUpdateRequest {
   address: string;
   bio: string;
   birthday: string;
-  countryCode: string;
-  provinceCode: string;
-  cityCode: string;
-  nationCode: string;
-  genderCode: string;
+  country: string;
+  province: string;
+  city: string;
+  nation: string;
+  gender: string;
   idCard: string;
-  languageCode: string;
+  language: string;
   remark: string;
 }
 
