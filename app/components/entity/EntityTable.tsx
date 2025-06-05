@@ -43,6 +43,7 @@ export interface EntityTableProps<
   resetAfterCreate?: boolean;
   disableRowDelete?: boolean;
   postData?: ProTableProps<Entity, Query>["postData"];
+  loading?: boolean;
   toolbarRender?: ({}: {
     action?: ActionType;
     selectedRowKeys?: React.Key[];
@@ -93,6 +94,7 @@ export default function EntityTable<
   resetAfterCreate = true,
   disableRowDelete = false,
   postData,
+  loading,
   toolbarRender,
   rowActionRender,
   tableAlertRender,
@@ -191,6 +193,7 @@ export default function EntityTable<
         rowKey={entityConfig.entityIdField ?? "id"}
         headerTitle={headerTitle ?? `${entityConfig.name}管理`}
         postData={postData}
+        loading={loading}
         toolBarRender={(action, { selectedRowKeys, selectedRows }) => {
           let otherActions: React.ReactNode[] = [];
           if (toolbarRender) {
