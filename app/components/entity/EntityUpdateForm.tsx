@@ -3,7 +3,7 @@ import {
   type ProFormColumnsType,
 } from "@ant-design/pro-components";
 import { Button, Modal, type FormInstance } from "antd";
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import type { EntityTableAction } from "~/components/entity/EntityTable";
 import { usePut } from "~/hooks/http";
 import type {
@@ -12,6 +12,11 @@ import type {
   EntityResponse,
   EntityUpdateRequest,
 } from "~/types/entity";
+
+export interface UpdateButtonProps {
+  disabled?: boolean;
+  loading?: boolean;
+}
 
 export interface EntityUpdateFormProps<
   Entity extends EntityResponse<EntityIdType> = EntityResponse<EntityIdType>,
@@ -22,6 +27,7 @@ export interface EntityUpdateFormProps<
   entityConfig: EntityConfig;
   columns: ProFormColumnsType<UpdateRequest>[];
   action?: EntityTableAction<UpdateRequest, Entity>;
+  buttonProps?: (entity: Entity) => UpdateButtonProps;
   onFinish?: () => Promise<void>;
 }
 
@@ -34,6 +40,7 @@ export default function EntityUpdateForm<
   entityConfig,
   columns,
   action,
+  buttonProps,
   onFinish,
 }: EntityUpdateFormProps<Entity, UpdateRequest>) {
   const formRef = useRef<FormInstance>(null);
@@ -44,12 +51,25 @@ export default function EntityUpdateForm<
     action: `编辑${entityConfig.name}`,
   });
 
+  const { disabled, loading }: UpdateButtonProps = useMemo(() => {
+    if (buttonProps) {
+      return buttonProps(entity);
+    } else {
+      return {};
+    }
+  }, [entity, buttonProps]);
+
   if (!action) {
     return null;
   }
   return (
     <>
-      <Button type="link" onClick={() => setOpen(true)}>
+      <Button
+        disabled={disabled}
+        loading={loading}
+        type="link"
+        onClick={() => setOpen(true)}
+      >
         编辑
       </Button>
       <Modal

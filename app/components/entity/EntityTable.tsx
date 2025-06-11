@@ -11,7 +11,9 @@ import { useMemo, useRef } from "react";
 import EntityBatchDeleteForm from "~/components/entity/EntityBatchDeleteForm";
 import EntityCreateForm from "~/components/entity/EntityCreateForm";
 import EntityDeleteForm from "~/components/entity/EntityDeleteForm";
-import EntityUpdateForm from "~/components/entity/EntityUpdateForm";
+import EntityUpdateForm, {
+  type UpdateButtonProps,
+} from "~/components/entity/EntityUpdateForm";
 import { useTableRequest } from "~/hooks/http";
 import type {
   EntityConfig,
@@ -38,6 +40,7 @@ export interface EntityTableProps<
   query?: Query;
   createAction?: EntityTableAction<CreateRequest, Entity>;
   updateAction?: EntityTableAction<UpdateRequest, Entity>;
+  updateButtonProps?: (entity: Entity) => UpdateButtonProps;
   deleteAction?: EntityTableAction<DeleteRequest, void>;
   createInitialValues?: CreateRequest;
   resetAfterCreate?: boolean;
@@ -89,6 +92,7 @@ export default function EntityTable<
   query,
   createAction = {},
   updateAction = {},
+  updateButtonProps,
   deleteAction = {},
   createInitialValues,
   resetAfterCreate = true,
@@ -147,6 +151,7 @@ export default function EntityTable<
                   entityConfig={entityConfig}
                   entity={record}
                   action={updateAction}
+                  buttonProps={updateButtonProps}
                   onFinish={async () => tableAction.current?.reload()}
                 />
                 {!disableRowDelete && (
