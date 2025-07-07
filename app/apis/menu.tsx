@@ -8,7 +8,7 @@ export function useAdminSidebar() {
     queryKey: [""],
     url: "/menus",
     params: {
-      id: "admin.sidebar",
+      id: "system.sidebar",
     },
   });
 
