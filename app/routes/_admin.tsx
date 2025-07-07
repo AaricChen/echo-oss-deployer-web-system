@@ -42,7 +42,11 @@ export default function AdminLayout() {
         if (!item.path) {
           return dom;
         }
-        return <Link to={item.path ?? "/"}>{dom}</Link>;
+        return (
+          <Link title={item.name} to={item.path ?? "/"}>
+            {dom}
+          </Link>
+        );
       }}
       avatarProps={{
         src: account?.avatar,
