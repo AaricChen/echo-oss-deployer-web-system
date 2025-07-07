@@ -1,3 +1,4 @@
+import { Typography } from "antd";
 import { useEffect, useState } from "react";
 import { useTableRequest } from "~/hooks/http";
 import {
@@ -36,5 +37,5 @@ export default function SystemDictText({ dict, code }: SystemDictTextProps) {
     }
   }, [data]);
 
-  return <div>{text}</div>;
+  return <Typography.Text>{text}</Typography.Text>;
 }

@@ -3,15 +3,21 @@ import {
   type ProFormItemProps,
 } from "@ant-design/pro-components";
 import { useEffect, useState } from "react";
+import { useDistrict } from "~/apis/district";
 import { useTableRequest } from "~/hooks/http";
 import type { DistrictQuery, DistrictResponse } from "~/types/district";
 
 export interface DistrictSelectProps extends ProFormItemProps {
   maxLevel?: number; // 行政区最大层级 默认3级 支持1-5级
+  value?: number;
 }
 
-export default function DistrictSelect(props: DistrictSelectProps) {
-  const { maxLevel = 3, ...formProps } = props;
+export default function DistrictSelect({
+  maxLevel = 3,
+  value,
+  fieldProps,
+}: DistrictSelectProps) {
+  const { data, isFetching } = useDistrict(value);
 
   const [options, setOptions] = useState<
     {
@@ -21,9 +27,10 @@ export default function DistrictSelect(props: DistrictSelectProps) {
     }[]
   >([]);
 
-  const { mutateAsync } = useTableRequest<DistrictResponse, DistrictQuery>(
-    "/district",
-  );
+  const { mutateAsync, isPending: isFetchingDistrict } = useTableRequest<
+    DistrictResponse,
+    DistrictQuery
+  >("/district");
 
   useEffect(() => {
     mutateAsync({
@@ -46,23 +53,13 @@ export default function DistrictSelect(props: DistrictSelectProps) {
 
   return (
     <ProFormCascader
-      transform={(v: any) => {
-        if (v.id) {
-          return v.id;
-        } else {
-          return v[v.length - 1];
-        }
-      }}
-      {...formProps}
+      initialValue={value}
       fieldProps={{
+        loading: isFetching || isFetchingDistrict,
         displayRender: (v: any) => {
-          if (Array.isArray(v)) {
-            if (v.length < maxLevel) {
-              return v[v.length - 1].path;
-            }
-            return v.join("/");
+          if (data) {
+            return data.path;
           }
-          return null;
         },
         options,
         loadData: (v) => {
@@ -83,7 +80,12 @@ export default function DistrictSelect(props: DistrictSelectProps) {
             setOptions([...options]);
           });
         },
-        ...formProps.fieldProps,
+        ...fieldProps,
+        onChange: (v) => {
+          if (Array.isArray(v)) {
+            fieldProps?.onChange?.(v[v.length - 1]);
+          }
+        },
       }}
     />
   );

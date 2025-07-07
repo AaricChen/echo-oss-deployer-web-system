@@ -1,5 +1,7 @@
 import type { ProRenderFieldPropsType } from "@ant-design/pro-components";
 import DepartmentSelect from "~/components/form/DepartmentSelect";
+import DistrictSelect from "~/components/form/DistrictSelect";
+import DistrictText from "~/components/form/DistrictText";
 import PermissionSelect from "~/components/form/PermissionSelect";
 import RoleSelect from "~/components/form/RoleSelect";
 import SystemDictSelect from "~/components/form/SystemDictSelect";
@@ -42,6 +44,14 @@ export const valueTypeMap: Record<string, ProRenderFieldPropsType> = {
           fieldProps={fieldProps}
         />
       );
+    },
+  },
+  district: {
+    render: (value) => {
+      return <DistrictText value={value} />;
+    },
+    renderFormItem: (value, { fieldProps }) => {
+      return <DistrictSelect value={value} fieldProps={fieldProps} />;
     },
   },
 };

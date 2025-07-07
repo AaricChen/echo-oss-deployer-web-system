@@ -118,11 +118,20 @@ export default function TenantPage() {
               hideInSearch: true,
               fieldProps: {
                 dict: "language",
-                placeholder: "租户的语言",
               },
               colProps: {
                 xs: 24,
-                lg: 8,
+                lg: 12,
+              },
+            },
+            {
+              title: "地区",
+              dataIndex: ["tenantInfo", "district"],
+              valueType: "district" as any,
+              hideInSearch: true,
+              colProps: {
+                xs: 24,
+                lg: 12,
               },
             },
           ],
@@ -185,6 +194,15 @@ export default function TenantPage() {
             valueType: "systemDict" as any,
             align: "center",
             hideInSearch: true,
+            fieldProps: {
+              dict: "language",
+            },
+          },
+          {
+            title: "地区",
+            dataIndex: ["tenantInfo", "district"],
+            valueType: "district" as any,
+            align: "center",
           },
         ]}
       />
