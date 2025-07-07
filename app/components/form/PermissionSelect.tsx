@@ -1,28 +1,32 @@
-import { TreeSelect, type TreeSelectProps } from "antd";
+import { Select, type SelectProps } from "antd";
 import { useGetPermissions } from "~/apis/permission";
+import { SecurityScope } from "~/types/common";
 
 export interface PermissionSelectProps {
-  fieldProps: TreeSelectProps;
+  fieldProps: SelectProps;
+  tenant?: string;
+  scope?: keyof typeof SecurityScope;
+  value?: string[];
 }
 
 export default function PermissionSelect({
+  tenant,
+  scope,
+  value,
   fieldProps,
 }: PermissionSelectProps) {
-  const { data, isPending } = useGetPermissions();
+  const { data, isFetching } = useGetPermissions(scope);
   return (
-    <TreeSelect
-      loading={isPending}
-      fieldNames={{ label: "name", value: "id" }}
-      treeNodeFilterProp="name"
-      treeData={data?.children}
+    <Select
       showSearch
-      treeDefaultExpandAll
+      allowClear
       autoClearSearchValue={false}
-      placeholder="请选择权限"
+      mode="multiple"
+      optionFilterProp="name"
+      loading={isFetching}
+      fieldNames={{ label: "name", value: "id" }}
+      options={data}
       {...fieldProps}
-      style={{
-        ...fieldProps.style,
-      }}
     />
   );
 }

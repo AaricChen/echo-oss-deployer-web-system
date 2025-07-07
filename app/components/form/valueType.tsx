@@ -13,7 +13,13 @@ export const valueTypeMap: Record<string, ProRenderFieldPropsType> = {
       return text.length;
     },
     renderFormItem: (_, { fieldProps }) => {
-      return <PermissionSelect fieldProps={fieldProps} />;
+      return (
+        <PermissionSelect
+          tenant={fieldProps.tenant}
+          scope={fieldProps.scope}
+          fieldProps={fieldProps}
+        />
+      );
     },
   },
   department: {
