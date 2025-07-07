@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import Icon, { iconMap } from "~/components/icon";
 import { useGet } from "~/hooks/http";
 import type { MenuResponse } from "~/types/menu";
-export function useAdminSidebar() {
+export function useSidebar() {
   const { data } = useGet<MenuResponse>({
     queryKey: [""],
     url: "/menus",

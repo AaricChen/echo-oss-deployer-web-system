@@ -4,12 +4,12 @@ import { Dropdown } from "antd";
 import { Link, Outlet, useNavigate } from "react-router";
 import { useCurrentAccount } from "~/apis/account";
 import { useLogout } from "~/apis/auth";
-import { useAdminSidebar } from "~/apis/menu";
+import { useSidebar } from "~/apis/menu";
 import { appConfig } from "~/configs/app";
 
 export default function AdminLayout() {
   const { data: account } = useCurrentAccount();
-  const { menuItems } = useAdminSidebar();
+  const { menuItems } = useSidebar();
   const { mutate: logout } = useLogout();
   const navigate = useNavigate();
   return (
@@ -25,14 +25,18 @@ export default function AdminLayout() {
         </Link>
       )}
       menu={{
-        type: "group",
+        type: "sub",
       }}
       menuDataRender={() => menuItems}
       menuItemRender={(item, dom) => {
         if (!item.path) {
           return dom;
         }
-        return <Link to={item.path ?? "/"}>{dom}</Link>;
+        return (
+          <Link title={item.name} to={item.path ?? "/"}>
+            {dom}
+          </Link>
+        );
       }}
       subMenuItemRender={(item, dom) => {
         if (!item.path) {
