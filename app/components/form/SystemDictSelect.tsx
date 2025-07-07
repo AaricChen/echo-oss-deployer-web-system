@@ -11,10 +11,14 @@ import {
 
 export interface SystemDictSelectProps extends ProFormSelectProps {
   dict: string;
+  value?: string;
 }
 
-export default function SystemDictSelect(props: SystemDictSelectProps) {
-  const { dict, ...formProps } = props;
+export default function SystemDictSelect({
+  dict,
+  value,
+  fieldProps,
+}: SystemDictSelectProps) {
   const { mutateAsync } = useTableRequest<
     SystemDictItemResponse,
     SystemDictItemQuery
@@ -43,12 +47,12 @@ export default function SystemDictSelect(props: SystemDictSelectProps) {
           }));
         });
       }}
-      {...formProps}
       fieldProps={{
+        value: value || undefined,
         onSearch: (v) => {
           setSearch(v);
         },
-        ...formProps.fieldProps,
+        ...fieldProps,
       }}
     />
   );

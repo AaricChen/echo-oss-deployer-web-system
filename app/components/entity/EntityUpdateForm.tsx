@@ -2,7 +2,7 @@ import {
   BetaSchemaForm,
   type ProFormColumnsType,
 } from "@ant-design/pro-components";
-import { Button, Modal, type FormInstance } from "antd";
+import { App, Button, Modal, type FormInstance } from "antd";
 import { useMemo, useRef, useState } from "react";
 import type { EntityTableAction } from "~/components/entity/EntityTable";
 import { usePut } from "~/hooks/http";
@@ -43,6 +43,7 @@ export default function EntityUpdateForm<
   buttonProps,
   onFinish,
 }: EntityUpdateFormProps<Entity, UpdateRequest>) {
+  const { message } = App.useApp();
   const formRef = useRef<FormInstance>(null);
 
   const [open, setOpen] = useState(false);
@@ -85,6 +86,10 @@ export default function EntityUpdateForm<
           columns={columns}
           initialValues={entity}
           onFinish={async (values) => {
+            if (!values.id) {
+              message.error("未找到ID信息");
+              return false;
+            }
             if (action.mutation) {
               await action.mutation.mutateAsync(values);
             } else {

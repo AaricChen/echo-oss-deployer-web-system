@@ -3,6 +3,7 @@ import DepartmentSelect from "~/components/form/DepartmentSelect";
 import PermissionSelect from "~/components/form/PermissionSelect";
 import RoleSelect from "~/components/form/RoleSelect";
 import SystemDictSelect from "~/components/form/SystemDictSelect";
+import SystemDictText from "~/components/form/SystemDictText";
 
 export const valueTypeMap: Record<string, ProRenderFieldPropsType> = {
   permission: {
@@ -30,17 +31,15 @@ export const valueTypeMap: Record<string, ProRenderFieldPropsType> = {
     },
   },
   systemDict: {
-    render: (dict) => {
-      return dict?.name;
+    render: (value, { fieldProps }) => {
+      return <SystemDictText dict={fieldProps.dict} code={value} />;
     },
     renderFormItem: (value, { fieldProps }) => {
       return (
         <SystemDictSelect
           dict={fieldProps.dict}
-          fieldProps={{
-            ...fieldProps,
-            value: value.code ? value.code : value,
-          }}
+          value={value}
+          fieldProps={fieldProps}
         />
       );
     },

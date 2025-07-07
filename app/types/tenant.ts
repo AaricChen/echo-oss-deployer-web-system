@@ -83,3 +83,18 @@ export interface TenantConfigRequest {
    */
   maxDomainCount?: number;
 }
+
+export const TenantStatus = {
+  Y: {
+    text: "启用",
+    status: "success",
+  },
+  N: {
+    text: "禁用",
+    status: "error",
+  },
+  Archive: {
+    text: "归档",
+    status: "default",
+  },
+};
