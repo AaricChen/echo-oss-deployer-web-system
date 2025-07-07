@@ -281,7 +281,7 @@ export default function TenantPage() {
               },
               colProps: {
                 xs: 24,
-                lg: 12,
+                lg: 8,
               },
             },
             {
@@ -298,7 +298,17 @@ export default function TenantPage() {
               },
               colProps: {
                 xs: 24,
-                lg: 12,
+                lg: 8,
+              },
+            },
+            {
+              title: "状态",
+              dataIndex: "status",
+              valueType: "select",
+              valueEnum: TenantStatus,
+              colProps: {
+                xs: 24,
+                lg: 8,
               },
             },
             {
