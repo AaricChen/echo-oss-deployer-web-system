@@ -5,7 +5,7 @@ import LogDetails from "~/components/log/LogDetails";
 import { useTableRequest } from "~/hooks/http";
 import type { SystemLogResponse } from "~/types/log";
 
-export default function SystemActivityLogPage() {
+export default function SystemOperationLogPage() {
   const { mutateAsync: getLogs } =
     useTableRequest<SystemLogResponse>("/log/system");
   const [open, setOpen] = useState(false);
@@ -17,7 +17,6 @@ export default function SystemActivityLogPage() {
           <ProTable<SystemLogResponse>
             rowKey="id"
             bordered
-            headerTitle="系统活动日志"
             scroll={{ x: "max-content" }}
             columns={[
               {
@@ -82,6 +81,7 @@ export default function SystemActivityLogPage() {
               {
                 title: "移动端",
                 dataIndex: "mobile",
+                align: "center",
                 valueEnum: {
                   true: {
                     text: "是",
@@ -149,7 +149,7 @@ export default function SystemActivityLogPage() {
                 align: "center",
               },
             ]}
-            params={{ type: "ACTIVITY" }}
+            params={{ type: "AUDIT" }}
             request={async (params, sort, filter) => {
               return getLogs({ params, sort, filter });
             }}
@@ -165,6 +165,6 @@ export default function SystemActivityLogPage() {
           )}
         </div>
       }
-    />
+    ></PageContainer>
   );
 }

@@ -14,7 +14,6 @@ import {
 export default function TenantPage() {
   return (
     <PageContainer
-      title="租户管理"
       content={
         <EntityTable<
           TenantResponse,
