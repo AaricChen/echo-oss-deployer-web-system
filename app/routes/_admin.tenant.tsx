@@ -82,16 +82,22 @@ export default function TenantPage() {
                 <Tag key={item.domain}>{item.domain}</Tag>
               ));
             },
+            fieldProps: {
+              creatorButtonProps: { creatorButtonText: "添加域名" },
+            },
             columns: [
               {
                 title: "域名",
                 dataIndex: "domain",
                 align: "center",
+                formItemProps: {
+                  rules: [{ required: true, message: "请输入域名" }],
+                },
               },
             ],
             colProps: {
               xs: 24,
-              lg: 12,
+              lg: 24,
             },
           },
         ]}
