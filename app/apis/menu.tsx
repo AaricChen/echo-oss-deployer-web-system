@@ -14,7 +14,7 @@ export function useSidebar() {
 
   const menuItems: MenuDataItem[] = useMemo(() => {
     if (!data) return [];
-    return convertMenuData(data.children);
+    return convertMenuData(data.children, 0);
   }, [data]);
 
   return {
@@ -22,14 +22,20 @@ export function useSidebar() {
   };
 }
 
-function convertMenuData(menus: MenuResponse[]): MenuDataItem[] {
+function convertMenuData(menus: MenuResponse[], level: number): MenuDataItem[] {
   return menus.map((menu) => {
     return {
       key: menu.id,
       name: menu.text,
       path: menu.link ?? undefined,
       icon: <Icon icon={menu.icon as keyof typeof iconMap} />,
-      children: menu.children?.length ? convertMenuData(menu.children) : [],
+      menuIcon:
+        level > 0 ? (
+          <Icon icon={menu.icon as keyof typeof iconMap} />
+        ) : undefined,
+      children: menu.children?.length
+        ? convertMenuData(menu.children, level + 1)
+        : [],
     };
   });
 }

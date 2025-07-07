@@ -29,30 +29,21 @@ export default function AdminLayout() {
       }}
       menuDataRender={() => menuItems}
       menuItemRender={(item, dom) => {
-        if (!item.path) {
-          return dom;
+        if (item.menuIcon) {
+          return (
+            <Link className="flex items-center gap-2" to={item.path ?? "/"}>
+              {item.icon} {dom}
+            </Link>
+          );
+        } else {
+          return <Link to={item.path ?? "/"}>{dom}</Link>;
         }
-        return (
-          <Link title={item.name} to={item.path ?? "/"}>
-            {dom}
-          </Link>
-        );
-      }}
-      subMenuItemRender={(item, dom) => {
-        if (!item.path) {
-          return dom;
-        }
-        return (
-          <Link title={item.name} to={item.path ?? "/"}>
-            {dom}
-          </Link>
-        );
       }}
       avatarProps={{
         src: account?.avatar,
         title: account?.nickname,
         size: "small",
-        render: (props, dom) => {
+        render: (_, dom) => {
           return (
             <Dropdown
               menu={{
