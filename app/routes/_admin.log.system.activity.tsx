@@ -5,7 +5,7 @@ import LogDetails from "~/components/log/LogDetails";
 import { useTableRequest } from "~/hooks/http";
 import type { SystemLogResponse } from "~/types/log";
 
-export default function SystemActivityLogPage() {
+export default function ActivityLogPage() {
   const { mutateAsync: getLogs } =
     useTableRequest<SystemLogResponse>("/log/system");
   const [open, setOpen] = useState(false);

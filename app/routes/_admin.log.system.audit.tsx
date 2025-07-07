@@ -5,7 +5,7 @@ import LogDetails from "~/components/log/LogDetails";
 import { useTableRequest } from "~/hooks/http";
 import type { SystemLogResponse } from "~/types/log";
 
-export default function SystemOperationLogPage() {
+export default function AuditLogPage() {
   const { mutateAsync: getLogs } =
     useTableRequest<SystemLogResponse>("/log/system");
   const [open, setOpen] = useState(false);
@@ -165,6 +165,6 @@ export default function SystemOperationLogPage() {
           )}
         </div>
       }
-    ></PageContainer>
+    />
   );
 }
