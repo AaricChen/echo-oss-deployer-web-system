@@ -27,12 +27,14 @@ export default function LogDetails({ open, log, onClose }: LogDetailsProps) {
           column={2}
           dataSource={log}
         >
-          <ProDescriptions.Item label="创建者">
-            <div className="flex items-center gap-2">
-              <Avatar src={log.createBy.avatar} />
-              <Typography.Text>{log.createBy.nickname}</Typography.Text>
-            </div>
-          </ProDescriptions.Item>
+          {log.createBy && (
+            <ProDescriptions.Item label="创建者">
+              <div className="flex items-center gap-2">
+                <Avatar src={log.createBy.avatar} />
+                <Typography.Text>{log.createBy.nickname}</Typography.Text>
+              </div>
+            </ProDescriptions.Item>
+          )}
           <ProDescriptions.Item label="请求ID">
             {log.requestId}
           </ProDescriptions.Item>
