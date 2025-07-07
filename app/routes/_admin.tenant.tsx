@@ -101,6 +101,128 @@ export default function TenantPage() {
               },
             },
             {
+              valueType: "divider",
+            },
+            {
+              title: "开始日期",
+              dataIndex: ["tenantConfig", "startAt"],
+              valueType: "dateTime",
+              hideInSearch: true,
+              formItemProps: {
+                tooltip: "如果设置了开始日期，则在开始日期之后才能认证账户",
+              },
+              fieldProps: {
+                style: {
+                  width: "100%",
+                },
+              },
+              colProps: {
+                xs: 24,
+                lg: 12,
+              },
+            },
+            {
+              title: "结束日期",
+              dataIndex: ["tenantConfig", "endAt"],
+              valueType: "dateTime",
+              hideInSearch: true,
+              formItemProps: {
+                tooltip: "如果设置了结束日期，则在结束日期之前才能认证账户",
+              },
+              fieldProps: {
+                style: {
+                  width: "100%",
+                },
+              },
+              colProps: {
+                xs: 24,
+                lg: 12,
+              },
+            },
+            {
+              title: "最大账户数量",
+              dataIndex: ["tenantConfig", "maxAccountCount"],
+              hideInSearch: true,
+              formItemProps: {
+                tooltip: "该租户下最大账户的创建数量，为空表示不限制",
+              },
+              fieldProps: {
+                type: "number",
+                min: 1,
+              },
+              colProps: {
+                xs: 24,
+                lg: 8,
+              },
+            },
+            {
+              title: "最大部门数量",
+              dataIndex: ["tenantConfig", "maxDepartmentCount"],
+              hideInSearch: true,
+              formItemProps: {
+                tooltip: "该租户下最多创建的部门数量，为空表示不限制",
+              },
+              fieldProps: {
+                type: "number",
+                min: 1,
+              },
+              colProps: {
+                xs: 24,
+                lg: 8,
+              },
+            },
+            {
+              title: "最大部门层级",
+              dataIndex: ["tenantConfig", "maxDepartmentLevel"],
+              hideInSearch: true,
+              formItemProps: {
+                tooltip: "该租户下部门的最大层级，为空表示不限制",
+              },
+              fieldProps: {
+                type: "number",
+                min: 1,
+              },
+              colProps: {
+                xs: 24,
+                lg: 8,
+              },
+            },
+            {
+              title: "最大权限组数量",
+              dataIndex: ["tenantConfig", "maxPermissionGroupCount"],
+              hideInSearch: true,
+              formItemProps: {
+                tooltip: "该租户下用户最多可以创建的权限组数量，为空表示不限制",
+              },
+              fieldProps: {
+                type: "number",
+                min: 1,
+              },
+              colProps: {
+                xs: 24,
+                lg: 8,
+              },
+            },
+            {
+              title: "最大角色数量",
+              dataIndex: ["tenantConfig", "maxRoleCount"],
+              hideInSearch: true,
+              formItemProps: {
+                tooltip: "该租户下包括所有部门创建的角色，为空表示不限制",
+              },
+              fieldProps: {
+                type: "number",
+                min: 1,
+              },
+              colProps: {
+                xs: 24,
+                lg: 8,
+              },
+            },
+            {
+              valueType: "divider",
+            },
+            {
               title: "备注",
               dataIndex: ["tenantInfo", "remark"],
               fieldProps: {
@@ -164,7 +286,7 @@ export default function TenantPage() {
             valueType: "formList",
             align: "center",
             hideInSearch: true,
-            renderText(text: { domain: string }[], record, index, action) {
+            renderText(text: { domain: string }[]) {
               return text.map((item) => (
                 <Tag key={item.domain}>{item.domain}</Tag>
               ));
@@ -203,6 +325,11 @@ export default function TenantPage() {
             dataIndex: ["tenantInfo", "district"],
             valueType: "district" as any,
             align: "center",
+            transform: (value) => {
+              return {
+                district: value,
+              };
+            },
           },
         ]}
       />

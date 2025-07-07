@@ -77,11 +77,6 @@ export interface TenantConfigRequest {
    * 包括所有部门创建的角色，为空表示不限制
    */
   maxRoleCount?: number;
-
-  /**
-   * 该租户最多支持的自定义域名数量，为空表示不限制
-   */
-  maxDomainCount?: number;
 }
 
 export const TenantStatus = {
