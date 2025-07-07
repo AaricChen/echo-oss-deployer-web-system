@@ -60,9 +60,11 @@ export interface PermissionGroupDeleteRequest
 export const PermissionGroupType = {
   SYSTEM: {
     text: "系统权限组",
+    status: "default",
   },
   ACCOUNT: {
     text: "账户权限组",
+    status: "success",
   },
 };
 

@@ -18,6 +18,7 @@ export default function PermissionSelect({
       allowClear
       autoClearSearchValue={false}
       mode="multiple"
+      placeholder="请选择权限"
       optionFilterProp="name"
       loading={isFetching}
       fieldNames={{ label: "name", value: "id" }}

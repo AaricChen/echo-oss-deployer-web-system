@@ -38,14 +38,17 @@ export default function SystemDictSelect({
             name: search,
             pageSize: 999,
           },
-          sort: {},
-          filter: {},
         }).then((res) => {
           return res.data.map((item) => ({
             label: item.name,
             value: item.code,
           }));
         });
+      }}
+      formItemProps={{
+        style: {
+          marginBottom: 0,
+        },
       }}
       fieldProps={{
         value: value || undefined,

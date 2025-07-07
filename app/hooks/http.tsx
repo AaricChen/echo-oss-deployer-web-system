@@ -267,8 +267,8 @@ export function useTableRequest<
         current?: number;
         keyword?: string;
       };
-      sort: Record<string, SortOrder>;
-      filter: Record<string, (string | number)[] | null>;
+      sort?: Record<string, SortOrder>;
+      filter?: Record<string, (string | number)[] | null>;
     }
   >({
     mutationFn: async (request) => {
@@ -283,9 +283,11 @@ export function useTableRequest<
         page: current ? current - 1 : 0,
         size: pageSize,
         keyword,
-        sort: Object.entries(request.sort).map(
-          ([key, value]) => `${key},${value === "ascend" ? "asc" : "desc"}`,
-        ),
+        sort: request.sort
+          ? Object.entries(request.sort).map(
+              ([key, value]) => `${key},${value === "ascend" ? "asc" : "desc"}`,
+            )
+          : null,
         ...request.filter,
       };
 

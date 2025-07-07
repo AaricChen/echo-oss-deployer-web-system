@@ -39,8 +39,6 @@ export default function DepartmentPage() {
         pageSize: 1000,
         root: true,
       },
-      sort: {},
-      filter: {},
     });
     setDepartments(res.data);
   };

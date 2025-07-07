@@ -9,7 +9,6 @@ import {
   type PermissionGroupQuery,
   type PermissionGroupResponse,
   type PermissionGroupUpdateRequest,
-  type PermissionResponse,
 } from "~/types/permission";
 
 export default function PermissionGroupPage() {
@@ -32,7 +31,6 @@ export default function PermissionGroupPage() {
             name: "",
             scope: "SYSTEM",
             status: "Y",
-            parent: "",
             permissions: [],
           }}
           columns={[
@@ -64,7 +62,7 @@ export default function PermissionGroupPage() {
               },
               colProps: {
                 xs: 24,
-                lg: 12,
+                lg: 8,
               },
             },
             {
@@ -75,10 +73,6 @@ export default function PermissionGroupPage() {
               valueEnum: PermissionGroupType,
               hideInSearch: true,
               hideInForm: true,
-              colProps: {
-                xs: 24,
-                lg: 12,
-              },
             },
             {
               title: "状态",
@@ -88,7 +82,22 @@ export default function PermissionGroupPage() {
               valueEnum: PermissionGroupStatus,
               colProps: {
                 xs: 24,
-                lg: 12,
+                lg: 8,
+              },
+            },
+            {
+              title: "父权限组",
+              dataIndex: "parent",
+              align: "center",
+              valueType: "permissionGroup" as any,
+              hideInSearch: true,
+              hideInTable: true,
+              fieldProps: {
+                scope: "SYSTEM",
+              },
+              colProps: {
+                xs: 24,
+                lg: 8,
               },
             },
             {
@@ -96,6 +105,7 @@ export default function PermissionGroupPage() {
               dataIndex: "children",
               align: "center",
               hideInForm: true,
+              hideInSearch: true,
               renderText(text: PermissionGroupResponse[]) {
                 return text.map((item) => item.name).join(",");
               },

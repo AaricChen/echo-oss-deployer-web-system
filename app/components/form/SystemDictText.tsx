@@ -25,8 +25,6 @@ export default function SystemDictText({ dict, code }: SystemDictTextProps) {
           dict,
           code,
         },
-        sort: {},
-        filter: {},
       });
     }
   }, [dict, code]);

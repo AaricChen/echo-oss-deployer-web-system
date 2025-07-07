@@ -5,7 +5,7 @@ import type { PermissionResponse } from "~/types/permission";
 
 export function useGetPermissions(scope?: keyof typeof SecurityScope) {
   return useGet<PermissionResponse[]>({
-    queryKey: ["permissions"],
+    queryKey: ["permissions", scope],
     url: "/permission",
     params: {
       scope,

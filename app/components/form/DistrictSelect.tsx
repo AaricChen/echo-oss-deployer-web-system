@@ -38,8 +38,6 @@ export default function DistrictSelect({
         pageSize: 100,
         root: true,
       },
-      sort: {},
-      filter: {},
     }).then((res) => {
       setOptions(
         res.data.map((item) => ({
@@ -54,6 +52,11 @@ export default function DistrictSelect({
   return (
     <ProFormCascader
       initialValue={value}
+      formItemProps={{
+        style: {
+          marginBottom: 0,
+        },
+      }}
       fieldProps={{
         loading: isFetching || isFetchingDistrict,
         displayRender: (v: any) => {
@@ -69,8 +72,6 @@ export default function DistrictSelect({
               parent: target.value,
               pageSize: 100,
             },
-            sort: {},
-            filter: {},
           }).then((res) => {
             target.children = res.data.map((item) => ({
               label: item.name,
