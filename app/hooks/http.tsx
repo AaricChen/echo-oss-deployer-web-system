@@ -13,7 +13,7 @@ import { type ReactNode, useMemo } from "react";
 import { useApiStore } from "~/stores/api";
 import { useAuthStore } from "~/stores/auth";
 import type { EntityIdType, EntityQuery, EntityResponse } from "~/types/entity";
-import type { HttpResponse } from "~/types/http";
+import { HttpError, type HttpResponse } from "~/types/http";
 import type { PaginationData, PaginationQuery } from "~/types/pagination";
 
 export interface HttpMutationRequestParams<Request, Response> {
@@ -135,7 +135,7 @@ export function useHttpMutation<Request, Response>({
   const { endpoint } = useApiStore();
   const { accessToken } = useAuthStore();
 
-  return useMutation<Response, DefaultError, Request>({
+  return useMutation<Response, HttpError, Request>({
     mutationFn: async (request) => {
       const headers: HeadersInit = {};
       headers["Content-Type"] = "application/json";
@@ -174,11 +174,8 @@ export function useHttpMutation<Request, Response>({
           if (res.success) {
             return res.data;
           } else {
-            throw new Error(res.message, { cause: res });
+            throw new HttpError(res);
           }
-        })
-        .catch(async (err) => {
-          throw new Error(err.message);
         });
     },
     onSuccess: async (response, request) => {
@@ -210,7 +207,23 @@ export function useHttpMutation<Request, Response>({
       if (onError) {
         onError(requestError, request);
       } else {
-        message.error(requestError.message);
+        const response = requestError.response;
+        if (response.error) {
+          let content = "";
+          if (response.error.objectErrors) {
+            content += response.error.objectErrors
+              .map((it) => `${it.name}: ${it.message}`)
+              .join("\n");
+          }
+          if (response.error.fieldErrors) {
+            content += response.error.fieldErrors
+              .map((it) => `${it.name}: ${it.message}`)
+              .join("\n");
+          }
+          message.error(content);
+        } else {
+          message.error(response.message);
+        }
       }
     },
   });

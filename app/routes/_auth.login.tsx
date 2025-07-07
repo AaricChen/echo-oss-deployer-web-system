@@ -1,17 +1,21 @@
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { LoginFormPage, ProFormText } from "@ant-design/pro-components";
+import {
+  LoginFormPage,
+  ProFormSelect,
+  ProFormText,
+} from "@ant-design/pro-components";
 import { theme } from "antd";
 import { useLogin } from "~/apis/auth";
 import { appConfig } from "~/configs/app";
-import type { LoginRequest } from "~/types/auth";
+import { AuthenticationType, type LoginRequest } from "~/types/auth";
 
 export default function LoginPage() {
   const { token } = theme.useToken();
   const login = useLogin();
   return (
     <LoginFormPage<LoginRequest>
-      backgroundVideoUrl="https://gw.alipayobjects.com/v/huamei_gcee1x/afts/video/jXRBRK_VAwoAAAAAAAAAAAAAK4eUAQBr"
       logo={appConfig.logo}
+      backgroundImageUrl={appConfig.loginBackground}
       title="欢迎"
       subTitle="登录到你的账户"
       containerStyle={{
@@ -22,8 +26,17 @@ export default function LoginPage() {
         await login.mutateAsync(values);
       }}
     >
+      <ProFormSelect
+        name="type"
+        hidden
+        initialValue={AuthenticationType.USERNAME}
+        options={Object.values(AuthenticationType).map((type) => ({
+          label: type,
+          value: type,
+        }))}
+      />
       <ProFormText
-        name="username"
+        name="identity"
         fieldProps={{
           size: "large",
           prefix: (
@@ -43,7 +56,7 @@ export default function LoginPage() {
         ]}
       />
       <ProFormText.Password
-        name="password"
+        name="credential"
         fieldProps={{
           size: "large",
           prefix: (

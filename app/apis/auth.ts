@@ -12,7 +12,7 @@ export function useLogin() {
 
   return useHttpMutation<LoginRequest, LoginResponse>({
     method: "POST",
-    url: "/auth/login",
+    url: "/auth/authenticate",
     action: "登录",
     noAuth: true,
     onSuccess: async (data) => {

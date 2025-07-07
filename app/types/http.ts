@@ -4,4 +4,30 @@ export interface HttpResponse<T> {
   message: string;
   data: T;
   success: boolean;
+  error?: FormError;
+}
+
+export interface FormError {
+  objectErrors: FormObjectError[];
+  fieldErrors: FormFieldError[];
+}
+
+export interface FormObjectError {
+  name: string;
+  message: string;
+}
+
+export interface FormFieldError {
+  field: string;
+  name: string;
+  message: string;
+}
+
+export class HttpError extends Error {
+  response: HttpResponse<any>;
+
+  constructor(response: HttpResponse<any>) {
+    super(response.message, { cause: response });
+    this.response = response;
+  }
 }
