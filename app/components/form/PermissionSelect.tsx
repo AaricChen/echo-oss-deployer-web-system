@@ -4,15 +4,11 @@ import { SecurityScope } from "~/types/common";
 
 export interface PermissionSelectProps {
   fieldProps: SelectProps;
-  tenant?: string;
   scope?: keyof typeof SecurityScope;
-  value?: string[];
 }
 
 export default function PermissionSelect({
-  tenant,
   scope,
-  value,
   fieldProps,
 }: PermissionSelectProps) {
   const { data, isFetching } = useGetPermissions(scope);

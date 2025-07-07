@@ -14,11 +14,7 @@ export const valueTypeMap: Record<string, ProRenderFieldPropsType> = {
     },
     renderFormItem: (_, { fieldProps }) => {
       return (
-        <PermissionSelect
-          tenant={fieldProps.tenant}
-          scope={fieldProps.scope}
-          fieldProps={fieldProps}
-        />
+        <PermissionSelect scope={fieldProps.scope} fieldProps={fieldProps} />
       );
     },
   },
