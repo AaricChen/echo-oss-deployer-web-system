@@ -1,5 +1,6 @@
 import { PageContainer, useToken } from "@ant-design/pro-components";
 import { Tag } from "antd";
+import AccountRoleUpdateForm from "~/components/account/AccountRoleUpdateForm";
 import EntityTable from "~/components/entity/EntityTable";
 import type {
   AccountCreateRequest,
@@ -268,7 +269,15 @@ export default function AccountPage() {
             ],
           }}
           rowActionRender={({ entity, action }) => {
-            return [];
+            return [
+              <AccountRoleUpdateForm
+                key="roleUpdateForm"
+                account={entity}
+                onFinish={async () => {
+                  action?.reload();
+                }}
+              />,
+            ];
           }}
           columns={[
             {

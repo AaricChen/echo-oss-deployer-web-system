@@ -133,9 +133,10 @@ export default function SecurityLogPage() {
                 key: "action",
                 valueType: "option",
                 width: 50,
-                render: (text, record) => {
+                render: (_, record) => {
                   return (
                     <Button
+                      type="link"
                       onClick={() => {
                         setLog(record);
                         setOpen(true);

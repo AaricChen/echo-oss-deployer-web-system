@@ -8,6 +8,7 @@ import type {
   EntityResponse,
   EntityUpdateRequest,
 } from "~/types/entity";
+import type { RoleResponse } from "~/types/role";
 import type { SystemDictItemResponse } from "~/types/systemDict";
 
 export type DataScope =
@@ -55,7 +56,7 @@ export interface AccountResponse extends EntityResponse<string> {
   /** 账户基础信息 */
   accountInfo: AccountInfoResponse;
   /** 账户角色 */
-  roles: string[];
+  roles: RoleResponse[];
   /** 账户部门 */
   departments: string[];
   /** 是否为超级管理员 */
@@ -99,25 +100,9 @@ export interface AccountUpdateRequest extends EntityUpdateRequest<string> {}
 
 export interface AccountDeleteRequest extends EntityDeleteRequest<string> {}
 
-export interface AccountInfoUpdateRequest {
+export interface AccountRoleUpdateRequest {
   id: string;
-  avatar: string;
-  nickname: string;
-  realname: string;
-  address: string;
-  bio: string;
-  birthday: string;
-  district: DistrictResponse;
-  nation: string;
-  gender: string;
-  idCard: string;
-  language: string;
-  remark: string;
-}
-
-export interface AccountPasswordUpdateRequest {
-  id: string;
-  password: string;
+  roles: string[];
 }
 
 export interface AccountInfoRequest {

@@ -3,9 +3,8 @@ import { useLocation, useNavigate } from "react-router";
 import { useGet, useHttpMutation, usePut } from "~/hooks/http";
 import type {
   AccountInfo,
-  AccountInfoUpdateRequest,
-  AccountPasswordUpdateRequest,
   AccountResponse,
+  AccountRoleUpdateRequest,
   CurrentAccountResponse,
 } from "~/types/account";
 
@@ -30,17 +29,10 @@ export function useCurrentAccount() {
   return result;
 }
 
-export function useUpdateAccountInfo() {
-  return usePut<AccountInfoUpdateRequest, AccountResponse>({
-    url: (request) => `/account/${request.id}/info`,
-    action: "更新基本资料",
-  });
-}
-
-export function useUpdateAccountPassword() {
-  return usePut<AccountPasswordUpdateRequest, AccountResponse>({
-    url: (request) => `/account/${request.id}/password`,
-    action: "更新密码",
+export function useUpdateAccountRole() {
+  return usePut<AccountRoleUpdateRequest, AccountResponse>({
+    url: (request) => `/account/${request.id}/role`,
+    action: "分配角色",
   });
 }
 
