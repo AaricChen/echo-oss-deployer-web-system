@@ -1,5 +1,5 @@
 import { LogoutOutlined, UserOutlined } from "@ant-design/icons";
-import { ProLayout } from "@ant-design/pro-components";
+import { DefaultFooter, ProLayout } from "@ant-design/pro-components";
 import { Dropdown } from "antd";
 import { Link, Outlet, useNavigate } from "react-router";
 import { useCurrentAccount } from "~/apis/account";
@@ -16,7 +16,7 @@ export default function AdminLayout() {
     <ProLayout
       loading={!account || !menuItems}
       layout="mix"
-      title={appConfig.name}
+      title="系统管理后台"
       logo={appConfig.logo}
       headerTitleRender={(logo, title) => (
         <Link to="/" className="flex items-center gap-2">
@@ -38,6 +38,14 @@ export default function AdminLayout() {
         } else {
           return <Link to={item.path ?? "/"}>{dom}</Link>;
         }
+      }}
+      menuFooterRender={(props) => {
+        if (props?.collapsed) return null;
+        return (
+          <DefaultFooter
+            copyright={`${appConfig.name} ${new Date().getFullYear()}`}
+          />
+        );
       }}
       avatarProps={{
         src: account?.avatar,
