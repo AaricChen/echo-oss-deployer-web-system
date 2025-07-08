@@ -77,7 +77,6 @@ export default function PermissionGroupPage() {
               align: "center",
               valueType: "select",
               valueEnum: PermissionGroupType,
-              hideInSearch: true,
               hideInForm: true,
             },
             {
