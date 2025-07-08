@@ -7,7 +7,6 @@ import type {
   EntityResponse,
   EntityUpdateRequest,
 } from "~/types/entity";
-import type { PermissionGroupResponse } from "~/types/permission";
 
 export const RoleEntity: EntityConfig = {
   name: "角色",

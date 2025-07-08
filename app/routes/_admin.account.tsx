@@ -1,5 +1,6 @@
 import { PageContainer, useToken } from "@ant-design/pro-components";
-import { Tag } from "antd";
+import { Button, Tag } from "antd";
+import { useNavigate } from "react-router";
 import AccountRoleUpdateForm from "~/components/account/AccountRoleUpdateForm";
 import EntityTable from "~/components/entity/EntityTable";
 import type {
@@ -13,6 +14,8 @@ import { AccountEntity, AccountStatus } from "~/types/account";
 
 export default function AccountPage() {
   const { token } = useToken();
+  const navigate = useNavigate();
+
   return (
     <PageContainer
       content={
@@ -277,6 +280,13 @@ export default function AccountPage() {
                   action?.reload();
                 }}
               />,
+              <Button
+                key="credential"
+                type="link"
+                onClick={() => navigate(`/auth/identity/${entity.id}`)}
+              >
+                凭据管理
+              </Button>,
             ];
           }}
           columns={[
