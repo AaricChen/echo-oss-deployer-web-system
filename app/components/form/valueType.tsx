@@ -21,6 +21,9 @@ export const valueTypeMap: Record<string, ProRenderFieldPropsType> = {
   },
   permissionGroup: {
     render: (value) => {
+      if (Array.isArray(value)) {
+        return value.length;
+      }
       return value;
     },
     renderFormItem: (_, { fieldProps }) => {

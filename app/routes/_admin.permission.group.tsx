@@ -119,7 +119,7 @@ export default function PermissionGroupPage() {
               title: "权限数量",
               dataIndex: "permissions",
               valueType: "permission" as any,
-              align: "center",
+              align: "right",
               formItemProps: {
                 label: "权限列表",
               },

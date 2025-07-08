@@ -1,4 +1,4 @@
-import type { DataScope } from "~/types/account";
+import type { SecurityScope } from "~/types/common";
 import type {
   EntityConfig,
   EntityCreateRequest,
@@ -17,21 +17,55 @@ export interface RoleQuery extends EntityQuery {}
 
 export interface RoleResponse extends EntityResponse<string> {
   id: string;
-  name: string;
-  remark: string;
-  dataScope: DataScope;
-  permissions: string[];
-  departments: string[];
+  tenant?: string;
+  department?: string;
+  scope?: keyof typeof SecurityScope;
+  name?: string;
+  remark?: string;
 }
 
 export interface RoleCreateRequest extends EntityCreateRequest {
+  tenant?: string;
+  department?: string;
+  scope: keyof typeof SecurityScope;
   name: string;
-  remark: string;
-  dataScope: DataScope;
-  permissions: string[];
+  remark?: string;
+  dataScopes?: DataScopeRequest[];
+  permissions?: string[];
+  permissionGroups?: string[];
+}
+
+export interface RoleUpdateRequest extends EntityUpdateRequest<string> {
+  department?: string;
+  name: string;
+  remark?: string;
+  dataScopes?: DataScopeRequest[];
+  permissions?: string[];
+  permissionGroups?: string[];
+}
+
+export interface RoleDeleteRequest extends EntityDeleteRequest<string> {}
+
+export interface DataScopeRequest {
+  entities: string[];
+  level: keyof typeof DataScopeLevel;
   departments: string[];
 }
 
-export type RoleUpdateRequest = RoleCreateRequest & EntityUpdateRequest<string>;
-
-export interface RoleDeleteRequest extends EntityDeleteRequest<string> {}
+export const DataScopeLevel = {
+  ALL: {
+    text: "所有部门",
+  },
+  DEPARTMENT_AND_LOWER: {
+    text: "本部门及下级部门",
+  },
+  DEPARTMENT_ONLY: {
+    text: "仅本部门",
+  },
+  CUSTOM: {
+    text: "自定义部门",
+  },
+  ACCOUNT_SELF: {
+    text: "本账户",
+  },
+};
