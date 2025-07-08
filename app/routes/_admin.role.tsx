@@ -1,5 +1,7 @@
 import { PageContainer } from "@ant-design/pro-components";
 import EntityTable from "~/components/entity/EntityTable";
+import RolePermissionPreviewer from "~/components/role/RolePermissionPreviewer";
+import type { PermissionGroupResponse } from "~/types/permission";
 import {
   RoleEntity,
   type RoleCreateRequest,
@@ -19,6 +21,9 @@ export default function RolePage() {
         RoleUpdateRequest,
         RoleDeleteRequest
       >
+        query={{
+          scope: "SYSTEM",
+        }}
         entityConfig={RoleEntity}
         createInitialValues={{
           scope: "SYSTEM",
@@ -71,60 +76,10 @@ export default function RolePage() {
             },
           },
           {
-            title: "数据范围",
-            dataIndex: "dataScope",
-            valueType: "select",
-            align: "center",
-            width: 128,
-            formItemProps: {
-              rules: [{ required: true, message: "请选择数据范围" }],
-            },
-            fieldProps: {
-              options: [
-                { label: "全部", value: "ALL" },
-                { label: "本部门及以下", value: "DEPARTMENT_AND_LOWER" },
-                { label: "本部门", value: "DEPARTMENT_ONLY" },
-                { label: "自定义", value: "CUSTOM" },
-                { label: "本人", value: "SELF" },
-              ],
-              style: {
-                width: "100%",
-              },
-            },
-            colProps: {
-              xs: 24,
-              lg: 8,
-            },
-            sorter: true,
-          },
-          {
-            valueType: "dependency",
-            name: ["dataScope"],
-            hideInTable: true,
-            columns: ({ dataScope }) => {
-              if (dataScope === "CUSTOM") {
-                return [
-                  {
-                    title: "自定义部门",
-                    dataIndex: "departments",
-                    valueType: "department" as any,
-                    formItemProps: {
-                      rules: [{ required: true, message: "请选择部门" }],
-                    },
-                    fieldProps: {
-                      multiple: true,
-                    },
-                  },
-                ];
-              } else {
-                return [];
-              }
-            },
-          },
-          {
             title: "权限组数量",
             dataIndex: "permissionGroups",
             valueType: "permissionGroup" as any,
+            hideInSearch: true,
             align: "right",
             formItemProps: {
               label: "权限组列表",
@@ -138,12 +93,23 @@ export default function RolePage() {
             title: "权限数量",
             dataIndex: "permissions",
             valueType: "permission" as any,
+            hideInSearch: true,
             align: "right",
             formItemProps: {
               label: "权限列表",
             },
             fieldProps: {
               scope: "SYSTEM",
+            },
+          },
+          {
+            title: "权限列表",
+            dataIndex: "aggregatedPermissions",
+            align: "center",
+            hideInForm: true,
+            hideInSearch: true,
+            render: (_, record) => {
+              return <RolePermissionPreviewer scope="SYSTEM" role={record} />;
             },
           },
         ]}

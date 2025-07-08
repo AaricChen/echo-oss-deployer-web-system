@@ -34,7 +34,7 @@ export interface PermissionGroupResponse extends EntityResponse<string> {
   type: keyof typeof PermissionGroupType;
   status: keyof typeof BoolStatus;
   children: PermissionGroupResponse[];
-  permissions: PermissionResponse[];
+  permissions: string[];
 }
 
 export interface PermissionGroupCreateRequest extends EntityCreateRequest {

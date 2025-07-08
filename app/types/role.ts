@@ -7,6 +7,7 @@ import type {
   EntityResponse,
   EntityUpdateRequest,
 } from "~/types/entity";
+import type { PermissionGroupResponse } from "~/types/permission";
 
 export const RoleEntity: EntityConfig = {
   name: "角色",
@@ -22,6 +23,8 @@ export interface RoleResponse extends EntityResponse<string> {
   scope?: keyof typeof SecurityScope;
   name?: string;
   remark?: string;
+  permissions: string[];
+  permissionGroups: string[];
 }
 
 export interface RoleCreateRequest extends EntityCreateRequest {

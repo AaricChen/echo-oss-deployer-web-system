@@ -26,7 +26,8 @@ export const valueTypeMap: Record<string, ProRenderFieldPropsType> = {
       }
       return value;
     },
-    renderFormItem: (_, { fieldProps }) => {
+    renderFormItem: (value, { fieldProps }) => {
+      console.log("🚀 ~ value:", value);
       return (
         <PermissionGroupSelect
           tenant={fieldProps.tenant}
