@@ -10,7 +10,9 @@ import { Button } from "antd";
 import { useMemo, useRef } from "react";
 import EntityBatchDeleteForm from "~/components/entity/EntityBatchDeleteForm";
 import EntityCreateForm from "~/components/entity/EntityCreateForm";
-import EntityDeleteForm from "~/components/entity/EntityDeleteForm";
+import EntityDeleteForm, {
+  type DeleteButtonProps,
+} from "~/components/entity/EntityDeleteForm";
 import EntityUpdateForm, {
   type UpdateButtonProps,
 } from "~/components/entity/EntityUpdateForm";
@@ -42,6 +44,7 @@ export interface EntityTableProps<
   updateAction?: EntityTableAction<UpdateRequest, Entity>;
   updateButtonProps?: (entity: Entity) => UpdateButtonProps;
   deleteAction?: EntityTableAction<DeleteRequest, void>;
+  deleteButtonProps?: (entity: Entity) => DeleteButtonProps;
   createInitialValues?: CreateRequest;
   resetAfterCreate?: boolean;
   disableRowDelete?: boolean;
@@ -94,6 +97,7 @@ export default function EntityTable<
   updateAction = {},
   updateButtonProps,
   deleteAction = {},
+  deleteButtonProps,
   createInitialValues,
   resetAfterCreate = true,
   disableRowDelete = false,
@@ -159,6 +163,7 @@ export default function EntityTable<
                     entity={record}
                     entityConfig={entityConfig}
                     action={deleteAction}
+                    buttonProps={deleteButtonProps}
                     onFinish={async () => {
                       tableAction.current?.reload();
                     }}

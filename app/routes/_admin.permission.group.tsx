@@ -26,6 +26,12 @@ export default function PermissionGroupPage() {
             root: true,
           }}
           entityConfig={PermissionGroupEntity}
+          updateButtonProps={(entity) => ({
+            disabled: entity.type === "SYSTEM",
+          })}
+          deleteButtonProps={(entity) => ({
+            disabled: entity.type === "SYSTEM",
+          })}
           createInitialValues={{
             tenant: "",
             name: "",
