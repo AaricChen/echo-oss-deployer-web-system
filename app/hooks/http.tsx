@@ -35,7 +35,9 @@ export interface GetRequest<Res, GetResponse = Res> {
   options?: Omit<
     UseQueryOptions<unknown, DefaultError, Res>,
     "queryKey" | "queryFn"
-  >;
+  > & {
+    ignoreError?: boolean;
+  };
   converter?: (response: GetResponse) => Promise<Res>;
 }
 
@@ -115,6 +117,9 @@ export function useGet<Res, GetResponse = Res>(
           }
         })
         .catch(async (err) => {
+          if (request.options?.ignoreError) {
+            throw err;
+          }
           if (err instanceof HttpError) {
             message.error(err.response.message);
           } else {
