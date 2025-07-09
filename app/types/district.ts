@@ -10,6 +10,12 @@ import type {
 export const DistrictEntity: EntityConfig = {
   name: "行政区",
   baseUrl: "/district",
+  permissions: {
+    query: "system.district:query",
+    create: "system.district:create",
+    update: "system.district:update",
+    delete: "system.district:delete",
+  },
 };
 
 export interface DistrictQuery extends EntityQuery {

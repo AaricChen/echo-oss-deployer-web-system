@@ -27,6 +27,12 @@ export enum AuthenticationType {
 export const AuthIdentityEntity: EntityConfig = {
   name: "认证凭据",
   baseUrl: "/auth/identity",
+  permissions: {
+    query: "system.auth-identity:query",
+    create: "system.auth-identity:create",
+    update: "system.auth-identity:update",
+    delete: "system.auth-identity:delete",
+  },
 };
 
 export interface AuthIdentityQuery extends EntityQuery {

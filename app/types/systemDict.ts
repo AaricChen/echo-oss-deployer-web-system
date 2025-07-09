@@ -1,9 +1,14 @@
-import type { DataScope } from "~/types/account";
 import type { EntityConfig, EntityQuery, EntityResponse } from "~/types/entity";
 
 export const SystemDictEntity: EntityConfig = {
   name: "系统字典",
   baseUrl: "/system/dict",
+  permissions: {
+    query: "system.dict:query",
+    create: "system.dict:create",
+    update: "system.dict:update",
+    delete: "system.dict:delete",
+  },
 };
 
 export interface SystemDictQuery extends EntityQuery {

@@ -16,6 +16,7 @@ import EntityDeleteForm, {
 import EntityUpdateForm, {
   type UpdateButtonProps,
 } from "~/components/entity/EntityUpdateForm";
+import Authorization from "~/components/security/Authorization";
 import { useTableRequest } from "~/hooks/http";
 import type {
   EntityConfig,
@@ -150,24 +151,29 @@ export default function EntityTable<
             }
             return (
               <div className="flex items-center gap-1">
-                <EntityUpdateForm
-                  columns={updateFormColumns}
-                  entityConfig={entityConfig}
-                  entity={record}
-                  action={updateAction}
-                  buttonProps={updateButtonProps}
-                  onFinish={async () => tableAction.current?.reload()}
-                />
-                {!disableRowDelete && (
-                  <EntityDeleteForm
-                    entity={record}
+                <Authorization permission={entityConfig.permissions.update}>
+                  <EntityUpdateForm
+                    columns={updateFormColumns}
                     entityConfig={entityConfig}
-                    action={deleteAction}
-                    buttonProps={deleteButtonProps}
-                    onFinish={async () => {
-                      tableAction.current?.reload();
-                    }}
+                    entity={record}
+                    action={updateAction}
+                    buttonProps={updateButtonProps}
+                    onFinish={async () => tableAction.current?.reload()}
                   />
+                </Authorization>
+
+                {!disableRowDelete && (
+                  <Authorization permission={entityConfig.permissions.delete}>
+                    <EntityDeleteForm
+                      entity={record}
+                      entityConfig={entityConfig}
+                      action={deleteAction}
+                      buttonProps={deleteButtonProps}
+                      onFinish={async () => {
+                        tableAction.current?.reload();
+                      }}
+                    />
+                  </Authorization>
                 )}
                 {rowActions.map((action) => action)}
               </div>
@@ -195,7 +201,7 @@ export default function EntityTable<
   }, [updateAction, createFormColumns]);
 
   return (
-    <>
+    <Authorization permission={entityConfig.permissions.query}>
       <ProTable<Entity>
         cardBordered
         actionRef={tableAction}
@@ -214,16 +220,18 @@ export default function EntityTable<
             });
           }
           return [
-            <EntityCreateForm<Entity, CreateRequest>
-              initialValues={createInitialValues}
-              entityConfig={entityConfig}
-              columns={createFormColumns}
-              action={createAction}
-              onFinish={async () => {
-                tableAction.current?.reload();
-              }}
-              resetOnFinish={resetAfterCreate}
-            />,
+            <Authorization permission={entityConfig.permissions.create}>
+              <EntityCreateForm<Entity, CreateRequest>
+                initialValues={createInitialValues}
+                entityConfig={entityConfig}
+                columns={createFormColumns}
+                action={createAction}
+                onFinish={async () => {
+                  tableAction.current?.reload();
+                }}
+                resetOnFinish={resetAfterCreate}
+              />
+            </Authorization>,
             ...otherActions,
           ];
         }}
@@ -270,16 +278,18 @@ export default function EntityTable<
             });
           }
           return [
-            <EntityBatchDeleteForm
-              key="batchDeleteForm"
-              selectedRowKeys={selectedRowKeys}
-              entityConfig={entityConfig}
-              action={deleteAction}
-              onFinish={async () => {
-                tableAction.current?.clearSelected?.();
-                await tableAction.current?.reload();
-              }}
-            />,
+            <Authorization permission={entityConfig.permissions.delete}>
+              <EntityBatchDeleteForm
+                key="batchDeleteForm"
+                selectedRowKeys={selectedRowKeys}
+                entityConfig={entityConfig}
+                action={deleteAction}
+                onFinish={async () => {
+                  tableAction.current?.clearSelected?.();
+                  await tableAction.current?.reload();
+                }}
+              />
+            </Authorization>,
             ...options,
           ];
         }}
@@ -293,6 +303,6 @@ export default function EntityTable<
         }}
         columns={tableColumns as ProColumns<Entity, "text">[]}
       />
-    </>
+    </Authorization>
   );
 }

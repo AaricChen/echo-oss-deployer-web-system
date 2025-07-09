@@ -11,6 +11,12 @@ import type {
 export const RoleEntity: EntityConfig = {
   name: "角色",
   baseUrl: "/role",
+  permissions: {
+    query: "system.role:query",
+    create: "system.role:create",
+    update: "system.role:update",
+    delete: "system.role:delete",
+  },
 };
 
 export interface RoleQuery extends EntityQuery {}

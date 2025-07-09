@@ -1,4 +1,5 @@
 import type React from "react";
+import type { Permission } from "~/types/permission";
 
 export type EntityIdType = React.Key;
 export type EntityQueryFieldType = string | number | boolean | undefined | null;
@@ -7,6 +8,12 @@ export interface EntityConfig {
   name: string; // 实体名称
   baseUrl: string; // 实体基础路径
   entityIdField?: string; // 实体ID字段
+  permissions: {
+    query?: Permission;
+    create?: Permission;
+    update?: Permission;
+    delete?: Permission;
+  };
 }
 
 export interface EntityQuery {

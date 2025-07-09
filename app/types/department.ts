@@ -1,4 +1,3 @@
-import type { DataScope } from "~/types/account";
 import type {
   EntityConfig,
   EntityCreateRequest,
@@ -11,6 +10,12 @@ import type {
 export const DepartmentEntity: EntityConfig = {
   name: "部门",
   baseUrl: "/department",
+  permissions: {
+    query: "system.department:query",
+    create: "system.department:create",
+    update: "system.department:update",
+    delete: "system.department:delete",
+  },
 };
 
 export interface DepartmentQuery extends EntityQuery {

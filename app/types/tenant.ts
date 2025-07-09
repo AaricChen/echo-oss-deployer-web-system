@@ -10,6 +10,12 @@ import type {
 export const TenantEntity: EntityConfig = {
   name: "租户",
   baseUrl: "/tenant",
+  permissions: {
+    query: "system.tenant:query",
+    create: "system.tenant:create",
+    update: "system.tenant:update",
+    delete: "system.tenant:delete",
+  },
 };
 
 export interface TenantQuery extends EntityQuery {}

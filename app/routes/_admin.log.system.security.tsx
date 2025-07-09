@@ -2,6 +2,7 @@ import { PageContainer, ProTable } from "@ant-design/pro-components";
 import { Button } from "antd";
 import { useState } from "react";
 import LogDetails from "~/components/log/LogDetails";
+import Authorization from "~/components/security/Authorization";
 import { useTableRequest } from "~/hooks/http";
 import type { SystemLogResponse } from "~/types/log";
 
@@ -13,7 +14,7 @@ export default function SecurityLogPage() {
   return (
     <PageContainer
       content={
-        <div>
+        <Authorization permission="system.system-log:query">
           <ProTable<SystemLogResponse>
             rowKey="id"
             bordered
@@ -164,7 +165,7 @@ export default function SecurityLogPage() {
               }}
             />
           )}
-        </div>
+        </Authorization>
       }
     />
   );

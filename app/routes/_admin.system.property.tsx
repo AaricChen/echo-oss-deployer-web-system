@@ -2,6 +2,7 @@ import { PageContainer } from "@ant-design/pro-components";
 import { Button, Popconfirm } from "antd";
 import { useResetSystemProperty } from "~/apis/systemProperty";
 import EntityTable from "~/components/entity/EntityTable";
+import Authorization from "~/components/security/Authorization";
 import {
   SystemPropertyEntity,
   type SystemPropertyQuery,
@@ -116,18 +117,20 @@ export default function SystemPropertyPage() {
           ]}
           rowActionRender={({ action, entity }) => {
             return [
-              <Popconfirm
-                title="确定要重置系统属性吗？"
-                key="items"
-                onConfirm={async () => {
-                  await resetSystemProperty({ id: entity.id });
-                  action?.reload();
-                }}
-              >
-                <Button disabled={!entity.editable} type="link">
-                  重置
-                </Button>
-              </Popconfirm>,
+              <Authorization permission="system.system-property:update">
+                <Popconfirm
+                  title="确定要重置系统属性吗？"
+                  key="items"
+                  onConfirm={async () => {
+                    await resetSystemProperty({ id: entity.id });
+                    action?.reload();
+                  }}
+                >
+                  <Button disabled={!entity.editable} type="link">
+                    重置
+                  </Button>
+                </Popconfirm>
+              </Authorization>,
             ];
           }}
         />

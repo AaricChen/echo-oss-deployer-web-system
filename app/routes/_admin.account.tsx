@@ -3,6 +3,7 @@ import { Button, Tag } from "antd";
 import { useNavigate } from "react-router";
 import AccountRoleUpdateForm from "~/components/account/AccountRoleUpdateForm";
 import EntityTable from "~/components/entity/EntityTable";
+import Authorization from "~/components/security/Authorization";
 import type {
   AccountCreateRequest,
   AccountDeleteRequest,
@@ -273,20 +274,24 @@ export default function AccountPage() {
           }}
           rowActionRender={({ entity, action }) => {
             return [
-              <AccountRoleUpdateForm
-                key="roleUpdateForm"
-                account={entity}
-                onFinish={async () => {
-                  action?.reload();
-                }}
-              />,
-              <Button
-                key="credential"
-                type="link"
-                onClick={() => navigate(`/auth/identity/${entity.id}`)}
-              >
-                凭据管理
-              </Button>,
+              <Authorization permission="system.account-role:update">
+                <AccountRoleUpdateForm
+                  key="roleUpdateForm"
+                  account={entity}
+                  onFinish={async () => {
+                    action?.reload();
+                  }}
+                />
+              </Authorization>,
+              <Authorization permission="system.auth-identity:query">
+                <Button
+                  key="credential"
+                  type="link"
+                  onClick={() => navigate(`/auth/identity/${entity.id}`)}
+                >
+                  凭据管理
+                </Button>
+              </Authorization>,
             ];
           }}
           columns={[

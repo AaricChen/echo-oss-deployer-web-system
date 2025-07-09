@@ -21,6 +21,12 @@ export type DataScope =
 export const AccountEntity: EntityConfig = {
   name: "系统账户",
   baseUrl: "/account",
+  permissions: {
+    query: "system.account:query",
+    create: "system.account:create",
+    update: "system.account:update",
+    delete: "system.account:delete",
+  },
 };
 
 export interface AccountQuery extends EntityQuery {

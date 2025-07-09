@@ -3,6 +3,7 @@ import { App, Button } from "antd";
 import { useNavigate } from "react-router";
 import { useResetDistrict } from "~/apis/district";
 import EntityTable from "~/components/entity/EntityTable";
+import Authorization from "~/components/security/Authorization";
 import {
   DistrictEntity,
   type DistrictCreateRequest,
@@ -113,22 +114,24 @@ export default function DistrictPage({ params }: Route.ComponentProps) {
                 管理行政区
               </Button>,
               entity.level >= 3 && (
-                <Button
-                  type="link"
-                  danger
-                  key="reset"
-                  onClick={() => {
-                    modal.confirm({
-                      title: "重置行政区",
-                      content: "确定要重置行政区吗？",
-                      onOk: () => {
-                        resetDistrict({ id: entity.id });
-                      },
-                    });
-                  }}
-                >
-                  重置行政区
-                </Button>
+                <Authorization permission="system.district:reset">
+                  <Button
+                    type="link"
+                    danger
+                    key="reset"
+                    onClick={() => {
+                      modal.confirm({
+                        title: "重置行政区",
+                        content: "确定要重置行政区吗？",
+                        onOk: () => {
+                          resetDistrict({ id: entity.id });
+                        },
+                      });
+                    }}
+                  >
+                    重置行政区
+                  </Button>
+                </Authorization>
               ),
             ];
           }}

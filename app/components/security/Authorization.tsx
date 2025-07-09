@@ -1,11 +1,9 @@
 import { useMemo } from "react";
 import { useCurrentAccount } from "~/apis/account";
-import { SystemPermissions } from "~/types/permission";
-
-export type Permission = keyof typeof SystemPermissions;
+import { type Permission } from "~/types/permission";
 
 export interface AuthorizationProps {
-  permission: Permission | Permission[];
+  permission?: Permission | Permission[];
   fallback?: React.ReactNode;
   children: React.ReactNode;
 }
@@ -22,6 +20,9 @@ export default function Authorization({
       return false;
     }
     if (account.admin) {
+      return true;
+    }
+    if (!permission) {
       return true;
     }
     if (Array.isArray(permission)) {
