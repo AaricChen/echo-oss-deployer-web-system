@@ -83,8 +83,18 @@ export interface AccountInfo {
 }
 
 export interface CurrentAccountResponse {
-  nickname: string;
+  /** 账户ID */
+  id: string;
+  /** 所属租户 */
+  tenant?: string;
+  /** 账户头像 */
   avatar: string;
+  /** 账户昵称 */
+  nickname: string;
+  /** 是否为超级管理员 */
+  admin: boolean;
+  /** 账户权限列表 */
+  permissions: string[];
 }
 
 export interface AccountCreateRequest extends EntityCreateRequest {
