@@ -90,7 +90,7 @@ export function useGet<Res, GetResponse = Res>(
         finalUrl += `?${new URLSearchParams(requestParams.map((it) => `${it.name}=${it.value}`).join("&")).toString()}`;
       }
 
-      if (!request.noAuth) {
+      if (!request.noAuth && accessToken) {
         headers["Authorization"] = `Bearer ${accessToken}`;
       }
 
@@ -151,7 +151,7 @@ export function useHttpMutation<Request, Response>({
       const headers: HeadersInit = {};
       headers["Content-Type"] = "application/json";
 
-      if (!noAuth) {
+      if (!noAuth && accessToken) {
         headers["Authorization"] = `Bearer ${accessToken}`;
       }
 

@@ -16,7 +16,7 @@ export function useCurrentAccount() {
     queryKey: ["current-account"],
     url: "/account/current",
     options: {
-      retry: false,
+      ignoreError: true,
     },
   });
 

@@ -10,6 +10,9 @@ export function useSidebar() {
     params: {
       id: "system.sidebar",
     },
+    options: {
+      ignoreError: true,
+    },
   });
 
   const menuItems: MenuDataItem[] = useMemo(() => {
