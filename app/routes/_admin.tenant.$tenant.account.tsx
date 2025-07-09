@@ -2,6 +2,7 @@ import type { Route } from ".react-router/types/app/routes/+types/_admin.tenant.
 import { PageContainer, useToken } from "@ant-design/pro-components";
 import { Button, Tag } from "antd";
 import { useNavigate } from "react-router";
+import { useTenantBasicInfo } from "~/apis/tenant";
 import AccountRoleUpdateForm from "~/components/account/AccountRoleUpdateForm";
 import EntityTable from "~/components/entity/EntityTable";
 import Authorization from "~/components/security/Authorization";
@@ -19,9 +20,15 @@ export default function TenantAccountPage({ params }: Route.ComponentProps) {
   const { token } = useToken();
   const navigate = useNavigate();
 
+  const { data: tenantBasicInfo, isPending } = useTenantBasicInfo({
+    code: tenant,
+  });
+
   return (
     <PageContainer
-      title="租户账户管理"
+      title={tenantBasicInfo?.tenantInfo.name}
+      loading={isPending}
+      extra={<Button onClick={() => navigate("/tenant")}>返回租户管理</Button>}
       content={
         <EntityTable<
           AccountResponse,

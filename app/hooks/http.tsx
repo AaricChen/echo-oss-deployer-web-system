@@ -115,7 +115,9 @@ export function useGet<Res, GetResponse = Res>(
           }
         })
         .catch(async (err) => {
-          if (!(err instanceof HttpError)) {
+          if (err instanceof HttpError) {
+            message.error(err.response.message);
+          } else {
             message.error("服务器开小差了，请稍后再试");
           }
           throw err;

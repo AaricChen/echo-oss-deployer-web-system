@@ -18,7 +18,19 @@ export const TenantEntity: EntityConfig = {
   },
 };
 
-export interface TenantQuery extends EntityQuery {}
+export interface TenantQuery extends EntityQuery {
+  code?: string;
+  name?: string;
+  status?: keyof typeof TenantStatus;
+  remark?: string;
+  district?: string;
+  domain?: string;
+}
+
+export interface TenantBasicQuery extends EntityQuery {
+  code?: string;
+  domain?: string;
+}
 
 export interface TenantResponse extends EntityResponse<string> {
   id: string;
@@ -26,6 +38,17 @@ export interface TenantResponse extends EntityResponse<string> {
   domains: { domain: string }[];
   tenantInfo: TenantInfoRequest;
   tenantConfig: TenantConfigRequest;
+}
+
+export interface TenantBasicResponse extends EntityResponse<string> {
+  id: string;
+  code: string;
+  tenantInfo: TenantBasicInfoResponse;
+}
+
+export interface TenantBasicInfoResponse {
+  name: string;
+  logo?: string;
 }
 
 export interface TenantCreateRequest extends EntityCreateRequest {
