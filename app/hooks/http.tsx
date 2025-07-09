@@ -63,6 +63,7 @@ export function usePaginationQuery<
 export function useGet<Res, GetResponse = Res>(
   request: GetRequest<Res, GetResponse>,
 ) {
+  const { message } = App.useApp();
   const { endpoint } = useApiStore();
   const { accessToken } = useAuthStore();
   return useQuery<unknown, DefaultError, Res>({
@@ -110,11 +111,14 @@ export function useGet<Res, GetResponse = Res>(
             }
             return res.data as Promise<Res>;
           } else {
-            throw new Error(res.message, { cause: res });
+            throw new HttpError(res);
           }
         })
         .catch(async (err) => {
-          throw new Error(err.message, { cause: err });
+          if (!(err instanceof HttpError)) {
+            message.error("服务器开小差了，请稍后再试");
+          }
+          throw err;
         });
     },
     ...request.options,
@@ -176,6 +180,12 @@ export function useHttpMutation<Request, Response>({
           } else {
             throw new HttpError(res);
           }
+        })
+        .catch(async (err) => {
+          if (!(err instanceof HttpError)) {
+            message.error("服务器开小差了，请稍后再试");
+          }
+          throw err;
         });
     },
     onSuccess: async (response, request) => {
@@ -251,6 +261,7 @@ export function useTableRequest<
   Response extends EntityResponse<EntityIdType>,
   Params extends ParamsType = ParamsType,
 >(url: string) {
+  const { message } = App.useApp();
   const { endpoint } = useApiStore();
   const { accessToken } = useAuthStore();
 
@@ -331,11 +342,14 @@ export function useTableRequest<
               total: res.data.page.totalElements,
             };
           } else {
-            throw new Error(res.message, { cause: res });
+            throw new HttpError(res);
           }
         })
         .catch(async (err) => {
-          throw new Error(err.message, { cause: err });
+          if (!(err instanceof HttpError)) {
+            message.error("服务器开小差了，请稍后再试");
+          }
+          throw err;
         });
     },
   });
