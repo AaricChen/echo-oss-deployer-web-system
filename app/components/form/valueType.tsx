@@ -49,7 +49,13 @@ export const valueTypeMap: Record<string, ProRenderFieldPropsType> = {
       return value.length;
     },
     renderFormItem: (_, { fieldProps }) => {
-      return <RoleSelect fieldProps={fieldProps} />;
+      return (
+        <RoleSelect
+          scope={fieldProps.scope}
+          tenant={fieldProps.tenant}
+          fieldProps={fieldProps}
+        />
+      );
     },
   },
   systemDict: {

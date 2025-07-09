@@ -278,6 +278,7 @@ export default function AccountPage() {
                 <AccountRoleUpdateForm
                   key="roleUpdateForm"
                   account={entity}
+                  scope="SYSTEM"
                   onFinish={async () => {
                     action?.reload();
                   }}

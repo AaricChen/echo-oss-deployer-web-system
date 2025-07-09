@@ -1,4 +1,8 @@
+import type { Route } from ".react-router/types/app/routes/+types/_admin.tenant.$tenant.role";
 import { PageContainer } from "@ant-design/pro-components";
+import { Button } from "antd";
+import { useNavigate } from "react-router";
+import { useTenantBasicInfo } from "~/apis/tenant";
 import EntityTable from "~/components/entity/EntityTable";
 import RolePermissionPreviewer from "~/components/role/RolePermissionPreviewer";
 import {
@@ -10,9 +14,19 @@ import {
   type RoleUpdateRequest,
 } from "~/types/role";
 
-export default function RolePage() {
+export default function TenantRolePage({ params }: Route.ComponentProps) {
+  const { tenant } = params;
+  const navigate = useNavigate();
+
+  const { data: tenantBasicInfo, isPending } = useTenantBasicInfo({
+    code: tenant,
+  });
   return (
-    <PageContainer title="角色管理">
+    <PageContainer
+      title={tenantBasicInfo?.tenantInfo.name + " 角色管理"}
+      loading={isPending}
+      extra={<Button onClick={() => navigate("/tenant")}>返回租户管理</Button>}
+    >
       <EntityTable<
         RoleResponse,
         RoleQuery,
@@ -21,11 +35,13 @@ export default function RolePage() {
         RoleDeleteRequest
       >
         query={{
-          scope: "SYSTEM",
+          scope: "TENANT",
+          tenant,
         }}
         entityConfig={RoleEntity}
         createInitialValues={{
-          scope: "SYSTEM",
+          scope: "TENANT",
+          tenant,
           name: "",
           permissions: [],
           permissionGroups: [],
@@ -41,6 +57,14 @@ export default function RolePage() {
           },
           {
             dataIndex: "scope",
+            hideInSearch: true,
+            hideInTable: true,
+            formItemProps: {
+              hidden: true,
+            },
+          },
+          {
+            dataIndex: "tenant",
             hideInSearch: true,
             hideInTable: true,
             formItemProps: {
@@ -85,7 +109,7 @@ export default function RolePage() {
             },
             fieldProps: {
               mode: "multiple",
-              scope: "SYSTEM",
+              scope: "TENANT",
             },
           },
           {
@@ -98,7 +122,8 @@ export default function RolePage() {
               label: "权限列表",
             },
             fieldProps: {
-              scope: "SYSTEM",
+              scope: "TENANT",
+              tenant,
             },
           },
           {
@@ -108,7 +133,7 @@ export default function RolePage() {
             hideInForm: true,
             hideInSearch: true,
             render: (_, record) => {
-              return <RolePermissionPreviewer scope="SYSTEM" role={record} />;
+              return <RolePermissionPreviewer scope="TENANT" role={record} />;
             },
           },
         ]}

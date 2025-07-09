@@ -26,7 +26,7 @@ export default function TenantAccountPage({ params }: Route.ComponentProps) {
 
   return (
     <PageContainer
-      title={tenantBasicInfo?.tenantInfo.name}
+      title={tenantBasicInfo?.tenantInfo.name + " 账户管理"}
       loading={isPending}
       extra={<Button onClick={() => navigate("/tenant")}>返回租户管理</Button>}
       content={
@@ -305,6 +305,8 @@ export default function TenantAccountPage({ params }: Route.ComponentProps) {
                 <AccountRoleUpdateForm
                   key="roleUpdateForm"
                   account={entity}
+                  scope="TENANT"
+                  tenant={tenant}
                   onFinish={async () => {
                     action?.reload();
                   }}

@@ -6,14 +6,19 @@ import type {
   AccountResponse,
   AccountRoleUpdateRequest,
 } from "~/types/account";
+import type { SecurityScope } from "~/types/common";
 
 export interface AccountRoleUpdateFormProps {
   account: AccountResponse;
+  scope: keyof typeof SecurityScope;
+  tenant?: string;
   onFinish?: () => Promise<void>;
 }
 
 export default function AccountRoleUpdateForm({
   account,
+  scope,
+  tenant,
   onFinish,
 }: AccountRoleUpdateFormProps) {
   const formRef = useRef<FormInstance>(null);
@@ -46,6 +51,10 @@ export default function AccountRoleUpdateForm({
               title: "角色",
               dataIndex: "roles",
               valueType: "role" as any,
+              fieldProps: {
+                scope,
+                tenant,
+              },
             },
           ]}
           onFinish={async (values) => {

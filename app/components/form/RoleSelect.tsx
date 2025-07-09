@@ -3,22 +3,29 @@ import {
   type ProFormSelectProps,
 } from "@ant-design/pro-components";
 import { useTableRequest } from "~/hooks/http";
+import type { SecurityScope } from "~/types/common";
 import type { RoleQuery, RoleResponse } from "~/types/role";
 
 export interface RoleSelectProps extends ProFormSelectProps {
+  scope?: keyof typeof SecurityScope;
   tenant?: string;
 }
 
-export default function RoleSelect({ tenant, fieldProps }: RoleSelectProps) {
+export default function RoleSelect({
+  scope,
+  tenant,
+  fieldProps,
+}: RoleSelectProps) {
   const { mutateAsync } = useTableRequest<RoleResponse, RoleQuery>("/role");
   return (
     <ProFormSelect
       showSearch
-      params={{ tenant }}
+      params={{ tenant, scope }}
       request={async () => {
         return mutateAsync({
           params: {
             tenant,
+            scope,
           },
         }).then((res) => {
           return res.data.map((item) => ({

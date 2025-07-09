@@ -510,7 +510,7 @@ export default function TenantPage() {
           }}
           rowActionRender={({ entity }) => {
             return [
-              <Authorization>
+              <Authorization permission="system.account:query">
                 <Button
                   type="link"
                   size="small"
@@ -519,6 +519,17 @@ export default function TenantPage() {
                   }}
                 >
                   账户管理
+                </Button>
+              </Authorization>,
+              <Authorization permission="system.role:query">
+                <Button
+                  type="link"
+                  size="small"
+                  onClick={() => {
+                    navigate(`/tenant/${entity.code}/role`);
+                  }}
+                >
+                  角色管理
                 </Button>
               </Authorization>,
             ];
