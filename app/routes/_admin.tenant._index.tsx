@@ -1,6 +1,8 @@
 import { PageContainer } from "@ant-design/pro-components";
-import { Tag } from "antd";
+import { Button, Tag } from "antd";
+import { useNavigate } from "react-router";
 import EntityTable from "~/components/entity/EntityTable";
+import Authorization from "~/components/security/Authorization";
 import {
   TenantEntity,
   TenantStatus,
@@ -12,6 +14,7 @@ import {
 } from "~/types/tenant";
 
 export default function TenantPage() {
+  const navigate = useNavigate();
   return (
     <PageContainer
       content={
@@ -504,6 +507,21 @@ export default function TenantPage() {
                 },
               },
             ],
+          }}
+          rowActionRender={({ entity }) => {
+            return [
+              <Authorization>
+                <Button
+                  type="link"
+                  size="small"
+                  onClick={() => {
+                    navigate(`/tenant/${entity.code}/account`);
+                  }}
+                >
+                  账户管理
+                </Button>
+              </Authorization>,
+            ];
           }}
           columns={[
             {

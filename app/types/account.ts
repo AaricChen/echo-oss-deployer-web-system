@@ -19,7 +19,7 @@ export type DataScope =
   | "SELF";
 
 export const AccountEntity: EntityConfig = {
-  name: "系统账户",
+  name: "账户",
   baseUrl: "/account",
   permissions: {
     query: "system.account:query",
@@ -110,6 +110,8 @@ export interface AccountCreateRequest extends EntityCreateRequest {
   scope: keyof typeof SecurityScope;
   /** 账户基础信息 */
   accountInfo?: AccountInfoRequest;
+  /** 是否为超级管理员 */
+  admin?: boolean;
 }
 
 export interface AccountUpdateRequest extends EntityUpdateRequest<string> {}
