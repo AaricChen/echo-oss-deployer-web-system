@@ -29,6 +29,7 @@ export const PermissionGroupEntity: EntityConfig = {
 export interface PermissionGroupQuery extends EntityQuery {
   name?: string;
   scope?: keyof typeof SecurityScope;
+  tenant?: string;
   status?: keyof typeof BoolStatus;
   root?: boolean;
 }

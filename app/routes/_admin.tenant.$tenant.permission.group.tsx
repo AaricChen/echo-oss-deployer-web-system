@@ -1,4 +1,8 @@
+import type { Route } from ".react-router/types/app/routes/+types/_admin.tenant.$tenant.permission.group";
 import { PageContainer } from "@ant-design/pro-components";
+import { Button } from "antd";
+import { useNavigate } from "react-router";
+import { useTenantBasicInfo } from "~/apis/tenant";
 import EntityTable from "~/components/entity/EntityTable";
 import {
   PermissionGroupEntity,
@@ -11,9 +15,20 @@ import {
   type PermissionGroupUpdateRequest,
 } from "~/types/permission";
 
-export default function PermissionGroupPage() {
+export default function TenantPermissionGroupPage({
+  params,
+}: Route.ComponentProps) {
+  const { tenant } = params;
+  const navigate = useNavigate();
+
+  const { data: tenantBasicInfo, isPending } = useTenantBasicInfo({
+    code: tenant,
+  });
   return (
     <PageContainer
+      title={tenantBasicInfo?.tenantInfo.name + " 权限组管理"}
+      loading={isPending}
+      extra={<Button onClick={() => navigate("/tenant")}>返回租户管理</Button>}
       content={
         <EntityTable<
           PermissionGroupResponse,
@@ -24,7 +39,8 @@ export default function PermissionGroupPage() {
         >
           query={{
             root: true,
-            scope: "SYSTEM",
+            scope: "TENANT",
+            tenant,
           }}
           entityConfig={PermissionGroupEntity}
           updateButtonProps={(entity) => ({
@@ -34,9 +50,9 @@ export default function PermissionGroupPage() {
             disabled: entity.type === "SYSTEM",
           })}
           createInitialValues={{
-            tenant: "",
+            tenant,
             name: "",
-            scope: "SYSTEM",
+            scope: "TENANT",
             status: "Y",
             permissions: [],
           }}
@@ -51,6 +67,14 @@ export default function PermissionGroupPage() {
             },
             {
               dataIndex: "scope",
+              hideInSearch: true,
+              hideInTable: true,
+              formItemProps: {
+                hidden: true,
+              },
+            },
+            {
+              dataIndex: "tenant",
               hideInSearch: true,
               hideInTable: true,
               formItemProps: {
@@ -99,7 +123,8 @@ export default function PermissionGroupPage() {
               hideInSearch: true,
               hideInTable: true,
               fieldProps: {
-                scope: "SYSTEM",
+                scope: "TENANT",
+                tenant,
               },
               colProps: {
                 xs: 24,
@@ -125,7 +150,8 @@ export default function PermissionGroupPage() {
                 label: "权限列表",
               },
               fieldProps: {
-                scope: "SYSTEM",
+                scope: "TENANT",
+                tenant,
               },
             },
           ]}
