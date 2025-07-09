@@ -69,7 +69,7 @@ export default function TenantAccountPage({ params }: Route.ComponentProps) {
                 },
                 colProps: {
                   xs: 24,
-                  lg: 8,
+                  lg: 12,
                 },
               },
               {
@@ -77,16 +77,7 @@ export default function TenantAccountPage({ params }: Route.ComponentProps) {
                 dataIndex: ["accountInfo", "remark"],
                 colProps: {
                   xs: 24,
-                  lg: 8,
-                },
-              },
-              {
-                title: "是否为管理员",
-                dataIndex: "admin",
-                valueType: "switch",
-                colProps: {
-                  xs: 24,
-                  lg: 8,
+                  lg: 12,
                 },
               },
               {
@@ -133,6 +124,11 @@ export default function TenantAccountPage({ params }: Route.ComponentProps) {
                 title: "生日",
                 dataIndex: ["accountInfo", "birthday"],
                 valueType: "date",
+                fieldProps: {
+                  style: {
+                    width: "100%",
+                  },
+                },
                 colProps: {
                   xs: 24,
                   lg: 8,
@@ -257,6 +253,11 @@ export default function TenantAccountPage({ params }: Route.ComponentProps) {
                 title: "生日",
                 dataIndex: ["accountInfo", "birthday"],
                 valueType: "date",
+                fieldProps: {
+                  style: {
+                    width: "100%",
+                  },
+                },
                 colProps: {
                   xs: 24,
                   lg: 8,
