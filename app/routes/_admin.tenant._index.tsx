@@ -34,6 +34,7 @@ export default function TenantPage() {
             },
             tenantConfig: {},
           }}
+          deleteAction={false}
           createAction={{
             columns: [
               {
