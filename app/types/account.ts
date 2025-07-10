@@ -1,4 +1,5 @@
 import type { SecurityScope } from "~/types/common";
+import type { DepartmentResponse } from "~/types/department";
 import type { DistrictResponse } from "~/types/district";
 import type {
   EntityConfig,
@@ -64,7 +65,7 @@ export interface AccountResponse extends EntityResponse<string> {
   /** 账户角色 */
   roles: RoleResponse[];
   /** 账户部门 */
-  departments: string[];
+  departments: DepartmentResponse[];
   /** 是否为超级管理员 */
   admin: boolean;
   /** 上次登录时间 */
@@ -121,6 +122,11 @@ export interface AccountDeleteRequest extends EntityDeleteRequest<string> {}
 export interface AccountRoleUpdateRequest {
   id: string;
   roles: string[];
+}
+
+export interface AccountDepartmentUpdateRequest {
+  id: string;
+  departments: string[];
 }
 
 export interface AccountInfoRequest {

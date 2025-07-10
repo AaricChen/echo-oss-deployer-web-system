@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { useGet, useHttpMutation, usePut } from "~/hooks/http";
 import type {
+  AccountDepartmentUpdateRequest,
   AccountInfo,
   AccountResponse,
   AccountRoleUpdateRequest,
@@ -33,6 +34,13 @@ export function useUpdateAccountRole() {
   return usePut<AccountRoleUpdateRequest, AccountResponse>({
     url: (request) => `/account/${request.id}/role`,
     action: "分配角色",
+  });
+}
+
+export function useUpdateAccountDepartment() {
+  return usePut<AccountDepartmentUpdateRequest, AccountResponse>({
+    url: (request) => `/account/${request.id}/department`,
+    action: "分配部门",
   });
 }
 

@@ -3,6 +3,7 @@ import { PageContainer, useToken } from "@ant-design/pro-components";
 import { Button, Tag } from "antd";
 import { useNavigate } from "react-router";
 import { useTenantBasicInfo } from "~/apis/tenant";
+import AccountDepartmentUpdateForm from "~/components/account/AccountDepartmentUpdateForm";
 import AccountRoleUpdateForm from "~/components/account/AccountRoleUpdateForm";
 import EntityTable from "~/components/entity/EntityTable";
 import Authorization from "~/components/security/Authorization";
@@ -306,6 +307,16 @@ export default function TenantAccountPage({ params }: Route.ComponentProps) {
                   key="roleUpdateForm"
                   account={entity}
                   scope="TENANT"
+                  tenant={tenant}
+                  onFinish={async () => {
+                    action?.reload();
+                  }}
+                />
+              </Authorization>,
+              <Authorization permission="system.account-department:update">
+                <AccountDepartmentUpdateForm
+                  key="departmentUpdateForm"
+                  account={entity}
                   tenant={tenant}
                   onFinish={async () => {
                     action?.reload();
