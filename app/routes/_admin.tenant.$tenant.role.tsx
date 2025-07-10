@@ -110,6 +110,7 @@ export default function TenantRolePage({ params }: Route.ComponentProps) {
             fieldProps: {
               mode: "multiple",
               scope: "TENANT",
+              tenant,
             },
           },
           {
@@ -123,7 +124,6 @@ export default function TenantRolePage({ params }: Route.ComponentProps) {
             },
             fieldProps: {
               scope: "TENANT",
-              tenant,
             },
           },
           {
