@@ -41,7 +41,9 @@ export const valueTypeMap: Record<string, ProRenderFieldPropsType> = {
       return value.length;
     },
     renderFormItem: (_, { fieldProps }) => {
-      return <DepartmentSelect fieldProps={fieldProps} />;
+      return (
+        <DepartmentSelect tenant={fieldProps.tenant} fieldProps={fieldProps} />
+      );
     },
   },
   role: {

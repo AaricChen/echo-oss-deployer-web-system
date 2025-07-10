@@ -148,12 +148,15 @@ export default function TenantPage() {
                 title: "最大账户数量",
                 dataIndex: ["tenantConfig", "maxAccountCount"],
                 hideInSearch: true,
+                valueType: "digit",
                 formItemProps: {
                   tooltip: "该租户下最大账户的创建数量，为空表示不限制",
                 },
                 fieldProps: {
-                  type: "number",
                   min: 1,
+                  style: {
+                    width: "100%",
+                  },
                 },
                 colProps: {
                   xs: 24,
@@ -164,12 +167,15 @@ export default function TenantPage() {
                 title: "最大部门数量",
                 dataIndex: ["tenantConfig", "maxDepartmentCount"],
                 hideInSearch: true,
+                valueType: "digit",
                 formItemProps: {
                   tooltip: "该租户下最多创建的部门数量，为空表示不限制",
                 },
                 fieldProps: {
-                  type: "number",
                   min: 1,
+                  style: {
+                    width: "100%",
+                  },
                 },
                 colProps: {
                   xs: 24,
@@ -180,12 +186,15 @@ export default function TenantPage() {
                 title: "最大部门层级",
                 dataIndex: ["tenantConfig", "maxDepartmentLevel"],
                 hideInSearch: true,
+                valueType: "digit",
                 formItemProps: {
                   tooltip: "该租户下部门的最大层级，为空表示不限制",
                 },
                 fieldProps: {
-                  type: "number",
                   min: 1,
+                  style: {
+                    width: "100%",
+                  },
                 },
                 colProps: {
                   xs: 24,
@@ -196,13 +205,16 @@ export default function TenantPage() {
                 title: "最大权限组数量",
                 dataIndex: ["tenantConfig", "maxPermissionGroupCount"],
                 hideInSearch: true,
+                valueType: "digit",
                 formItemProps: {
                   tooltip:
                     "该租户下用户最多可以创建的权限组数量，为空表示不限制",
                 },
                 fieldProps: {
-                  type: "number",
                   min: 1,
+                  style: {
+                    width: "100%",
+                  },
                 },
                 colProps: {
                   xs: 24,
@@ -213,12 +225,15 @@ export default function TenantPage() {
                 title: "最大角色数量",
                 dataIndex: ["tenantConfig", "maxRoleCount"],
                 hideInSearch: true,
+                valueType: "digit",
                 formItemProps: {
                   tooltip: "该租户下包括所有部门创建的角色，为空表示不限制",
                 },
                 fieldProps: {
-                  type: "number",
                   min: 1,
+                  style: {
+                    width: "100%",
+                  },
                 },
                 colProps: {
                   xs: 24,
@@ -393,12 +408,15 @@ export default function TenantPage() {
                 title: "最大账户数量",
                 dataIndex: ["tenantConfig", "maxAccountCount"],
                 hideInSearch: true,
+                valueType: "digit",
                 formItemProps: {
                   tooltip: "该租户下最大账户的创建数量，为空表示不限制",
                 },
                 fieldProps: {
-                  type: "number",
                   min: 1,
+                  style: {
+                    width: "100%",
+                  },
                 },
                 colProps: {
                   xs: 24,
@@ -409,12 +427,15 @@ export default function TenantPage() {
                 title: "最大部门数量",
                 dataIndex: ["tenantConfig", "maxDepartmentCount"],
                 hideInSearch: true,
+                valueType: "digit",
                 formItemProps: {
                   tooltip: "该租户下最多创建的部门数量，为空表示不限制",
                 },
                 fieldProps: {
-                  type: "number",
                   min: 1,
+                  style: {
+                    width: "100%",
+                  },
                 },
                 colProps: {
                   xs: 24,
@@ -425,12 +446,15 @@ export default function TenantPage() {
                 title: "最大部门层级",
                 dataIndex: ["tenantConfig", "maxDepartmentLevel"],
                 hideInSearch: true,
+                valueType: "digit",
                 formItemProps: {
                   tooltip: "该租户下部门的最大层级，为空表示不限制",
                 },
                 fieldProps: {
-                  type: "number",
                   min: 1,
+                  style: {
+                    width: "100%",
+                  },
                 },
                 colProps: {
                   xs: 24,
@@ -441,13 +465,16 @@ export default function TenantPage() {
                 title: "最大权限组数量",
                 dataIndex: ["tenantConfig", "maxPermissionGroupCount"],
                 hideInSearch: true,
+                valueType: "digit",
                 formItemProps: {
                   tooltip:
                     "该租户下用户最多可以创建的权限组数量，为空表示不限制",
                 },
                 fieldProps: {
-                  type: "number",
                   min: 1,
+                  style: {
+                    width: "100%",
+                  },
                 },
                 colProps: {
                   xs: 24,
@@ -458,12 +485,15 @@ export default function TenantPage() {
                 title: "最大角色数量",
                 dataIndex: ["tenantConfig", "maxRoleCount"],
                 hideInSearch: true,
+                valueType: "digit",
                 formItemProps: {
                   tooltip: "该租户下包括所有部门创建的角色，为空表示不限制",
                 },
                 fieldProps: {
-                  type: "number",
                   min: 1,
+                  style: {
+                    width: "100%",
+                  },
                 },
                 colProps: {
                   xs: 24,
@@ -520,6 +550,20 @@ export default function TenantPage() {
                   }}
                 >
                   账户管理
+                </Button>
+              </Authorization>,
+              <Authorization
+                key="department"
+                permission="system.department:query"
+              >
+                <Button
+                  type="link"
+                  size="small"
+                  onClick={() => {
+                    navigate(`/tenant/${entity.code}/department`);
+                  }}
+                >
+                  部门管理
                 </Button>
               </Authorization>,
               <Authorization key="role" permission="system.role:query">
@@ -616,6 +660,7 @@ export default function TenantPage() {
               dataIndex: ["tenantInfo", "district"],
               valueType: "district" as any,
               align: "center",
+              hideInSearch: true,
               transform: (value) => {
                 return {
                   district: value,
@@ -627,37 +672,44 @@ export default function TenantPage() {
               dataIndex: ["tenantConfig", "startAt"],
               valueType: "dateTime",
               align: "center",
+              hideInSearch: true,
             },
             {
               title: "结束时间",
               dataIndex: ["tenantConfig", "endAt"],
               valueType: "dateTime",
               align: "center",
+              hideInSearch: true,
             },
             {
               title: "最大账户数量",
               dataIndex: ["tenantConfig", "maxAccountCount"],
               align: "center",
+              hideInSearch: true,
             },
             {
               title: "最大部门数量",
               dataIndex: ["tenantConfig", "maxDepartmentCount"],
               align: "center",
+              hideInSearch: true,
             },
             {
               title: "最大部门层级",
               dataIndex: ["tenantConfig", "maxDepartmentLevel"],
               align: "center",
+              hideInSearch: true,
             },
             {
               title: "最大权限组数量",
               dataIndex: ["tenantConfig", "maxPermissionGroupCount"],
               align: "center",
+              hideInSearch: true,
             },
             {
               title: "最大角色数量",
               dataIndex: ["tenantConfig", "maxRoleCount"],
               align: "center",
+              hideInSearch: true,
             },
           ]}
         />

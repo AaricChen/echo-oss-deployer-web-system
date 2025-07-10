@@ -51,6 +51,7 @@ export interface EntityTableProps<
   disableRowDelete?: boolean;
   postData?: ProTableProps<Entity, Query>["postData"];
   loading?: boolean;
+  search?: ProTableProps<Entity, Query>["search"];
   toolbarRender?: ({}: {
     action?: ActionType;
     selectedRowKeys?: React.Key[];
@@ -104,6 +105,7 @@ export default function EntityTable<
   disableRowDelete = false,
   postData,
   loading,
+  search,
   toolbarRender,
   rowActionRender,
   tableAlertRender,
@@ -302,6 +304,7 @@ export default function EntityTable<
           });
         }}
         columns={tableColumns as ProColumns<Entity, "text">[]}
+        search={search}
       />
     </Authorization>
   );

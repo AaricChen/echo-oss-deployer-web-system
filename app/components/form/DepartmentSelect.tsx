@@ -1,27 +1,46 @@
-import { TreeSelect, type TreeSelectProps } from "antd";
-import { useGetDepartments } from "~/apis/department";
+import {
+  ProFormSelect,
+  type ProFormSelectProps,
+} from "@ant-design/pro-components";
+import { useTableRequest } from "~/hooks/http";
+import type { DepartmentQuery, DepartmentResponse } from "~/types/department";
 
-export interface DepartmentSelectProps {
-  fieldProps: TreeSelectProps;
+export interface DepartmentSelectProps extends ProFormSelectProps {
+  tenant: string;
 }
 
 export default function DepartmentSelect({
+  tenant,
   fieldProps,
 }: DepartmentSelectProps) {
-  const { data, isPending } = useGetDepartments();
+  const { mutateAsync } = useTableRequest<DepartmentResponse, DepartmentQuery>(
+    "/department",
+  );
   return (
-    <TreeSelect
-      fieldNames={{ label: "name", value: "id" }}
-      treeNodeFilterProp="name"
-      treeData={data?.content}
-      loading={isPending}
-      placeholder="请选择部门"
+    <ProFormSelect
       showSearch
-      treeDefaultExpandAll
-      autoClearSearchValue={false}
-      {...fieldProps}
-      style={{
-        ...fieldProps.style,
+      params={{ tenant }}
+      request={async () => {
+        return mutateAsync({
+          params: {
+            tenant,
+            pageSize: 1000,
+          },
+        }).then((res) => {
+          return res.data.map((item) => ({
+            label: item.departmentInfo.name,
+            value: item.id,
+          }));
+        });
+      }}
+      formItemProps={{
+        style: {
+          marginBottom: 0,
+        },
+      }}
+      fieldProps={{
+        placeholder: "请选择部门",
+        ...fieldProps,
       }}
     />
   );

@@ -61,7 +61,6 @@ export default function DistrictPage({ params }: Route.ComponentProps) {
                 rules: [{ required: true, message: "请输入行政区编码" }],
               },
               fieldProps: {
-                type: "number",
                 style: {
                   width: "100%",
                 },

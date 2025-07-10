@@ -19,36 +19,57 @@ export const DepartmentEntity: EntityConfig = {
 };
 
 export interface DepartmentQuery extends EntityQuery {
-  root?: boolean;
-  parent?: string;
+  tenant?: string;
+  code?: string;
   name?: string;
-  remark?: string;
 }
 
 export interface DepartmentResponse extends EntityResponse<string> {
-  key: string;
   id: string;
-  name: string;
-  remark: string;
+  tenant: string;
+  code: string;
   sequence: number;
+  departmentInfo: DepartmentInfoResponse;
   parent: string;
   children: DepartmentResponse[];
+  path: string;
+  depth: number;
 }
 
 export interface DepartmentCreateRequest extends EntityCreateRequest {
-  name: string;
-  remark: string;
-  sequence: number;
-  parent: string;
+  tenant: string;
+  code?: string;
+  sequence?: number;
+  parent?: string;
+  departmentInfo: DepartmentInfoRequest;
 }
 
-export type DepartmentUpdateRequest = DepartmentCreateRequest &
-  EntityUpdateRequest<string>;
-
-export type DepartmentUpdateParentRequest = {
-  id: string;
-  parent: string;
-  sequence: number;
-};
+export interface DepartmentUpdateRequest extends EntityUpdateRequest<string> {
+  sequence?: number;
+  parent?: string;
+  departmentInfo: DepartmentInfoRequest;
+}
 
 export interface DepartmentDeleteRequest extends EntityDeleteRequest<string> {}
+
+export interface DepartmentInfoRequest {
+  name: string;
+  remark?: string;
+  district?: string;
+  address?: string;
+  contactName?: string;
+  contactPhone?: string;
+  contactEmail?: string;
+  establishedAt?: string;
+}
+
+export interface DepartmentInfoResponse {
+  name: string;
+  remark: string;
+  district: string;
+  address: string;
+  contactName: string;
+  contactPhone: string;
+  contactEmail: string;
+  establishedAt: string;
+}

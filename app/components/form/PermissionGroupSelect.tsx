@@ -10,13 +10,11 @@ import type {
 } from "~/types/permission";
 
 export interface PermissionGroupSelectProps extends ProFormSelectProps {
-  value?: string;
   tenant?: string;
   scope?: keyof typeof SecurityScope;
 }
 
 export default function PermissionGroupSelect({
-  value,
   tenant,
   scope,
   fieldProps,
@@ -48,7 +46,7 @@ export default function PermissionGroupSelect({
           marginBottom: 0,
         },
       }}
-      fieldProps={{ value, placeholder: "请选择权限组", ...fieldProps }}
+      fieldProps={{ placeholder: "请选择权限组", ...fieldProps }}
     />
   );
 }
