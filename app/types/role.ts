@@ -28,6 +28,7 @@ export interface RoleResponse extends EntityResponse<string> {
   scope?: keyof typeof SecurityScope;
   name?: string;
   remark?: string;
+  dataScopes?: DataScopeResponse[];
   permissions: string[];
   permissionGroups: string[];
 }
@@ -55,9 +56,20 @@ export interface RoleUpdateRequest extends EntityUpdateRequest<string> {
 export interface RoleDeleteRequest extends EntityDeleteRequest<string> {}
 
 export interface DataScopeRequest {
-  entities: string[];
+  entities: DataScopeEntity[];
   level: keyof typeof DataScopeLevel;
   departments: string[];
+}
+
+export interface DataScopeResponse {
+  entities: DataScopeEntity[];
+  level: keyof typeof DataScopeLevel;
+  departments: string[];
+}
+
+export interface DataScopeEntity {
+  value: string;
+  label: string;
 }
 
 export const DataScopeLevel = {
