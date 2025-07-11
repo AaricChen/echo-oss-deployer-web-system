@@ -75,6 +75,7 @@ export default function TenantPermissionGroupPage({
                   { max: 32, message: "编码长度不能超过32个字符" },
                 ],
               },
+              fieldProps: {},
               colProps: {
                 xs: 24,
                 lg: 8,

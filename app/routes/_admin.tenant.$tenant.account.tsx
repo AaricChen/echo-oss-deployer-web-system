@@ -1,7 +1,7 @@
 import type { Route } from ".react-router/types/app/routes/+types/_admin.tenant.$tenant.account";
 import { PageContainer, useToken } from "@ant-design/pro-components";
 import { Button, Tag } from "antd";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { useTenantBasicInfo } from "~/apis/tenant";
 import AccountDepartmentUpdateForm from "~/components/account/AccountDepartmentUpdateForm";
 import AccountRoleUpdateForm from "~/components/account/AccountRoleUpdateForm";
@@ -20,6 +20,7 @@ export default function TenantAccountPage({ params }: Route.ComponentProps) {
   const { tenant } = params;
   const { token } = useToken();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const { data: tenantBasicInfo, isPending } = useTenantBasicInfo({
     code: tenant,
@@ -327,7 +328,11 @@ export default function TenantAccountPage({ params }: Route.ComponentProps) {
                 <Button
                   key="credential"
                   type="link"
-                  onClick={() => navigate(`/auth/identity/${entity.id}`)}
+                  onClick={() =>
+                    navigate(
+                      `/auth/identity/${entity.id}?redirect=${location.pathname}`,
+                    )
+                  }
                 >
                   凭据管理
                 </Button>

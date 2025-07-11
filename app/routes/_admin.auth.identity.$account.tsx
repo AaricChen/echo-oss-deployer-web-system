@@ -1,5 +1,8 @@
 import type { Route } from ".react-router/types/app/routes/+types/_admin.auth.identity.$account";
 import { PageContainer, type FormInstance } from "@ant-design/pro-components";
+import { Button } from "antd";
+import { useNavigate } from "react-router";
+import { useSearchParam } from "react-use";
 import StatusBadge from "~/components/common/StatusBadge";
 import EntityTable from "~/components/entity/EntityTable";
 import {
@@ -16,8 +19,15 @@ export default function AuthIdentityAccountPage({
   params,
 }: Route.ComponentProps) {
   const { account } = params;
+  const navigate = useNavigate();
+  const redirect = useSearchParam("redirect");
+  console.log("🚀 ~ redirect:", redirect);
   return (
     <PageContainer
+      title="账户凭据管理"
+      extra={
+        redirect && <Button onClick={() => navigate(redirect)}>返回</Button>
+      }
       content={
         <EntityTable<
           AuthIdentityResponse,

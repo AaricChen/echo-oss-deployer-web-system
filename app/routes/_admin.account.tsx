@@ -274,7 +274,10 @@ export default function AccountPage() {
           }}
           rowActionRender={({ entity, action }) => {
             return [
-              <Authorization permission="system.account-role:update">
+              <Authorization
+                key="roleUpdateForm"
+                permission="system.account-role:update"
+              >
                 <AccountRoleUpdateForm
                   key="roleUpdateForm"
                   account={entity}
@@ -284,11 +287,15 @@ export default function AccountPage() {
                   }}
                 />
               </Authorization>,
-              <Authorization permission="system.auth-identity:query">
+              <Authorization
+                key="credential"
+                permission="system.auth-identity:query"
+              >
                 <Button
-                  key="credential"
                   type="link"
-                  onClick={() => navigate(`/auth/identity/${entity.id}`)}
+                  onClick={() =>
+                    navigate(`/auth/identity/${entity.id}?redirect=/account`)
+                  }
                 >
                   凭据管理
                 </Button>
