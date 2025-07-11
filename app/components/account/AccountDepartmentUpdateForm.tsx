@@ -49,7 +49,7 @@ export default function AccountDepartmentUpdateForm({
               dataIndex: "departments",
               valueType: "department" as any,
               fieldProps: {
-                mode: "multiple",
+                multiple: true,
                 tenant,
               },
             },

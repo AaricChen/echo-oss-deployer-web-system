@@ -333,8 +333,9 @@ export default function AccountPage() {
               search: false,
               align: "center",
               render: (text: React.ReactNode, record: AccountResponse) => (
-                <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                <div className="flex items-center gap-2">
                   <span
+                    className="grow"
                     style={{
                       color: record.authenticateAt
                         ? token.colorText

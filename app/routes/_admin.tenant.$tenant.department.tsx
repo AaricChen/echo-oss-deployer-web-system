@@ -1,6 +1,6 @@
 import type { Route } from ".react-router/types/app/routes/+types/_admin.tenant.$tenant.department";
 import { PageContainer } from "@ant-design/pro-components";
-import { Button } from "antd";
+import { Button, type FormInstance } from "antd";
 import { useNavigate } from "react-router";
 import { useTenantBasicInfo } from "~/apis/tenant";
 import EntityTable from "~/components/entity/EntityTable";
@@ -75,7 +75,15 @@ export default function TenantPermissionGroupPage({
                   { max: 32, message: "编码长度不能超过32个字符" },
                 ],
               },
-              fieldProps: {},
+              fieldProps: (form?: FormInstance) => {
+                if (form) {
+                  const id = form.getFieldValue("id");
+                  return {
+                    disabled: !!id,
+                  };
+                }
+                return {};
+              },
               colProps: {
                 xs: 24,
                 lg: 8,

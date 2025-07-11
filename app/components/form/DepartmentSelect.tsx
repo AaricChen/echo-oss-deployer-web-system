@@ -1,11 +1,12 @@
 import {
-  ProFormSelect,
-  type ProFormSelectProps,
+  ProFormTreeSelect,
+  type ProFormTreeSelectProps,
 } from "@ant-design/pro-components";
+import type { TreeSelectProps } from "antd";
 import { useTableRequest } from "~/hooks/http";
 import type { DepartmentQuery, DepartmentResponse } from "~/types/department";
 
-export interface DepartmentSelectProps extends ProFormSelectProps {
+export interface DepartmentSelectProps extends ProFormTreeSelectProps {
   tenant: string;
 }
 
@@ -16,21 +17,33 @@ export default function DepartmentSelect({
   const { mutateAsync } = useTableRequest<DepartmentResponse, DepartmentQuery>(
     "/department",
   );
+
+  const convert: (data: DepartmentResponse[]) => {
+    title: string;
+    value: string;
+    children: TreeSelectProps["treeData"];
+  }[] = (data: DepartmentResponse[]) => {
+    return data.map((item: DepartmentResponse) => {
+      return {
+        title: item.departmentInfo.name,
+        value: item.id,
+        children: convert(item.children),
+      };
+    });
+  };
+
   return (
-    <ProFormSelect
-      showSearch
+    <ProFormTreeSelect
       params={{ tenant }}
       request={async () => {
         return mutateAsync({
           params: {
+            root: true,
             tenant,
             pageSize: 1000,
           },
         }).then((res) => {
-          return res.data.map((item) => ({
-            label: item.departmentInfo.name,
-            value: item.id,
-          }));
+          return convert(res.data);
         });
       }}
       formItemProps={{
@@ -39,7 +52,9 @@ export default function DepartmentSelect({
         },
       }}
       fieldProps={{
+        showSearch: true,
         placeholder: "请选择部门",
+        treeDefaultExpandAll: true,
         ...fieldProps,
       }}
     />

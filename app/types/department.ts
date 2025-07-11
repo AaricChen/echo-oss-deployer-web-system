@@ -19,6 +19,7 @@ export const DepartmentEntity: EntityConfig = {
 };
 
 export interface DepartmentQuery extends EntityQuery {
+  root?: boolean;
   tenant?: string;
   code?: string;
   name?: string;
