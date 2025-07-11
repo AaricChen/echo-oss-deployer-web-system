@@ -15,6 +15,8 @@ import type {
   AccountUpdateRequest,
 } from "~/types/account";
 import { AccountEntity, AccountStatus } from "~/types/account";
+import type { DepartmentResponse } from "~/types/department";
+import type { RoleResponse } from "~/types/role";
 
 export default function TenantAccountPage({ params }: Route.ComponentProps) {
   const { tenant } = params;
@@ -388,6 +390,34 @@ export default function TenantAccountPage({ params }: Route.ComponentProps) {
                   )}
                 </div>
               ),
+            },
+            {
+              title: "所在部门",
+              dataIndex: "departments",
+              align: "center",
+              hideInSearch: true,
+              hideInForm: true,
+              renderText: (departments: DepartmentResponse[]) => {
+                const content = departments.map((department) => (
+                  <Tag key={department.id}>
+                    {department.departmentInfo.name}
+                  </Tag>
+                ));
+                return <div>{content}</div>;
+              },
+            },
+            {
+              title: "账户角色",
+              dataIndex: "roles",
+              align: "center",
+              hideInSearch: true,
+              hideInForm: true,
+              renderText: (roles: RoleResponse[]) => {
+                const content = roles.map((role) => (
+                  <Tag key={role.id}>{role.name}</Tag>
+                ));
+                return <div>{content}</div>;
+              },
             },
             {
               title: "状态",
