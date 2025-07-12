@@ -18,6 +18,7 @@ export function useCurrentAccount() {
     url: "/account/current",
     options: {
       ignoreError: true,
+      staleTime: Infinity,
     },
   });
 
