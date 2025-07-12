@@ -3,7 +3,7 @@ import {
   type ProFormColumnsType,
 } from "@ant-design/pro-components";
 import { Button, Modal, type FormInstance } from "antd";
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import type { EntityTableAction } from "~/components/entity/EntityTable";
 import { usePost } from "~/hooks/http";
 import type {
@@ -37,8 +37,17 @@ export default function EntityCreateForm<
   onFinish,
 }: EntityCreateFormProps<Entity, CreateRequest>) {
   const formRef = useRef<FormInstance>(null);
+
+  const actionUrl = useMemo(() => {
+    if (action && action.url) {
+      return action.url;
+    } else {
+      return entityConfig.baseUrl;
+    }
+  }, [action, entityConfig]);
+
   const { mutateAsync: createEntity } = usePost<CreateRequest, Entity>({
-    url: entityConfig.baseUrl,
+    url: actionUrl,
     action: `新增${entityConfig.name}`,
   });
   const [openModal, setOpenModal] = useState(false);

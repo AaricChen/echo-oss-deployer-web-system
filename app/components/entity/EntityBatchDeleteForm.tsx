@@ -1,4 +1,5 @@
 import { App, Button } from "antd";
+import { useMemo } from "react";
 import type { EntityTableAction } from "~/components/entity/EntityTable";
 import { useDelete } from "~/hooks/http";
 import type {
@@ -27,8 +28,17 @@ export default function EntityBatchDeleteForm<
   onFinish,
 }: EntityBatchDeleteFormProps<DeleteRequest>) {
   const { modal } = App.useApp();
+
+  const actionUrl = useMemo(() => {
+    if (action && action.url) {
+      return action.url;
+    } else {
+      return entityConfig.baseUrl;
+    }
+  }, [action, entityConfig]);
+
   const { mutateAsync: deleteEntities } = useDelete<DeleteRequest, void>({
-    url: entityConfig.baseUrl,
+    url: actionUrl,
     action: `批量删除${entityConfig.name}`,
   });
 

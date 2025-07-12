@@ -46,9 +46,17 @@ export default function EntityUpdateForm<
   const { message } = App.useApp();
   const formRef = useRef<FormInstance>(null);
 
+  const actionUrl = useMemo(() => {
+    if (action && action.url) {
+      return action.url;
+    } else {
+      return entityConfig.baseUrl;
+    }
+  }, [action, entityConfig]);
+
   const [open, setOpen] = useState(false);
   const { mutateAsync: updateEntity } = usePut<UpdateRequest, Entity>({
-    url: (request) => `${entityConfig.baseUrl}/${request.id}`,
+    url: (request) => `${actionUrl}/${request.id}`,
     action: `编辑${entityConfig.name}`,
   });
 

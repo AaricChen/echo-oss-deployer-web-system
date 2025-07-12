@@ -37,8 +37,16 @@ export default function EntityDeleteForm<
   buttonProps,
   onFinish,
 }: EntityDeleteFormProps<Entity, DeleteRequest>) {
+  const actionUrl = useMemo(() => {
+    if (action && action.url) {
+      return action.url;
+    } else {
+      return entityConfig.baseUrl;
+    }
+  }, [action, entityConfig]);
+
   const { mutateAsync: deleteEntities } = useDelete<DeleteRequest, void>({
-    url: entityConfig.baseUrl,
+    url: actionUrl,
     action: `删除${entityConfig.name}`,
   });
 
