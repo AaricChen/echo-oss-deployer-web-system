@@ -7,6 +7,7 @@ export function useDistrict(id?: number) {
     url: `/district/${id}`,
     options: {
       enabled: !!id,
+      staleTime: Infinity,
     },
   });
 }

@@ -47,6 +47,21 @@ export default function TenantPermissionGroupPage({
               name: "",
             },
           }}
+          rowActionRender={(record) => {
+            return [
+              <Button
+                key="role"
+                type="link"
+                onClick={() => {
+                  navigate(
+                    `/tenant/${tenant}/department/${record.entity.id}/role`,
+                  );
+                }}
+              >
+                角色管理
+              </Button>,
+            ];
+          }}
           columns={[
             {
               dataIndex: "id",

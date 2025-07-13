@@ -19,7 +19,13 @@ export const RoleEntity: EntityConfig = {
   },
 };
 
-export interface RoleQuery extends EntityQuery {}
+export interface RoleQuery extends EntityQuery {
+  tenant?: string;
+  department?: string;
+  scope?: keyof typeof SecurityScope;
+  name?: string;
+  remark?: string;
+}
 
 export interface RoleResponse extends EntityResponse<string> {
   id: string;
