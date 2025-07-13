@@ -22,11 +22,11 @@ export function useCurrentAccount() {
     },
   });
 
-  useEffect(() => {
-    if (result.isError) {
-      navigate(`/login?redirect=${location.pathname}`);
-    }
-  }, [result]);
+  // useEffect(() => {
+  //   if (result.isError) {
+  //     navigate(`/login?redirect=${location.pathname}`);
+  //   }
+  // }, [result]);
 
   return result;
 }

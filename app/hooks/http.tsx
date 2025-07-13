@@ -15,6 +15,7 @@ import { useAuthStore } from "~/stores/auth";
 import type { EntityIdType, EntityQuery, EntityResponse } from "~/types/entity";
 import { HttpError, type HttpResponse } from "~/types/http";
 import type { PaginationData, PaginationQuery } from "~/types/pagination";
+import { useErrorHandler } from "./error";
 
 export interface HttpMutationRequestParams<Request, Response> {
   method: "GET" | "POST" | "PUT" | "DELETE";
@@ -68,6 +69,7 @@ export function useGet<Res, GetResponse = Res>(
   const { message } = App.useApp();
   const { endpoint } = useApiStore();
   const { accessToken } = useAuthStore();
+  const { handleError } = useErrorHandler();
   return useQuery<unknown, DefaultError, Res>({
     queryKey: request.queryKey,
     queryFn: async () => {
@@ -113,18 +115,11 @@ export function useGet<Res, GetResponse = Res>(
             }
             return res.data as Promise<Res>;
           } else {
-            throw new HttpError(res);
+            throw res;
           }
         })
         .catch(async (err) => {
-          if (request.options?.ignoreError) {
-            throw err;
-          }
-          if (err instanceof HttpError) {
-            message.error(err.response.message);
-          } else {
-            message.error("服务器开小差了，请稍后再试");
-          }
+          handleError(err);
           throw err;
         });
     },
@@ -145,6 +140,7 @@ export function useHttpMutation<Request, Response>({
   const { message } = App.useApp();
   const { endpoint } = useApiStore();
   const { accessToken } = useAuthStore();
+  const { handleError } = useErrorHandler();
 
   return useMutation<Response, HttpError, Request>({
     mutationFn: async (request) => {
@@ -185,13 +181,11 @@ export function useHttpMutation<Request, Response>({
           if (res.success) {
             return res.data;
           } else {
-            throw new HttpError(res);
+            throw res;
           }
         })
         .catch(async (err) => {
-          if (!(err instanceof HttpError)) {
-            message.error("服务器开小差了，请稍后再试");
-          }
+          handleError(err);
           throw err;
         });
     },
@@ -271,6 +265,7 @@ export function useTableRequest<
   const { message } = App.useApp();
   const { endpoint } = useApiStore();
   const { accessToken } = useAuthStore();
+  const { handleError } = useErrorHandler();
 
   return useMutation<
     {
@@ -349,15 +344,11 @@ export function useTableRequest<
               total: res.data.page.totalElements,
             };
           } else {
-            throw new HttpError(res);
+            throw res;
           }
         })
         .catch(async (err) => {
-          if (err instanceof HttpError) {
-            message.error(err.response.message);
-          } else {
-            message.error("服务器开小差了，请稍后再试");
-          }
+          handleError(err);
           throw err;
         });
     },
