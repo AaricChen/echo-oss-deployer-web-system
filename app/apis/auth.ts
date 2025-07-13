@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import { useSearchParam } from "react-use";
 import { useHttpMutation } from "~/hooks/http";
@@ -9,6 +9,7 @@ export function useLogin() {
   const navigate = useNavigate();
   const redirect = useSearchParam("redirect");
   const { updateAuthToken } = useAuthStore();
+  const queryClient = useQueryClient();
 
   return useHttpMutation<LoginRequest, LoginResponse>({
     method: "POST",
@@ -17,6 +18,7 @@ export function useLogin() {
     noAuth: true,
     onSuccess: async (data) => {
       updateAuthToken(data);
+      queryClient.invalidateQueries({ queryKey: ["current-account"] });
       navigate(redirect || "/");
     },
   });

@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-import { useLocation, useNavigate } from "react-router";
 import { useGet, useHttpMutation, usePut } from "~/hooks/http";
 import type {
   AccountDepartmentUpdateRequest,
@@ -10,10 +8,7 @@ import type {
 } from "~/types/account";
 
 export function useCurrentAccount() {
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const result = useGet<CurrentAccountResponse>({
+  return useGet<CurrentAccountResponse>({
     queryKey: ["current-account"],
     url: "/account/current",
     options: {
@@ -21,14 +16,6 @@ export function useCurrentAccount() {
       staleTime: Infinity,
     },
   });
-
-  // useEffect(() => {
-  //   if (result.isError) {
-  //     navigate(`/login?redirect=${location.pathname}`);
-  //   }
-  // }, [result]);
-
-  return result;
 }
 
 export function useUpdateAccountRole() {

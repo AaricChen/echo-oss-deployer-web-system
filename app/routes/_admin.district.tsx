@@ -104,8 +104,8 @@ export default function DistrictPage({ params }: Route.ComponentProps) {
           rowActionRender={({ entity }) => {
             return [
               <Button
-                type="link"
                 key="children"
+                type="link"
                 onClick={() => {
                   navigate(`/district/${entity.id}`);
                 }}
@@ -115,9 +115,9 @@ export default function DistrictPage({ params }: Route.ComponentProps) {
               entity.level >= 3 && (
                 <Authorization permission="system.district:reset">
                   <Button
+                    key="reset"
                     type="link"
                     danger
-                    key="reset"
                     onClick={() => {
                       modal.confirm({
                         title: "重置行政区",
