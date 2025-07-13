@@ -566,17 +566,6 @@ export default function TenantPage() {
                   部门管理
                 </Button>
               </Authorization>,
-              <Authorization key="role" permission="system.role:query">
-                <Button
-                  type="link"
-                  size="small"
-                  onClick={() => {
-                    navigate(`/tenant/${entity.code}/role`);
-                  }}
-                >
-                  角色管理
-                </Button>
-              </Authorization>,
               <Authorization
                 key="permission-group"
                 permission="system.permission-group:query"

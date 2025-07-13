@@ -196,7 +196,7 @@ export default function TenantPermissionGroupPage({
               align: "center",
               colProps: {
                 xs: 24,
-                lg: 12,
+                lg: 16,
               },
             },
             {
@@ -205,7 +205,6 @@ export default function TenantPermissionGroupPage({
               align: "center",
               colProps: {
                 xs: 24,
-                lg: 12,
               },
             },
             {
