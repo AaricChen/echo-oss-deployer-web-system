@@ -76,7 +76,7 @@ export default function TenantPage() {
                 title: "域名",
                 dataIndex: "domains",
                 valueType: "formList",
-                hideInSearch: true,
+                search: false,
                 renderText(text: { domain: string }[]) {
                   return text.map((item) => (
                     <Tag key={item.domain}>{item.domain}</Tag>
@@ -112,7 +112,7 @@ export default function TenantPage() {
                 title: "开始时间",
                 dataIndex: ["tenantConfig", "startAt"],
                 valueType: "dateTime",
-                hideInSearch: true,
+                search: false,
                 formItemProps: {
                   tooltip: "如果设置了开始日期，则在开始日期之后才能认证账户",
                 },
@@ -130,7 +130,7 @@ export default function TenantPage() {
                 title: "结束时间",
                 dataIndex: ["tenantConfig", "endAt"],
                 valueType: "dateTime",
-                hideInSearch: true,
+                search: false,
                 formItemProps: {
                   tooltip: "如果设置了结束日期，则在结束日期之前才能认证账户",
                 },
@@ -147,7 +147,7 @@ export default function TenantPage() {
               {
                 title: "最大账户数量",
                 dataIndex: ["tenantConfig", "maxAccountCount"],
-                hideInSearch: true,
+                search: false,
                 valueType: "digit",
                 formItemProps: {
                   tooltip: "该租户下最大账户的创建数量，为空表示不限制",
@@ -166,7 +166,7 @@ export default function TenantPage() {
               {
                 title: "最大部门数量",
                 dataIndex: ["tenantConfig", "maxDepartmentCount"],
-                hideInSearch: true,
+                search: false,
                 valueType: "digit",
                 formItemProps: {
                   tooltip: "该租户下最多创建的部门数量，为空表示不限制",
@@ -185,7 +185,7 @@ export default function TenantPage() {
               {
                 title: "最大部门层级",
                 dataIndex: ["tenantConfig", "maxDepartmentLevel"],
-                hideInSearch: true,
+                search: false,
                 valueType: "digit",
                 formItemProps: {
                   tooltip: "该租户下部门的最大层级，为空表示不限制",
@@ -204,7 +204,7 @@ export default function TenantPage() {
               {
                 title: "最大权限组数量",
                 dataIndex: ["tenantConfig", "maxPermissionGroupCount"],
-                hideInSearch: true,
+                search: false,
                 valueType: "digit",
                 formItemProps: {
                   tooltip:
@@ -224,7 +224,7 @@ export default function TenantPage() {
               {
                 title: "最大角色数量",
                 dataIndex: ["tenantConfig", "maxRoleCount"],
-                hideInSearch: true,
+                search: false,
                 valueType: "digit",
                 formItemProps: {
                   tooltip: "该租户下包括所有部门创建的角色，为空表示不限制",
@@ -258,7 +258,7 @@ export default function TenantPage() {
                 title: "语言",
                 dataIndex: ["tenantInfo", "language"],
                 valueType: "systemDict" as any,
-                hideInSearch: true,
+                search: false,
                 fieldProps: {
                   dict: "language",
                 },
@@ -271,7 +271,7 @@ export default function TenantPage() {
                 title: "地区",
                 dataIndex: ["tenantInfo", "district"],
                 valueType: "district" as any,
-                hideInSearch: true,
+                search: false,
                 colProps: {
                   xs: 24,
                   lg: 12,
@@ -336,7 +336,7 @@ export default function TenantPage() {
                 title: "域名",
                 dataIndex: "domains",
                 valueType: "formList",
-                hideInSearch: true,
+                search: false,
                 renderText(text: { domain: string }[]) {
                   return text.map((item) => (
                     <Tag key={item.domain}>{item.domain}</Tag>
@@ -372,7 +372,7 @@ export default function TenantPage() {
                 title: "开始时间",
                 dataIndex: ["tenantConfig", "startAt"],
                 valueType: "dateTime",
-                hideInSearch: true,
+                search: false,
                 formItemProps: {
                   tooltip: "如果设置了开始日期，则在开始日期之后才能认证账户",
                 },
@@ -390,7 +390,7 @@ export default function TenantPage() {
                 title: "结束时间",
                 dataIndex: ["tenantConfig", "endAt"],
                 valueType: "dateTime",
-                hideInSearch: true,
+                search: false,
                 formItemProps: {
                   tooltip: "如果设置了结束日期，则在结束日期之前才能认证账户",
                 },
@@ -407,7 +407,7 @@ export default function TenantPage() {
               {
                 title: "最大账户数量",
                 dataIndex: ["tenantConfig", "maxAccountCount"],
-                hideInSearch: true,
+                search: false,
                 valueType: "digit",
                 formItemProps: {
                   tooltip: "该租户下最大账户的创建数量，为空表示不限制",
@@ -426,7 +426,7 @@ export default function TenantPage() {
               {
                 title: "最大部门数量",
                 dataIndex: ["tenantConfig", "maxDepartmentCount"],
-                hideInSearch: true,
+                search: false,
                 valueType: "digit",
                 formItemProps: {
                   tooltip: "该租户下最多创建的部门数量，为空表示不限制",
@@ -445,7 +445,7 @@ export default function TenantPage() {
               {
                 title: "最大部门层级",
                 dataIndex: ["tenantConfig", "maxDepartmentLevel"],
-                hideInSearch: true,
+                search: false,
                 valueType: "digit",
                 formItemProps: {
                   tooltip: "该租户下部门的最大层级，为空表示不限制",
@@ -464,7 +464,7 @@ export default function TenantPage() {
               {
                 title: "最大权限组数量",
                 dataIndex: ["tenantConfig", "maxPermissionGroupCount"],
-                hideInSearch: true,
+                search: false,
                 valueType: "digit",
                 formItemProps: {
                   tooltip:
@@ -484,7 +484,7 @@ export default function TenantPage() {
               {
                 title: "最大角色数量",
                 dataIndex: ["tenantConfig", "maxRoleCount"],
-                hideInSearch: true,
+                search: false,
                 valueType: "digit",
                 formItemProps: {
                   tooltip: "该租户下包括所有部门创建的角色，为空表示不限制",
@@ -518,7 +518,7 @@ export default function TenantPage() {
                 title: "语言",
                 dataIndex: ["tenantInfo", "language"],
                 valueType: "systemDict" as any,
-                hideInSearch: true,
+                search: false,
                 fieldProps: {
                   dict: "language",
                 },
@@ -531,7 +531,7 @@ export default function TenantPage() {
                 title: "地区",
                 dataIndex: ["tenantInfo", "district"],
                 valueType: "district" as any,
-                hideInSearch: true,
+                search: false,
                 colProps: {
                   xs: 24,
                   lg: 12,
@@ -609,7 +609,7 @@ export default function TenantPage() {
               dataIndex: "domains",
               valueType: "formList",
               align: "center",
-              hideInSearch: true,
+              search: false,
               renderText(text: { domain: string }[]) {
                 return text.map((item) => (
                   <Tag key={item.domain}>{item.domain}</Tag>
@@ -639,7 +639,7 @@ export default function TenantPage() {
               dataIndex: ["tenantInfo", "language"],
               valueType: "systemDict" as any,
               align: "center",
-              hideInSearch: true,
+              search: false,
               fieldProps: {
                 dict: "language",
               },
@@ -649,7 +649,7 @@ export default function TenantPage() {
               dataIndex: ["tenantInfo", "district"],
               valueType: "district" as any,
               align: "center",
-              hideInSearch: true,
+              search: false,
               transform: (value) => {
                 return {
                   district: value,
@@ -661,44 +661,44 @@ export default function TenantPage() {
               dataIndex: ["tenantConfig", "startAt"],
               valueType: "dateTime",
               align: "center",
-              hideInSearch: true,
+              search: false,
             },
             {
               title: "结束时间",
               dataIndex: ["tenantConfig", "endAt"],
               valueType: "dateTime",
               align: "center",
-              hideInSearch: true,
+              search: false,
             },
             {
               title: "最大账户数量",
               dataIndex: ["tenantConfig", "maxAccountCount"],
               align: "center",
-              hideInSearch: true,
+              search: false,
             },
             {
               title: "最大部门数量",
               dataIndex: ["tenantConfig", "maxDepartmentCount"],
               align: "center",
-              hideInSearch: true,
+              search: false,
             },
             {
               title: "最大部门层级",
               dataIndex: ["tenantConfig", "maxDepartmentLevel"],
               align: "center",
-              hideInSearch: true,
+              search: false,
             },
             {
               title: "最大权限组数量",
               dataIndex: ["tenantConfig", "maxPermissionGroupCount"],
               align: "center",
-              hideInSearch: true,
+              search: false,
             },
             {
               title: "最大角色数量",
               dataIndex: ["tenantConfig", "maxRoleCount"],
               align: "center",
-              hideInSearch: true,
+              search: false,
             },
           ]}
         />

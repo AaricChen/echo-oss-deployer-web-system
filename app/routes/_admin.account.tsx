@@ -357,7 +357,7 @@ export default function AccountPage() {
               title: "账户角色",
               dataIndex: "roles",
               align: "center",
-              hideInSearch: true,
+              search: false,
               hideInForm: true,
               renderText: (roles: RoleResponse[]) => {
                 const content = roles.map((role) => (
@@ -396,13 +396,13 @@ export default function AccountPage() {
               title: "备注",
               align: "center",
               dataIndex: ["accountInfo", "remark"],
-              hideInSearch: true,
+              search: false,
             },
             {
               title: "真实姓名",
               align: "center",
               dataIndex: ["accountInfo", "realname"],
-              hideInSearch: true,
+              search: false,
             },
             {
               title: "性别",
@@ -412,13 +412,13 @@ export default function AccountPage() {
               fieldProps: {
                 dict: "gender",
               },
-              hideInSearch: true,
+              search: false,
             },
             {
               title: "身份证号",
               align: "center",
               dataIndex: ["accountInfo", "idCard"],
-              hideInSearch: true,
+              search: false,
             },
             {
               title: "民族",
@@ -428,14 +428,14 @@ export default function AccountPage() {
               fieldProps: {
                 dict: "nation",
               },
-              hideInSearch: true,
+              search: false,
             },
             {
               title: "生日",
               align: "center",
               dataIndex: ["accountInfo", "birthday"],
               valueType: "date",
-              hideInSearch: true,
+              search: false,
             },
             {
               title: "语言",
@@ -445,20 +445,20 @@ export default function AccountPage() {
               fieldProps: {
                 dict: "language",
               },
-              hideInSearch: true,
+              search: false,
             },
             {
               title: "行政区",
               align: "center",
               dataIndex: ["accountInfo", "district"],
               valueType: "district" as any,
-              hideInSearch: true,
+              search: false,
             },
             {
               title: "地址",
               align: "center",
               dataIndex: ["accountInfo", "address"],
-              hideInSearch: true,
+              search: false,
             },
           ]}
         />

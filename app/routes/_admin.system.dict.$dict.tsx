@@ -31,7 +31,7 @@ export default function SystemDictItemsPage({ params }: Route.ComponentProps) {
             columns={[
               {
                 dataIndex: "id",
-                hideInSearch: true,
+                search: false,
                 hideInTable: true,
                 formItemProps: {
                   hidden: true,
@@ -39,7 +39,7 @@ export default function SystemDictItemsPage({ params }: Route.ComponentProps) {
               },
               {
                 dataIndex: "dict",
-                hideInSearch: true,
+                search: false,
                 hideInTable: true,
                 formItemProps: {
                   hidden: true,

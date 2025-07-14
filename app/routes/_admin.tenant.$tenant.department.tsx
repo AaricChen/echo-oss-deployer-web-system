@@ -65,7 +65,7 @@ export default function TenantPermissionGroupPage({
           columns={[
             {
               dataIndex: "id",
-              hideInSearch: true,
+              search: false,
               hideInTable: true,
               formItemProps: {
                 hidden: true,
@@ -73,7 +73,7 @@ export default function TenantPermissionGroupPage({
             },
             {
               dataIndex: "tenant",
-              hideInSearch: true,
+              search: false,
               hideInTable: true,
               formItemProps: {
                 hidden: true,
@@ -129,7 +129,7 @@ export default function TenantPermissionGroupPage({
               valueType: "department" as any,
               align: "center",
               hideInTable: true,
-              hideInSearch: true,
+              search: false,
               fieldProps: {
                 tenant,
               },

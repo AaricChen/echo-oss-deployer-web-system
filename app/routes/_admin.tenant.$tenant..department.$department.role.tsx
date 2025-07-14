@@ -64,7 +64,7 @@ export default function TenantRolePage({ params }: Route.ComponentProps) {
         columns={[
           {
             dataIndex: "id",
-            hideInSearch: true,
+            search: false,
             hideInTable: true,
             formItemProps: {
               hidden: true,
@@ -72,7 +72,7 @@ export default function TenantRolePage({ params }: Route.ComponentProps) {
           },
           {
             dataIndex: "scope",
-            hideInSearch: true,
+            search: false,
             hideInTable: true,
             formItemProps: {
               hidden: true,
@@ -80,7 +80,7 @@ export default function TenantRolePage({ params }: Route.ComponentProps) {
           },
           {
             dataIndex: "tenant",
-            hideInSearch: true,
+            search: false,
             hideInTable: true,
             formItemProps: {
               hidden: true,
@@ -88,7 +88,7 @@ export default function TenantRolePage({ params }: Route.ComponentProps) {
           },
           {
             dataIndex: "department",
-            hideInSearch: true,
+            search: false,
             hideInTable: true,
             formItemProps: {
               hidden: true,
@@ -125,7 +125,7 @@ export default function TenantRolePage({ params }: Route.ComponentProps) {
             title: "权限组数量",
             dataIndex: "permissionGroups",
             valueType: "permissionGroup" as any,
-            hideInSearch: true,
+            search: false,
             align: "right",
             formItemProps: {
               label: "权限组列表",
@@ -140,7 +140,7 @@ export default function TenantRolePage({ params }: Route.ComponentProps) {
             title: "权限数量",
             dataIndex: "permissions",
             valueType: "permission" as any,
-            hideInSearch: true,
+            search: false,
             align: "right",
             formItemProps: {
               label: "权限列表",
@@ -154,7 +154,7 @@ export default function TenantRolePage({ params }: Route.ComponentProps) {
             dataIndex: "aggregatedPermissions",
             align: "center",
             hideInForm: true,
-            hideInSearch: true,
+            search: false,
             render: (_, record) => {
               return <RolePermissionPreviewer scope="TENANT" role={record} />;
             },
@@ -163,7 +163,7 @@ export default function TenantRolePage({ params }: Route.ComponentProps) {
             title: "数据范围",
             dataIndex: "dataScopes",
             valueType: "formList",
-            hideInSearch: true,
+            search: false,
             align: "center",
             formItemProps: {
               tooltip:

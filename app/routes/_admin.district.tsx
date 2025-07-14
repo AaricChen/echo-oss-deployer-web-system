@@ -46,7 +46,7 @@ export default function DistrictPage({ params }: Route.ComponentProps) {
           columns={[
             {
               dataIndex: "parent",
-              hideInSearch: true,
+              search: false,
               hideInTable: true,
               formItemProps: {
                 hidden: true,
@@ -91,14 +91,14 @@ export default function DistrictPage({ params }: Route.ComponentProps) {
               align: "center",
               width: 120,
               hideInForm: true,
-              hideInSearch: true,
+              search: false,
             },
             {
               title: "行政区路径",
               dataIndex: "path",
               align: "center",
               hideInForm: true,
-              hideInSearch: true,
+              search: false,
             },
           ]}
           rowActionRender={({ entity }) => {

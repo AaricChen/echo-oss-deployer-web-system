@@ -33,7 +33,7 @@ export default function RolePage() {
         columns={[
           {
             dataIndex: "id",
-            hideInSearch: true,
+            search: false,
             hideInTable: true,
             formItemProps: {
               hidden: true,
@@ -41,7 +41,7 @@ export default function RolePage() {
           },
           {
             dataIndex: "scope",
-            hideInSearch: true,
+            search: false,
             hideInTable: true,
             formItemProps: {
               hidden: true,
@@ -78,7 +78,7 @@ export default function RolePage() {
             title: "权限组数量",
             dataIndex: "permissionGroups",
             valueType: "permissionGroup" as any,
-            hideInSearch: true,
+            search: false,
             align: "right",
             formItemProps: {
               label: "权限组列表",
@@ -92,7 +92,7 @@ export default function RolePage() {
             title: "权限数量",
             dataIndex: "permissions",
             valueType: "permission" as any,
-            hideInSearch: true,
+            search: false,
             align: "right",
             formItemProps: {
               label: "权限列表",
@@ -106,7 +106,7 @@ export default function RolePage() {
             dataIndex: "aggregatedPermissions",
             align: "center",
             hideInForm: true,
-            hideInSearch: true,
+            search: false,
             render: (_, record) => {
               return <RolePermissionPreviewer scope="SYSTEM" role={record} />;
             },

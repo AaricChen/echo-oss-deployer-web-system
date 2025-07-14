@@ -59,7 +59,7 @@ export default function TenantPermissionGroupPage({
           columns={[
             {
               dataIndex: "id",
-              hideInSearch: true,
+              search: false,
               hideInTable: true,
               formItemProps: {
                 hidden: true,
@@ -67,7 +67,7 @@ export default function TenantPermissionGroupPage({
             },
             {
               dataIndex: "scope",
-              hideInSearch: true,
+              search: false,
               hideInTable: true,
               formItemProps: {
                 hidden: true,
@@ -75,7 +75,7 @@ export default function TenantPermissionGroupPage({
             },
             {
               dataIndex: "tenant",
-              hideInSearch: true,
+              search: false,
               hideInTable: true,
               formItemProps: {
                 hidden: true,
@@ -120,7 +120,7 @@ export default function TenantPermissionGroupPage({
               dataIndex: "parent",
               align: "center",
               valueType: "permissionGroup" as any,
-              hideInSearch: true,
+              search: false,
               hideInTable: true,
               fieldProps: {
                 scope: "TENANT",
@@ -136,7 +136,7 @@ export default function TenantPermissionGroupPage({
               dataIndex: "children",
               align: "center",
               hideInForm: true,
-              hideInSearch: true,
+              search: false,
               renderText(text: PermissionGroupResponse[]) {
                 return text.map((item) => item.name).join(",");
               },

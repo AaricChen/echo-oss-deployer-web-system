@@ -22,7 +22,7 @@ export default function SystemPropertyPage() {
           columns={[
             {
               dataIndex: "id",
-              hideInSearch: true,
+              search: false,
               hideInTable: true,
               formItemProps: {
                 hidden: true,
@@ -59,7 +59,7 @@ export default function SystemPropertyPage() {
               title: "属性名称",
               dataIndex: "name",
               align: "center",
-              hideInSearch: true,
+              search: false,
               colProps: {
                 xs: 24,
                 lg: 12,
@@ -72,7 +72,7 @@ export default function SystemPropertyPage() {
               title: "属性描述",
               dataIndex: "description",
               align: "center",
-              hideInSearch: true,
+              search: false,
               colProps: {
                 xs: 24,
                 lg: 12,
@@ -85,13 +85,13 @@ export default function SystemPropertyPage() {
               title: "属性类型",
               dataIndex: "catalog",
               align: "center",
-              hideInSearch: true,
+              search: false,
               hideInForm: true,
             },
             {
               title: "可编辑",
               dataIndex: "editable",
-              hideInSearch: true,
+              search: false,
               hideInForm: true,
               align: "center",
               valueEnum: {
@@ -109,7 +109,7 @@ export default function SystemPropertyPage() {
               title: "属性值",
               dataIndex: "value",
               align: "center",
-              hideInSearch: true,
+              search: false,
               colProps: {
                 xs: 24,
               },

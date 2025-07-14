@@ -43,7 +43,7 @@ export default function PermissionGroupPage() {
           columns={[
             {
               dataIndex: "id",
-              hideInSearch: true,
+              search: false,
               hideInTable: true,
               formItemProps: {
                 hidden: true,
@@ -51,7 +51,7 @@ export default function PermissionGroupPage() {
             },
             {
               dataIndex: "scope",
-              hideInSearch: true,
+              search: false,
               hideInTable: true,
               formItemProps: {
                 hidden: true,
@@ -96,7 +96,7 @@ export default function PermissionGroupPage() {
               dataIndex: "parent",
               align: "center",
               valueType: "permissionGroup" as any,
-              hideInSearch: true,
+              search: false,
               hideInTable: true,
               fieldProps: {
                 scope: "SYSTEM",
@@ -111,7 +111,7 @@ export default function PermissionGroupPage() {
               dataIndex: "children",
               align: "center",
               hideInForm: true,
-              hideInSearch: true,
+              search: false,
               renderText(text: PermissionGroupResponse[]) {
                 return text.map((item) => item.name).join(",");
               },

@@ -21,7 +21,7 @@ export default function SystemDictPage() {
           columns={[
             {
               dataIndex: "id",
-              hideInSearch: true,
+              search: false,
               hideInTable: true,
               formItemProps: {
                 hidden: true,
@@ -46,7 +46,7 @@ export default function SystemDictPage() {
               title: "字典数量",
               dataIndex: "items",
               align: "right",
-              hideInSearch: true,
+              search: false,
             },
           ]}
           rowActionRender={({ entity }) => {

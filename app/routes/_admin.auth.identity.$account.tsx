@@ -47,7 +47,7 @@ export default function AuthIdentityAccountPage({
             {
               dataIndex: "id",
               hideInTable: true,
-              hideInSearch: true,
+              search: false,
               formItemProps: {
                 hidden: true,
               },
@@ -55,7 +55,7 @@ export default function AuthIdentityAccountPage({
             {
               dataIndex: "account",
               hideInTable: true,
-              hideInSearch: true,
+              search: false,
               formItemProps: {
                 hidden: true,
               },
@@ -89,7 +89,7 @@ export default function AuthIdentityAccountPage({
               valueType: "dependency",
               name: ["type"],
               hideInTable: true,
-              hideInSearch: true,
+              search: false,
               columns: (values: AuthIdentityCreateRequest) => {
                 if (values.type === "USERNAME") {
                   return [
@@ -126,7 +126,7 @@ export default function AuthIdentityAccountPage({
             {
               title: "凭据",
               dataIndex: "credential",
-              hideInSearch: true,
+              search: false,
               hideInForm: true,
               align: "center",
               renderText(text) {
