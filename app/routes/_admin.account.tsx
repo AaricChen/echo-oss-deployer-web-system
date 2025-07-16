@@ -277,7 +277,7 @@ export default function AccountPage() {
             return [
               <Authorization
                 key="roleUpdateForm"
-                permission="system.account-role:update"
+                permission="system.account-update:role"
               >
                 <AccountRoleUpdateForm
                   key="roleUpdateForm"

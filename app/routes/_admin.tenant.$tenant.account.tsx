@@ -305,7 +305,7 @@ export default function TenantAccountPage({ params }: Route.ComponentProps) {
           }}
           rowActionRender={({ entity, action }) => {
             return [
-              <Authorization permission="system.account-role:update">
+              <Authorization permission="system.account-update:role">
                 <AccountRoleUpdateForm
                   key="roleUpdateForm"
                   account={entity}
@@ -316,7 +316,7 @@ export default function TenantAccountPage({ params }: Route.ComponentProps) {
                   }}
                 />
               </Authorization>,
-              <Authorization permission="system.account-department:update">
+              <Authorization permission="system.account-update:department">
                 <AccountDepartmentUpdateForm
                   key="departmentUpdateForm"
                   account={entity}

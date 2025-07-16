@@ -21,6 +21,12 @@ export default function SystemDictItemsPage({ params }: Route.ComponentProps) {
             entityConfig={{
               name: data?.name ?? "",
               baseUrl: `/system/dict/item`,
+              permissions: {
+                query: "system.system-dict:query",
+                create: "system.system-dict-item:create",
+                update: "system.system-dict-item:update",
+                delete: "system.system-dict-item:delete",
+              },
             }}
             createInitialValues={{
               dict: dict ?? "",

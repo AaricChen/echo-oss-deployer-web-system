@@ -4,10 +4,7 @@ export const SystemDictEntity: EntityConfig = {
   name: "系统字典",
   baseUrl: "/system/dict",
   permissions: {
-    query: "system.dict:query",
-    create: "system.dict:create",
-    update: "system.dict:update",
-    delete: "system.dict:delete",
+    query: "system.system-dict:query",
   },
 };
 

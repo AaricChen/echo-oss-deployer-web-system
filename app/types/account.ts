@@ -26,7 +26,6 @@ export const AccountEntity: EntityConfig = {
     query: "system.account:query",
     create: "system.account:create",
     update: "system.account:update",
-    delete: "system.account:delete",
   },
 };
 

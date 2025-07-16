@@ -19,7 +19,7 @@ export function useErrorHandler() {
           message.error("登录已过期，请重新登录");
           logout();
           navigate(`/login?redirect=${location.pathname}`);
-        } else if (err.code === "002002") {
+        } else if (err.code === "002002" || err.code === "002001") {
           // 刷新令牌失效，清空登录信息
           message.error(err.details ?? err.message);
         } else {

@@ -13,8 +13,6 @@ export const DistrictEntity: EntityConfig = {
   permissions: {
     query: "system.district:query",
     create: "system.district:create",
-    update: "system.district:update",
-    delete: "system.district:delete",
   },
 };
 

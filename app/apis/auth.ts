@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import { useSearchParam } from "react-use";
-import { useHttpMutation } from "~/hooks/http";
+import { useHttpMutation, usePost } from "~/hooks/http";
 import { useAuthStore } from "~/stores/auth";
 import type { LoginRequest, LoginResponse } from "~/types/auth";
 
@@ -32,8 +32,13 @@ export function useLogin() {
 export function useLogout() {
   const navigate = useNavigate();
   const { logout: logoutTokens } = useAuthStore();
+  const { mutateAsync: logout } = usePost({
+    url: "/auth/logout",
+    action: "退出登录",
+  });
   return useMutation({
     mutationFn: async () => {
+      await logout({});
       logoutTokens();
     },
     onSuccess: () => {
