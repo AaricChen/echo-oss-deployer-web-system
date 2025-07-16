@@ -22,12 +22,3 @@ export interface FormFieldError {
   name: string;
   message: string;
 }
-
-export class HttpError extends Error {
-  response: HttpResponse<any>;
-
-  constructor(response: HttpResponse<any>) {
-    super(response.message, { cause: response });
-    this.response = response;
-  }
-}

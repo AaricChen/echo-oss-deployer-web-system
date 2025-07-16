@@ -13,7 +13,7 @@ import { type ReactNode, useMemo } from "react";
 import { useApiStore } from "~/stores/api";
 import { useAuthStore } from "~/stores/auth";
 import type { EntityIdType, EntityQuery, EntityResponse } from "~/types/entity";
-import { HttpError, type HttpResponse } from "~/types/http";
+import { type HttpResponse } from "~/types/http";
 import type { PaginationData, PaginationQuery } from "~/types/pagination";
 import { useErrorHandler } from "./error";
 
@@ -142,7 +142,7 @@ export function useHttpMutation<Request, Response>({
   const { accessToken } = useAuthStore();
   const { handleError } = useErrorHandler();
 
-  return useMutation<Response, HttpError, Request>({
+  return useMutation<Response, DefaultError, Request>({
     mutationFn: async (request) => {
       const headers: HeadersInit = {};
       headers["Content-Type"] = "application/json";
@@ -217,24 +217,6 @@ export function useHttpMutation<Request, Response>({
     onError: async (requestError, request) => {
       if (onError) {
         onError(requestError, request);
-      } else {
-        const response = requestError.response;
-        if (response.error) {
-          let content = "";
-          if (response.error.objectErrors) {
-            content += response.error.objectErrors
-              .map((it) => `${it.name}: ${it.message}`)
-              .join("\n");
-          }
-          if (response.error.fieldErrors) {
-            content += response.error.fieldErrors
-              .map((it) => `${it.name}: ${it.message}`)
-              .join("\n");
-          }
-          message.error(content);
-        } else {
-          message.error(response.message);
-        }
       }
     },
   });
