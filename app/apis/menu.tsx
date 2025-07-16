@@ -6,7 +6,7 @@ import type { MenuResponse } from "~/types/menu";
 
 export function useSidebar() {
   const { data } = useGet<MenuResponse>({
-    queryKey: [""],
+    queryKey: ["sidebar-menu"],
     url: "/menus",
     params: {
       id: "system:admin.sidebar",

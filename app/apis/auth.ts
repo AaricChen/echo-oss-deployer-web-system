@@ -18,7 +18,12 @@ export function useLogin() {
     noAuth: true,
     onSuccess: async (data) => {
       updateAuthToken(data);
-      queryClient.invalidateQueries({ queryKey: ["current-account"] });
+      queryClient.invalidateQueries({
+        queryKey: ["current-account"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["sidebar-menu"],
+      });
       navigate(redirect || "/");
     },
   });
