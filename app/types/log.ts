@@ -30,8 +30,11 @@ export interface SystemLogResponse extends EntityResponse<string> {
   endAt: string;
   success: boolean;
   parameters: string;
-  exception: string;
   exceptions: string;
+  exceptionCode: string;
+  exceptionMessage: string;
+  exceptionDetails: string;
+  exceptionCause: string;
   duration: string;
   createBy: {
     avatar: string;

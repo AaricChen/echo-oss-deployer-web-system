@@ -59,12 +59,27 @@ export default function LogDetails({ open, log, onClose }: LogDetailsProps) {
           <ProDescriptions.Item label="方法" valueType="code" span={2}>
             {log.method}
           </ProDescriptions.Item>
+          {log.exceptionCode && (
+            <ProDescriptions.Item label="异常代码" span={2}>
+              {log.exceptionCode}
+            </ProDescriptions.Item>
+          )}
+          {log.exceptionMessage && (
+            <ProDescriptions.Item label="异常信息" span={2}>
+              {log.exceptionMessage}
+            </ProDescriptions.Item>
+          )}
+          {log.exceptionDetails && (
+            <ProDescriptions.Item label="异常详情" span={2}>
+              {log.exceptionDetails}
+            </ProDescriptions.Item>
+          )}
+          {log.exceptionCause && (
+            <ProDescriptions.Item label="异常原因" span={2}>
+              {log.exceptionCause}
+            </ProDescriptions.Item>
+          )}
         </ProDescriptions>
-        {log.exception && (
-          <Card title="异常信息" size="small">
-            <Typography.Text type="secondary">{log.exception}</Typography.Text>
-          </Card>
-        )}
         {log.exceptions && (
           <Card
             title="异常堆栈"
