@@ -19,13 +19,13 @@ export function useErrorHandler() {
           message.error("登录已过期，请重新登录");
           logout();
           navigate(`/login?redirect=${location.pathname}`);
-        } else if (err.code === "002002" || err.code === "002001") {
+        } else if (response.code === "002002" || response.code === "002001") {
           // 刷新令牌失效，清空登录信息
-          message.error(err.details ?? err.message);
+          message.error(getErrorMessage(response));
         } else {
           navigate(`/login?redirect=${location.pathname}`);
         }
-      } else if (err.code === "000002") {
+      } else if (response.code === "000002") {
         if (response.error) {
           let content = "";
           if (response.error.objectErrors) {
@@ -39,9 +39,11 @@ export function useErrorHandler() {
               .join("\n");
           }
           message.error(content);
+        } else {
+          message.error(getErrorMessage(response));
         }
       } else {
-        message.error(err.details ?? err.message);
+        message.error(getErrorMessage(response));
       }
     } else {
       message.error("服务器开小差了，请稍后再试");
@@ -49,4 +51,14 @@ export function useErrorHandler() {
   };
 
   return { handleError };
+}
+
+function getErrorMessage(response: HttpResponse<any>) {
+  if (response.details) {
+    return response.details;
+  }
+  if (response.message) {
+    return response.message;
+  }
+  return "服务器开小差了，请稍后再试";
 }

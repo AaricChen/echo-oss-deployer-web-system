@@ -2,6 +2,8 @@ export interface HttpResponse<T> {
   id: string;
   code: string;
   message: string;
+  details?: string;
+  cause?: string;
   data: T;
   success: boolean;
   error?: FormError;
