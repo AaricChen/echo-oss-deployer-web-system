@@ -4,6 +4,8 @@ import { useSearchParam } from "react-use";
 import { useGet, useHttpMutation, usePost } from "~/hooks/http";
 import { useAuthStore } from "~/stores/auth";
 import type {
+  AuthCaptchaRequest,
+  AuthCaptchaResponse,
   AuthenticationConfigResponse,
   AuthRequest,
   AuthResponse,
@@ -58,5 +60,12 @@ export function useAuthenticationConfig() {
     options: {
       staleTime: Infinity,
     },
+  });
+}
+
+export function useAuthCaptcha(type: "phone" | "email") {
+  return usePost<AuthCaptchaRequest, AuthCaptchaResponse>({
+    url: `/auth/captcha/${type}`,
+    action: "发送验证码",
   });
 }

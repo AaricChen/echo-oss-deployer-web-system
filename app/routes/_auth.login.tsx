@@ -1,21 +1,26 @@
-import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import { LockOutlined, PhoneOutlined, UserOutlined } from "@ant-design/icons";
 import {
   LoginForm,
-  ProFormSelect,
+  ProFormCaptcha,
+  ProFormDependency,
   ProFormText,
 } from "@ant-design/pro-components";
-import { Tabs, theme } from "antd";
-import { useEffect, useMemo, useState } from "react";
-import { useAuthenticationConfig, useLogin } from "~/apis/auth";
+import { Tabs, theme, type FormInstance } from "antd";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useAuthCaptcha, useAuthenticationConfig, useLogin } from "~/apis/auth";
+import ImageCaptcha from "~/components/form/ImageCaptcha";
 import { appConfig } from "~/configs/app";
-import { AuthenticationType, type AuthRequest } from "~/types/auth";
+import { AuthenticationType } from "~/types/auth";
 
 export default function LoginPage() {
   const { token } = theme.useToken();
   const login = useLogin();
   const { data: config } = useAuthenticationConfig();
   const [type, setType] = useState<keyof typeof AuthenticationType>("USERNAME");
-
+  const { mutateAsync: sendCaptcha } = useAuthCaptcha(
+    type === "PHONE_CAPTCHA" ? "phone" : "email",
+  );
+  const formRef = useRef<FormInstance>(null);
   useEffect(() => {
     if (config) {
       if (config.usernameAuthentication) {
@@ -42,12 +47,38 @@ export default function LoginPage() {
 
   return (
     <div style={{ backgroundColor: token.colorBgContainer }}>
-      <LoginForm<AuthRequest>
+      <LoginForm<any>
+        formRef={formRef}
         logo={appConfig.logo}
         title="欢迎"
         subTitle="登录到你的账户"
         onFinish={async (values) => {
-          await login.mutateAsync({ ...values, type });
+          if (type === "USERNAME") {
+            await login.mutateAsync({
+              type,
+              identity: values.username,
+              credential: values.password,
+            });
+          } else if (type === "PHONE_CAPTCHA") {
+            await login.mutateAsync({
+              type,
+              identity: values.phone,
+              credential: values.captcha,
+            });
+          } else if (type === "EMAIL_CAPTCHA") {
+            await login.mutateAsync({
+              type,
+              identity: values.email,
+              credential: values.captcha,
+            });
+          } else if (type === "CRYPTO") {
+            await login.mutateAsync({
+              type,
+              identity: values.address,
+              credential: values.signature,
+              message: values.message,
+            });
+          }
         }}
       >
         <Tabs
@@ -60,46 +91,128 @@ export default function LoginPage() {
             setType(key as keyof typeof AuthenticationType);
           }}
         />
-        <ProFormText
-          name="identity"
-          fieldProps={{
-            size: "large",
-            prefix: (
-              <UserOutlined
-                style={{
-                  color: token.colorText,
-                }}
-              />
-            ),
-          }}
-          placeholder={"请输入用户名"}
-          rules={[
-            {
-              required: true,
-              message: "请输入用户名!",
-            },
-          ]}
-        />
-        <ProFormText.Password
-          name="credential"
-          fieldProps={{
-            size: "large",
-            prefix: (
-              <LockOutlined
-                style={{
-                  color: token.colorText,
-                }}
-              />
-            ),
-          }}
-          placeholder={"请输入密码"}
-          rules={[
-            {
-              required: true,
-              message: "请输入密码!",
-            },
-          ]}
-        />
+        {type === "USERNAME" && (
+          <>
+            <ProFormText
+              name="username"
+              fieldProps={{
+                size: "large",
+                prefix: (
+                  <UserOutlined
+                    style={{
+                      color: token.colorText,
+                    }}
+                  />
+                ),
+              }}
+              placeholder="请输入用户名 手机号 或 邮箱"
+              rules={[
+                {
+                  required: true,
+                  message: "请输入用户名 手机号 或 邮箱!",
+                },
+              ]}
+            />
+            <ProFormText.Password
+              name="password"
+              fieldProps={{
+                size: "large",
+                prefix: (
+                  <LockOutlined
+                    style={{
+                      color: token.colorText,
+                    }}
+                  />
+                ),
+              }}
+              placeholder="请输入密码"
+              rules={[
+                {
+                  required: true,
+                  message: "请输入密码!",
+                },
+              ]}
+            />
+          </>
+        )}
+        {type === "PHONE_CAPTCHA" && (
+          <>
+            <ProFormText
+              name="phone"
+              fieldProps={{
+                size: "large",
+                prefix: (
+                  <PhoneOutlined
+                    style={{
+                      color: token.colorText,
+                    }}
+                  />
+                ),
+              }}
+              placeholder="请输入手机号"
+              rules={[
+                {
+                  required: true,
+                  message: "请输入手机号!",
+                },
+                {
+                  pattern: /^1[3-9]\d{9}$/,
+                  message: "请输入正确的手机号!",
+                },
+              ]}
+            />
+            <ImageCaptcha
+              onTimestampChange={(timestamp) => {
+                formRef.current?.setFieldsValue({
+                  timestamp,
+                });
+              }}
+              onCaptchaChange={(captcha) => {
+                formRef.current?.setFieldsValue({
+                  imageCaptcha: captcha,
+                });
+              }}
+            />
+            <ProFormDependency name={["timestamp", "imageCaptcha"]}>
+              {({ timestamp, imageCaptcha }) => {
+                return (
+                  <ProFormCaptcha
+                    name="captcha"
+                    fieldProps={{
+                      size: "large",
+                      prefix: (
+                        <LockOutlined
+                          style={{
+                            color: token.colorText,
+                          }}
+                        />
+                      ),
+                    }}
+                    captchaProps={{
+                      size: "large",
+                    }}
+                    placeholder="请输入验证码"
+                    rules={[
+                      {
+                        required: true,
+                        message: "请输入验证码!",
+                      },
+                    ]}
+                    phoneName="phone"
+                    onGetCaptcha={async (phone) => {
+                      await sendCaptcha({
+                        scope: "SYSTEM",
+                        target: phone,
+                        timestamp,
+                        captcha: imageCaptcha,
+                      });
+                    }}
+                  />
+                );
+              }}
+            </ProFormDependency>
+          </>
+        )}
       </LoginForm>
     </div>
   );

@@ -1,3 +1,4 @@
+import type { SecurityScope } from "~/types/common";
 import type {
   EntityConfig,
   EntityCreateRequest,
@@ -30,6 +31,26 @@ export interface AuthenticationConfigResponse {
   emailCaptchaAuthentication: boolean;
   /** 密码学认证 */
   cryptoAuthentication: boolean;
+}
+
+export interface AuthCaptchaRequest {
+  /** 安全域 */
+  scope: keyof typeof SecurityScope; // SecurityScope 类型，前端用 string 表示
+  /** 所属租户 */
+  tenant?: string;
+  /** 目标 */
+  target: string;
+  /** 图形验证码时间戳 */
+  timestamp?: string;
+  /** 图形验证码值 */
+  captcha?: string;
+}
+
+export interface AuthCaptchaResponse {
+  /** 发送目标 */
+  target: string;
+  /** 验证码发送结果 */
+  success: boolean;
 }
 
 export const AuthIdentityEntity: EntityConfig = {
