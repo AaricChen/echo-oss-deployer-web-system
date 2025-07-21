@@ -21,7 +21,6 @@ export default function AuthIdentityAccountPage({
   const { account } = params;
   const navigate = useNavigate();
   const redirect = useSearchParam("redirect");
-  console.log("🚀 ~ redirect:", redirect);
   return (
     <PageContainer
       title="账户凭据管理"
@@ -91,10 +90,20 @@ export default function AuthIdentityAccountPage({
               hideInTable: true,
               search: false,
               columns: (values: AuthIdentityCreateRequest) => {
-                if (values.type === "USERNAME") {
+                if (
+                  values.type === "USERNAME" ||
+                  values.type === "PHONE" ||
+                  values.type === "EMAIL"
+                ) {
+                  const title =
+                    values.type === "USERNAME"
+                      ? "用户名"
+                      : values.type === "PHONE"
+                        ? "手机号"
+                        : "邮箱";
                   return [
                     {
-                      title: "用户名",
+                      title,
                       dataIndex: "identity",
                       align: "center",
                       formItemProps: {
@@ -116,6 +125,17 @@ export default function AuthIdentityAccountPage({
                           return "";
                         }
                         return value;
+                      },
+                    },
+                  ];
+                } else if (values.type === "CRYPTO_ADDRESS") {
+                  return [
+                    {
+                      title: "钱包地址",
+                      dataIndex: "identity",
+                      align: "center",
+                      formItemProps: {
+                        rules: [{ required: true, message: "请输入钱包地址" }],
                       },
                     },
                   ];
