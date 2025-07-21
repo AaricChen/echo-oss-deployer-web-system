@@ -57,6 +57,9 @@ export default function LoginPage() {
         logo={appConfig.logo}
         title="欢迎"
         subTitle="登录到你的账户"
+        contentStyle={{
+          width: 380,
+        }}
         onFinish={async (values) => {
           if (type === "USERNAME") {
             await login.mutateAsync({
