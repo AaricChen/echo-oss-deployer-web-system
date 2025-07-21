@@ -7,21 +7,29 @@ import type {
   EntityUpdateRequest,
 } from "~/types/entity";
 
-export interface LoginRequest {
-  type: AuthenticationType;
+export interface AuthRequest {
+  type: keyof typeof AuthenticationType;
   tenant?: string; // 租户代码
   identity: string; // 凭据标识
   credential: string; // 认证凭据
+  message?: string; // 密码学认证消息
 }
 
-export interface LoginResponse {
-  type: AuthenticationType;
+export interface AuthResponse {
+  type: keyof typeof AuthenticationType;
   accessToken: string;
   refreshToken: string;
 }
 
-export enum AuthenticationType {
-  USERNAME = "USERNAME",
+export interface AuthenticationConfigResponse {
+  /** 用户名密码认证 */
+  usernameAuthentication: boolean;
+  /** 手机号验证码认证 */
+  phoneCaptchaAuthentication: boolean;
+  /** 邮箱验证码认证 */
+  emailCaptchaAuthentication: boolean;
+  /** 密码学认证 */
+  cryptoAuthentication: boolean;
 }
 
 export const AuthIdentityEntity: EntityConfig = {
@@ -64,8 +72,32 @@ export interface AuthIdentityUpdateRequest extends EntityUpdateRequest<string> {
 export interface AuthIdentityDeleteRequest
   extends EntityDeleteRequest<string> {}
 
+export const AuthenticationType = {
+  USERNAME: {
+    text: "账号密码登录",
+  },
+  PHONE_CAPTCHA: {
+    text: "手机号登录",
+  },
+  EMAIL_CAPTCHA: {
+    text: "邮箱登录",
+  },
+  CRYPTO: {
+    text: "钱包登录",
+  },
+};
+
 export const AuthIdentityType = {
   USERNAME: {
     text: "用户名密码凭据",
+  },
+  PHONE: {
+    text: "手机号",
+  },
+  EMAIL: {
+    text: "邮箱",
+  },
+  CRYPTO_ADDRESS: {
+    text: "钱包地址",
   },
 };

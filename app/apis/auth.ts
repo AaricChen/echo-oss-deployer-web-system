@@ -1,9 +1,13 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import { useSearchParam } from "react-use";
-import { useHttpMutation, usePost } from "~/hooks/http";
+import { useGet, useHttpMutation, usePost } from "~/hooks/http";
 import { useAuthStore } from "~/stores/auth";
-import type { LoginRequest, LoginResponse } from "~/types/auth";
+import type {
+  AuthenticationConfigResponse,
+  AuthRequest,
+  AuthResponse,
+} from "~/types/auth";
 
 export function useLogin() {
   const navigate = useNavigate();
@@ -11,7 +15,7 @@ export function useLogin() {
   const { updateAuthToken } = useAuthStore();
   const queryClient = useQueryClient();
 
-  return useHttpMutation<LoginRequest, LoginResponse>({
+  return useHttpMutation<AuthRequest, AuthResponse>({
     method: "POST",
     url: "/auth/authenticate",
     action: "登录",
@@ -43,6 +47,16 @@ export function useLogout() {
     },
     onSuccess: () => {
       navigate("/login");
+    },
+  });
+}
+
+export function useAuthenticationConfig() {
+  return useGet<AuthenticationConfigResponse>({
+    queryKey: ["authentication-config"],
+    url: "/auth/config",
+    options: {
+      staleTime: Infinity,
     },
   });
 }

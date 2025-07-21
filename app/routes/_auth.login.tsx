@@ -4,32 +4,61 @@ import {
   ProFormSelect,
   ProFormText,
 } from "@ant-design/pro-components";
-import { theme } from "antd";
-import { useLogin } from "~/apis/auth";
+import { Tabs, theme } from "antd";
+import { useEffect, useMemo, useState } from "react";
+import { useAuthenticationConfig, useLogin } from "~/apis/auth";
 import { appConfig } from "~/configs/app";
-import { AuthenticationType, type LoginRequest } from "~/types/auth";
+import { AuthenticationType, type AuthRequest } from "~/types/auth";
 
 export default function LoginPage() {
   const { token } = theme.useToken();
   const login = useLogin();
+  const { data: config } = useAuthenticationConfig();
+  const [type, setType] = useState<keyof typeof AuthenticationType>("USERNAME");
+
+  useEffect(() => {
+    if (config) {
+      if (config.usernameAuthentication) {
+        setType("USERNAME");
+      } else if (config.phoneCaptchaAuthentication) {
+        setType("PHONE_CAPTCHA");
+      } else if (config.emailCaptchaAuthentication) {
+        setType("EMAIL_CAPTCHA");
+      } else if (config.cryptoAuthentication) {
+        setType("CRYPTO");
+      }
+    }
+  }, [config]);
+
+  const supportedTypes = useMemo(() => {
+    if (!config) return [];
+    return [
+      config.usernameAuthentication ? "USERNAME" : null,
+      config.phoneCaptchaAuthentication ? "PHONE_CAPTCHA" : null,
+      config.emailCaptchaAuthentication ? "EMAIL_CAPTCHA" : null,
+      config.cryptoAuthentication ? "CRYPTO" : null,
+    ].filter((it) => it !== null);
+  }, [config]);
+
   return (
     <div style={{ backgroundColor: token.colorBgContainer }}>
-      <LoginForm<LoginRequest>
+      <LoginForm<AuthRequest>
         logo={appConfig.logo}
         title="欢迎"
         subTitle="登录到你的账户"
         onFinish={async (values) => {
-          await login.mutateAsync(values);
+          await login.mutateAsync({ ...values, type });
         }}
       >
-        <ProFormSelect
-          name="type"
-          hidden
-          initialValue={AuthenticationType.USERNAME}
-          options={Object.values(AuthenticationType).map((type) => ({
-            label: type,
-            value: type,
+        <Tabs
+          items={supportedTypes.map((it) => ({
+            key: it,
+            label:
+              AuthenticationType[it as keyof typeof AuthenticationType].text,
           }))}
+          onChange={(key) => {
+            setType(key as keyof typeof AuthenticationType);
+          }}
         />
         <ProFormText
           name="identity"
