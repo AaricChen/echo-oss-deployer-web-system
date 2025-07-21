@@ -1,4 +1,9 @@
-import { LockOutlined, PhoneOutlined, UserOutlined } from "@ant-design/icons";
+import {
+  LockOutlined,
+  MailOutlined,
+  PhoneOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 import {
   LoginForm,
   ProFormCaptcha,
@@ -203,6 +208,84 @@ export default function LoginPage() {
                       await sendCaptcha({
                         scope: "SYSTEM",
                         target: phone,
+                        timestamp,
+                        captcha: imageCaptcha,
+                      });
+                    }}
+                  />
+                );
+              }}
+            </ProFormDependency>
+          </>
+        )}
+        {type === "EMAIL_CAPTCHA" && (
+          <>
+            <ProFormText
+              name="email"
+              fieldProps={{
+                size: "large",
+                prefix: (
+                  <MailOutlined
+                    style={{
+                      color: token.colorText,
+                    }}
+                  />
+                ),
+              }}
+              placeholder="请输入邮箱"
+              rules={[
+                {
+                  required: true,
+                  message: "请输入邮箱!",
+                },
+                {
+                  pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                  message: "请输入正确的邮箱!",
+                },
+              ]}
+            />
+            <ImageCaptcha
+              onTimestampChange={(timestamp) => {
+                formRef.current?.setFieldsValue({
+                  timestamp,
+                });
+              }}
+              onCaptchaChange={(captcha) => {
+                formRef.current?.setFieldsValue({
+                  imageCaptcha: captcha,
+                });
+              }}
+            />
+            <ProFormDependency name={["timestamp", "imageCaptcha"]}>
+              {({ timestamp, imageCaptcha }) => {
+                return (
+                  <ProFormCaptcha
+                    name="captcha"
+                    fieldProps={{
+                      size: "large",
+                      prefix: (
+                        <LockOutlined
+                          style={{
+                            color: token.colorText,
+                          }}
+                        />
+                      ),
+                    }}
+                    captchaProps={{
+                      size: "large",
+                    }}
+                    placeholder="请输入验证码"
+                    rules={[
+                      {
+                        required: true,
+                        message: "请输入验证码!",
+                      },
+                    ]}
+                    phoneName="email"
+                    onGetCaptcha={async (email) => {
+                      await sendCaptcha({
+                        scope: "SYSTEM",
+                        target: email,
                         timestamp,
                         captcha: imageCaptcha,
                       });
