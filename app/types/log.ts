@@ -41,3 +41,24 @@ export interface SystemLogResponse extends EntityResponse<string> {
     nickname: string;
   };
 }
+
+export interface SmsRecordQuery extends EntityQuery {
+  tenant: string;
+  phone: string;
+  signature: string;
+  template: string;
+  message: string;
+  success: boolean;
+}
+
+export interface SmsRecordResponse extends EntityResponse<string> {
+  id: string;
+  tenant: string;
+  phone: string;
+  signature: string;
+  template: string;
+  content: string;
+  message: string;
+  success: boolean;
+  createAt: string;
+}
