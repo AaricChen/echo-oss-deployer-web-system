@@ -49,6 +49,7 @@ export interface SmsRecordQuery extends EntityQuery {
   template: string;
   message: string;
   success: boolean;
+  createAt: string;
 }
 
 export interface SmsRecordResponse extends EntityResponse<string> {
@@ -60,5 +61,24 @@ export interface SmsRecordResponse extends EntityResponse<string> {
   content: string;
   message: string;
   success: boolean;
+  createAt: string;
+}
+
+export interface EmailRecordQuery extends EntityQuery {
+  tenant: string;
+  email: string;
+  subject: string;
+  success: boolean;
+  createAt: string;
+}
+
+export interface EmailRecordResponse extends EntityResponse<string> {
+  id: string;
+  tenant: string;
+  email: string;
+  subject: string;
+  content: string;
+  success: boolean;
+  message: string;
   createAt: string;
 }

@@ -2,37 +2,31 @@ import { PageContainer, ProTable } from "@ant-design/pro-components";
 import { useState } from "react";
 import Authorization from "~/components/security/Authorization";
 import { useTableRequest } from "~/hooks/http";
-import type { SmsRecordResponse } from "~/types/log";
+import type { EmailRecordResponse } from "~/types/log";
 
-export default function SmsLogPage() {
+export default function EmailLogPage() {
   const { mutateAsync: getLogs } =
-    useTableRequest<SmsRecordResponse>("/sms/record");
+    useTableRequest<EmailRecordResponse>("/email/record");
   const [open, setOpen] = useState(false);
-  const [log, setLog] = useState<SmsRecordResponse | null>(null);
+  const [log, setLog] = useState<EmailRecordResponse | null>(null);
   return (
     <PageContainer
       content={
         <Authorization permission="system.system-log:query">
-          <ProTable<SmsRecordResponse>
+          <ProTable<EmailRecordResponse>
             rowKey="id"
             bordered
             headerTitle="系统活动日志"
             scroll={{ x: "max-content" }}
             columns={[
               {
-                title: "手机号",
-                dataIndex: "phone",
+                title: "邮箱",
+                dataIndex: "email",
                 align: "center",
               },
               {
-                title: "签名",
-                dataIndex: "signature",
-                align: "center",
-                search: false,
-              },
-              {
-                title: "模板",
-                dataIndex: "template",
+                title: "主题",
+                dataIndex: "subject",
                 align: "center",
                 search: false,
               },
@@ -52,6 +46,15 @@ export default function SmsLogPage() {
                 },
               },
               {
+                title: "发送时间",
+                dataIndex: "createAt",
+                align: "center",
+                valueType: "dateTimeRange",
+                render(_, entity) {
+                  return entity.createAt;
+                },
+              },
+              {
                 title: "内容",
                 dataIndex: "content",
                 align: "center",
@@ -62,15 +65,6 @@ export default function SmsLogPage() {
                 dataIndex: "message",
                 align: "center",
                 search: false,
-              },
-              {
-                title: "发送时间",
-                dataIndex: "createAt",
-                align: "center",
-                valueType: "dateTimeRange",
-                render(_, entity) {
-                  return entity.createAt;
-                },
               },
             ]}
             request={async (params, sort, filter) => {
