@@ -9,6 +9,7 @@ import type {
   AuthenticationConfigResponse,
   AuthRequest,
   AuthResponse,
+  CryptoMessageChallengeResponse,
 } from "~/types/auth";
 
 export function useLogin() {
@@ -67,5 +68,18 @@ export function useAuthCaptcha(type: "phone" | "email") {
   return usePost<AuthCaptchaRequest, AuthCaptchaResponse>({
     url: `/auth/captcha/${type}`,
     action: "发送验证码",
+  });
+}
+
+export function useCryptoMessageChallenge(address?: string) {
+  return useGet<CryptoMessageChallengeResponse>({
+    queryKey: ["crypto-message-challenge", address],
+    params: {
+      address,
+    },
+    url: "/auth/crypto/challenge",
+    options: {
+      enabled: !!address,
+    },
   });
 }

@@ -9,10 +9,16 @@ import {
 
 import { ProConfigProvider } from "@ant-design/pro-components";
 import "@ant-design/v5-patch-for-react-19";
+import { createAppKit } from "@reown/appkit/react";
+import { WagmiAdapter } from "@reown/appkit-adapter-wagmi";
+import { mainnet, type AppKitNetwork } from "@reown/appkit/networks";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { App, ConfigProvider } from "antd";
 import React from "react";
+import { WagmiProvider } from "wagmi";
+import Logo from "~/assets/logo.png";
 import { valueTypeMap } from "~/components/form/valueType";
+import { appConfig } from "~/configs/app";
 import type { Route } from "./+types/root";
 import "./app.css";
 
@@ -23,6 +29,27 @@ const queryClient = new QueryClient({
       retry: false,
     },
   },
+});
+
+const reownProjectId = "ce7a1f8e4c1b8e1b490e2b4a33f509a5";
+const reownMetadata = {
+  name: appConfig.name,
+  description: appConfig.description,
+  url: appConfig.url,
+  icons: [Logo],
+};
+const networks = [mainnet] as [AppKitNetwork, ...AppKitNetwork[]];
+const wagmiAdapter = new WagmiAdapter({
+  networks,
+  projectId: reownProjectId,
+  ssr: false,
+});
+
+createAppKit({
+  adapters: [wagmiAdapter],
+  networks,
+  projectId: reownProjectId,
+  metadata: reownMetadata,
 });
 
 export const links: Route.LinksFunction = () => [
@@ -59,15 +86,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
 export default function Application() {
   return (
     <React.StrictMode>
-      <QueryClientProvider client={queryClient}>
-        <ConfigProvider theme={{}}>
-          <ProConfigProvider valueTypeMap={valueTypeMap}>
-            <App>
-              <Outlet />
-            </App>
-          </ProConfigProvider>
-        </ConfigProvider>
-      </QueryClientProvider>
+      <WagmiProvider config={wagmiAdapter.wagmiConfig}>
+        <QueryClientProvider client={queryClient}>
+          <ConfigProvider theme={{}}>
+            <ProConfigProvider valueTypeMap={valueTypeMap}>
+              <App>
+                <Outlet />
+              </App>
+            </ProConfigProvider>
+          </ConfigProvider>
+        </QueryClientProvider>
+      </WagmiProvider>
     </React.StrictMode>
   );
 }

@@ -10,9 +10,17 @@ import {
   ProFormDependency,
   ProFormText,
 } from "@ant-design/pro-components";
-import { Tabs, theme, type FormInstance } from "antd";
+import { useAppKit, useAppKitAccount } from "@reown/appkit/react";
+
+import { Button, Tabs, theme, type FormInstance } from "antd";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useAuthCaptcha, useAuthenticationConfig, useLogin } from "~/apis/auth";
+import { useSignMessage } from "wagmi";
+import {
+  useAuthCaptcha,
+  useAuthenticationConfig,
+  useCryptoMessageChallenge,
+  useLogin,
+} from "~/apis/auth";
 import ImageCaptcha from "~/components/form/ImageCaptcha";
 import { appConfig } from "~/configs/app";
 import { AuthenticationType } from "~/types/auth";
@@ -26,6 +34,14 @@ export default function LoginPage() {
     type === "PHONE_CAPTCHA" ? "phone" : "email",
   );
   const formRef = useRef<FormInstance>(null);
+
+  const { open } = useAppKit();
+  const { address, isConnected } = useAppKitAccount({
+    namespace: "eip155",
+  });
+  const { data: messageChallenge } = useCryptoMessageChallenge(address);
+  const { signMessageAsync } = useSignMessage();
+
   useEffect(() => {
     if (config) {
       if (config.usernameAuthentication) {
@@ -60,6 +76,11 @@ export default function LoginPage() {
         contentStyle={{
           width: 380,
         }}
+        submitter={{
+          submitButtonProps: {
+            disabled: type === "CRYPTO" && !isConnected,
+          },
+        }}
         onFinish={async (values) => {
           if (type === "USERNAME") {
             await login.mutateAsync({
@@ -80,12 +101,17 @@ export default function LoginPage() {
               credential: values.captcha,
             });
           } else if (type === "CRYPTO") {
-            await login.mutateAsync({
-              type,
-              identity: values.address,
-              credential: values.signature,
-              message: values.message,
-            });
+            if (messageChallenge && address) {
+              const signature = await signMessageAsync({
+                message: messageChallenge.message,
+              });
+              await login.mutateAsync({
+                type,
+                identity: address,
+                credential: signature,
+                message: messageChallenge.message,
+              });
+            }
           }
         }}
       >
@@ -298,6 +324,30 @@ export default function LoginPage() {
               }}
             </ProFormDependency>
           </>
+        )}
+        {type === "CRYPTO" && (
+          <div className="mb-4 flex flex-col">
+            {isConnected ? (
+              <Button
+                type="dashed"
+                onClick={() =>
+                  open({
+                    namespace: "eip155",
+                    view: "Account",
+                  })
+                }
+              >
+                {address}
+              </Button>
+            ) : (
+              <Button
+                type="dashed"
+                onClick={() => open({ namespace: "eip155" })}
+              >
+                连接钱包
+              </Button>
+            )}
+          </div>
         )}
       </LoginForm>
     </div>

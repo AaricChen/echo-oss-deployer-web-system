@@ -1,10 +1,12 @@
 import type { MenuDataItem } from "@ant-design/pro-components";
 import { useMemo } from "react";
+import { useCurrentAccount } from "~/apis/account";
 import Icon, { iconMap } from "~/components/icon";
 import { useGet } from "~/hooks/http";
 import type { MenuResponse } from "~/types/menu";
 
 export function useSidebar() {
+  const { data: account } = useCurrentAccount();
   const { data } = useGet<MenuResponse>({
     queryKey: ["sidebar-menu"],
     url: "/menu",
@@ -14,6 +16,7 @@ export function useSidebar() {
     options: {
       ignoreError: true,
       staleTime: Infinity,
+      enabled: !!account,
     },
   });
 

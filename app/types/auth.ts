@@ -32,6 +32,14 @@ export interface AuthenticationConfigResponse {
   /** 密码学认证 */
   cryptoAuthentication: boolean;
 }
+export interface CryptoMessageChallengeRequest {
+  address: string;
+}
+/** 密码学认证消息挑战响应 */
+export interface CryptoMessageChallengeResponse {
+  /** 消息体 */
+  message: string;
+}
 
 export interface AuthCaptchaRequest {
   /** 安全域 */
