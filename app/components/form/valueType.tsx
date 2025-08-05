@@ -1,7 +1,9 @@
 import type { ProRenderFieldPropsType } from "@ant-design/pro-components";
+import ImagePreview from "~/components/common/ImagePreview";
 import DepartmentSelect from "~/components/form/DepartmentSelect";
 import DistrictSelect from "~/components/form/DistrictSelect";
 import DistrictText from "~/components/form/DistrictText";
+import ImageUpload from "~/components/form/ImageUpload";
 import PermissionGroupSelect from "~/components/form/PermissionGroupSelect";
 import PermissionSelect from "~/components/form/PermissionSelect";
 import RoleSelect from "~/components/form/RoleSelect";
@@ -80,6 +82,14 @@ export const valueTypeMap: Record<string, ProRenderFieldPropsType> = {
     },
     renderFormItem: (value, { fieldProps }) => {
       return <DistrictSelect value={value} fieldProps={fieldProps} />;
+    },
+  },
+  image: {
+    render: (value, { fieldProps }) => {
+      return <ImagePreview value={value} width={fieldProps.width} />;
+    },
+    renderFormItem: (value, { fieldProps }) => {
+      return <ImageUpload value={value} {...fieldProps} />;
     },
   },
 };
