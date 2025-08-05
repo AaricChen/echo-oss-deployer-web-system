@@ -60,7 +60,7 @@ export interface EntityTableProps<
   rowActionRender?: ({}: {
     action: ActionType | null;
     entity: Entity;
-  }) => React.ReactNode[];
+  }) => (React.ReactNode | EntityTableAction<UpdateRequest, Entity>)[];
   tableAlertRender?: ({}: {
     action: ActionType | null;
     selectedRowKeys: React.Key[];
@@ -80,6 +80,7 @@ export type EntityTableAction<EntityRequest, Response> =
       mutation?: UseMutationResult<Response, DefaultError, EntityRequest>;
       name?: string;
       url?: string;
+      urlSuffix?: string;
     };
 
 export default function EntityTable<
@@ -144,7 +145,10 @@ export default function EntityTable<
           align: "center",
           fixed: "right",
           render: (_, record: Entity) => {
-            let rowActions: React.ReactNode[] = [];
+            let rowActions: (
+              | React.ReactNode
+              | EntityTableAction<UpdateRequest, Entity>
+            )[] = [];
             if (rowActionRender) {
               rowActions = rowActionRender({
                 action: tableAction.current,
@@ -153,6 +157,34 @@ export default function EntityTable<
             }
             return (
               <div className="flex items-center gap-1">
+                {rowActions.map((action) => {
+                  if (
+                    action &&
+                    typeof action === "object" &&
+                    "columns" in action
+                  ) {
+                    const rowAction = action as EntityTableAction<
+                      UpdateRequest,
+                      Entity
+                    >;
+                    if (rowAction && rowAction.columns) {
+                      return (
+                        <EntityUpdateForm
+                          columns={action.columns ?? []}
+                          entityConfig={entityConfig}
+                          entity={record}
+                          action={rowAction}
+                          buttonProps={updateButtonProps}
+                          onFinish={async () => tableAction.current?.reload()}
+                        />
+                      );
+                    } else {
+                      return null;
+                    }
+                  }
+                  return action as React.ReactNode;
+                })}
+
                 <Authorization permission={entityConfig.permissions.update}>
                   <EntityUpdateForm
                     columns={updateFormColumns}
@@ -177,7 +209,6 @@ export default function EntityTable<
                     />
                   </Authorization>
                 )}
-                {rowActions.map((action) => action)}
               </div>
             );
           },

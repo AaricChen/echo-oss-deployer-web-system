@@ -8,6 +8,7 @@ import type { HttpResponse } from "~/types/http";
 import { getImageBase64, type FileType } from "~/utils/image";
 
 export interface ImageUploadProps extends Omit<UploadProps, "onChange"> {
+  value?: string | string[];
   uploadText?: string;
   maxCount?: number;
   pastable?: boolean;
@@ -16,6 +17,7 @@ export interface ImageUploadProps extends Omit<UploadProps, "onChange"> {
 }
 
 export default function ImageUpload({
+  value,
   uploadText = "选择图片",
   maxCount = 1,
   disabled,
@@ -44,6 +46,25 @@ export default function ImageUpload({
   const multiple = useMemo(() => {
     return maxCount > 1;
   }, [maxCount]);
+
+  useEffect(() => {
+    if (Array.isArray(value)) {
+      if (value.every((item) => item.startsWith("http"))) {
+        setFileList(
+          value.map((item) => ({
+            uid: item,
+            name: "image.png",
+            status: "done",
+            url: item,
+          })),
+        );
+      }
+    } else if (value && value.startsWith("http")) {
+      setFileList([
+        { uid: value, name: "image.png", status: "done", url: value },
+      ]);
+    }
+  }, [value]);
 
   useEffect(() => {
     const tokens = fileList

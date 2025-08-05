@@ -54,10 +54,24 @@ export default function EntityUpdateForm<
     }
   }, [action, entityConfig]);
 
+  const actionName = useMemo(() => {
+    if (action && action.name) {
+      return `${action.name}`;
+    } else {
+      return `编辑`;
+    }
+  }, [action, entityConfig]);
+
   const [open, setOpen] = useState(false);
   const { mutateAsync: updateEntity } = usePut<UpdateRequest, Entity>({
-    url: (request) => `${actionUrl}/${request.id}`,
-    action: `编辑${entityConfig.name}`,
+    url: (request) => {
+      if (action && action.urlSuffix) {
+        return `${actionUrl}/${request.id}${action.urlSuffix}`;
+      } else {
+        return `${actionUrl}/${request.id}`;
+      }
+    },
+    action: `${actionName}${entityConfig.name}`,
   });
 
   const { disabled, loading }: UpdateButtonProps = useMemo(() => {
@@ -79,12 +93,12 @@ export default function EntityUpdateForm<
         type="link"
         onClick={() => setOpen(true)}
       >
-        编辑
+        {actionName}
       </Button>
       <Modal
         open={open}
         onCancel={() => setOpen(false)}
-        title={`编辑${action.name ?? entityConfig.name}`}
+        title={`${actionName}${entityConfig.name}`}
         footer={false}
         destroyOnHidden
       >
