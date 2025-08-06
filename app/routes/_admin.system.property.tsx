@@ -1,12 +1,12 @@
 import { PageContainer } from "@ant-design/pro-components";
 import { Button, Popconfirm } from "antd";
 import { useResetSystemProperty } from "~/apis/systemProperty";
-import EntityTable from "~/components/entity/EntityTable";
 import Authorization from "~/components/security/Authorization";
+import EntityTable from "~/components/table/EntityTable";
 import {
-  SystemPropertyEntity,
   type SystemPropertyQuery,
   type SystemPropertyResponse,
+  type SystemPropertyUpdateRequest,
 } from "~/types/systemProperty";
 
 export default function SystemPropertyPage() {
@@ -14,20 +14,59 @@ export default function SystemPropertyPage() {
   return (
     <PageContainer
       content={
-        <EntityTable<SystemPropertyResponse, SystemPropertyQuery>
-          entityConfig={SystemPropertyEntity}
-          createAction={false}
-          updateButtonProps={(entity) => ({ disabled: !entity.editable })}
-          deleteAction={false}
-          columns={[
+        <EntityTable<
+          SystemPropertyResponse,
+          SystemPropertyQuery,
+          {
+            update: SystemPropertyUpdateRequest;
+          }
+        >
+          entity="system-property"
+          name="系统属性"
+          baseUrl="/system/property"
+          permission="system.system-property:query"
+          rowActions={({ tableAction }, { entity }) => [
+            <Authorization permission="system.system-property:update">
+              <Popconfirm
+                title="确定要重置系统属性吗？"
+                key="items"
+                onConfirm={async () => {
+                  await resetSystemProperty({ id: entity.id });
+                  tableAction.reload();
+                }}
+              >
+                <Button disabled={!entity.editable} type="link">
+                  重置
+                </Button>
+              </Popconfirm>
+            </Authorization>,
             {
-              dataIndex: "id",
-              search: false,
-              hideInTable: true,
-              formItemProps: {
-                hidden: true,
+              action: "update",
+              initialValues: {
+                id: entity.id,
+                value: entity.value,
               },
+              buttonProps: {
+                disabled: !entity.editable,
+              },
+              columns: [
+                {
+                  dataIndex: "id",
+                  formItemProps: {
+                    hidden: true,
+                  },
+                },
+                {
+                  title: "属性值",
+                  dataIndex: "value",
+                  colProps: {
+                    xs: 24,
+                  },
+                },
+              ],
             },
+          ]}
+          columns={[
             {
               title: "属性内容",
               dataIndex: "content",
@@ -48,7 +87,6 @@ export default function SystemPropertyPage() {
               title: "属性类型",
               dataIndex: "catalog",
               hideInTable: true,
-              hideInForm: true,
               valueType: "select",
               valueEnum: {
                 INFO: "信息",
@@ -60,10 +98,6 @@ export default function SystemPropertyPage() {
               dataIndex: "name",
               align: "center",
               search: false,
-              colProps: {
-                xs: 24,
-                lg: 12,
-              },
               fieldProps: {
                 disabled: true,
               },
@@ -73,10 +107,6 @@ export default function SystemPropertyPage() {
               dataIndex: "description",
               align: "center",
               search: false,
-              colProps: {
-                xs: 24,
-                lg: 12,
-              },
               fieldProps: {
                 disabled: true,
               },
@@ -86,7 +116,11 @@ export default function SystemPropertyPage() {
               dataIndex: "catalog",
               align: "center",
               search: false,
-              hideInForm: true,
+              valueType: "select",
+              valueEnum: {
+                INFO: "信息",
+                SYSTEM: "系统",
+              },
             },
             {
               title: "可编辑",
@@ -110,29 +144,8 @@ export default function SystemPropertyPage() {
               dataIndex: "value",
               align: "center",
               search: false,
-              colProps: {
-                xs: 24,
-              },
             },
           ]}
-          rowActionRender={({ action, entity }) => {
-            return [
-              <Authorization permission="system.system-property:update">
-                <Popconfirm
-                  title="确定要重置系统属性吗？"
-                  key="items"
-                  onConfirm={async () => {
-                    await resetSystemProperty({ id: entity.id });
-                    action?.reload();
-                  }}
-                >
-                  <Button disabled={!entity.editable} type="link">
-                    重置
-                  </Button>
-                </Popconfirm>
-              </Authorization>,
-            ];
-          }}
         />
       }
     />
