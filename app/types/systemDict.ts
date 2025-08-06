@@ -1,4 +1,9 @@
-import type { EntityConfig, EntityQuery, EntityResponse } from "~/types/entity";
+import type {
+  EntityConfig,
+  EntityCreateRequest,
+  EntityQuery,
+  EntityResponse,
+} from "~/types/entity";
 
 export const SystemDictEntity: EntityConfig = {
   name: "系统字典",
@@ -19,13 +24,22 @@ export interface SystemDictResponse extends EntityResponse<string> {
 }
 
 export interface SystemDictItemQuery extends EntityQuery {
-  dict: string;
+  dict?: string;
   name?: string;
   code?: string;
 }
 
+export interface SystemDictItemCreateRequest extends EntityCreateRequest {
+  dict: string; // 所属字典
+  name: string; // 字典项名称
+  code: string; // 字典项代码
+  sequence?: number; // 排序
+  parent?: string; // 父项
+}
+
 export interface SystemDictItemResponse extends EntityResponse<string> {
   id: string;
+  dict: string;
   name: string;
   code: string;
 }
