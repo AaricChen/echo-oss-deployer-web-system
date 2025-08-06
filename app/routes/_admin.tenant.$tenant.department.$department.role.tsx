@@ -3,16 +3,14 @@ import { PageContainer } from "@ant-design/pro-components";
 import { Button, Tag } from "antd";
 import { useNavigate } from "react-router";
 import { useTenantBasicInfo } from "~/apis/tenant";
-import EntityTable from "~/components/entity/EntityTable";
 import RolePermissionPreviewer from "~/components/role/RolePermissionPreviewer";
+import EntityTable from "~/components/table/EntityTable";
 import { useGet } from "~/hooks/http";
 import {
   DataScopeLevel,
-  RoleEntity,
   type DataScopeEntity,
   type DataScopeResponse,
   type RoleCreateRequest,
-  type RoleDeleteRequest,
   type RoleQuery,
   type RoleResponse,
   type RoleUpdateRequest,
@@ -40,210 +38,403 @@ export default function TenantRolePage({ params }: Route.ComponentProps) {
           返回部门管理
         </Button>
       }
-    >
-      <EntityTable<
-        RoleResponse,
-        RoleQuery,
-        RoleCreateRequest,
-        RoleUpdateRequest,
-        RoleDeleteRequest
-      >
-        query={{
-          tenant,
-          department,
-        }}
-        entityConfig={RoleEntity}
-        createInitialValues={{
-          scope: "TENANT",
-          tenant,
-          department,
-          name: "",
-          permissions: [],
-          permissionGroups: [],
-        }}
-        columns={[
+      content={
+        <EntityTable<
+          RoleResponse,
+          RoleQuery,
           {
-            dataIndex: "id",
-            search: false,
-            hideInTable: true,
-            formItemProps: {
-              hidden: true,
-            },
-          },
-          {
-            dataIndex: "scope",
-            search: false,
-            hideInTable: true,
-            formItemProps: {
-              hidden: true,
-            },
-          },
-          {
-            dataIndex: "tenant",
-            search: false,
-            hideInTable: true,
-            formItemProps: {
-              hidden: true,
-            },
-          },
-          {
-            dataIndex: "department",
-            search: false,
-            hideInTable: true,
-            formItemProps: {
-              hidden: true,
-            },
-          },
-          {
-            title: "名称",
-            dataIndex: "name",
-            align: "center",
-            formItemProps: {
-              rules: [
-                { required: true, message: "请输入名称" },
-                { max: 32, message: "名称长度不能超过32个字符" },
+            create: RoleCreateRequest;
+            update: RoleUpdateRequest;
+          }
+        >
+          entity="role"
+          name="角色"
+          baseUrl="/role"
+          query={{
+            tenant,
+            department,
+          }}
+          toolbarActions={() => [
+            {
+              action: "create",
+              permission: "system.role:create",
+              initialValues: {
+                scope: "TENANT",
+                tenant,
+                department,
+                name: "",
+                permissions: [],
+                permissionGroups: [],
+              },
+              columns: [
+                {
+                  dataIndex: "scope",
+                  formItemProps: {
+                    hidden: true,
+                  },
+                },
+                {
+                  dataIndex: "tenant",
+                  formItemProps: {
+                    hidden: true,
+                  },
+                },
+                {
+                  dataIndex: "department",
+                  formItemProps: {
+                    hidden: true,
+                  },
+                },
+                {
+                  title: "名称",
+                  dataIndex: "name",
+                  formItemProps: {
+                    rules: [
+                      { required: true, message: "请输入名称" },
+                      { max: 32, message: "名称长度不能超过32个字符" },
+                    ],
+                  },
+                  colProps: {
+                    xs: 24,
+                    lg: 12,
+                  },
+                },
+                {
+                  title: "备注",
+                  dataIndex: "remark",
+                  formItemProps: {
+                    rules: [{ max: 64, message: "备注长度不能超过64个字符" }],
+                  },
+                  colProps: {
+                    xs: 24,
+                    lg: 12,
+                  },
+                },
+                {
+                  title: "权限组",
+                  dataIndex: "permissionGroups",
+                  valueType: "permissionGroup" as any,
+                  fieldProps: {
+                    mode: "multiple",
+                    scope: "TENANT",
+                    tenant,
+                  },
+                },
+                {
+                  title: "权限",
+                  dataIndex: "permissions",
+                  valueType: "permission" as any,
+                  fieldProps: {
+                    scope: "TENANT",
+                  },
+                },
+                {
+                  title: "数据范围",
+                  dataIndex: "dataScopes",
+                  valueType: "formList",
+                  search: false,
+                  align: "center",
+                  formItemProps: {
+                    tooltip:
+                      "数据范围定义了该角色可以访问的实体和部门，一个角色可以有多个数据范围",
+                  },
+                  fieldProps: {
+                    creatorButtonProps: {
+                      creatorButtonText: "新增数据范围",
+                    },
+                  },
+                  renderText: (dataScopes: DataScopeResponse[]) => {
+                    return dataScopes.map((item) => (
+                      <Tag key={item.level}>
+                        {DataScopeLevel[item.level].text}
+                      </Tag>
+                    ));
+                  },
+                  columns: [
+                    {
+                      valueType: "group",
+                      columns: [
+                        {
+                          title: "访问级别",
+                          dataIndex: "level",
+                          valueType: "select",
+                          valueEnum: DataScopeLevel,
+                          formItemProps: {
+                            tooltip: "访问级别定义了该角色可以访问的部门信息",
+                          },
+                          colProps: {
+                            xs: 24,
+                            lg: 10,
+                          },
+                        },
+                        {
+                          title: "实体列表",
+                          dataIndex: "entities",
+                          valueType: "select",
+                          formItemProps: {
+                            tooltip:
+                              "设置该数据范围对那些实体有效，不选择表示该数据范围对所有实体有效",
+                          },
+                          fieldProps: {
+                            options: scopeEntities,
+                            mode: "multiple",
+                          },
+                          colProps: {
+                            xs: 24,
+                            lg: 14,
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      valueType: "dependency",
+                      name: ["level"],
+                      columns: ({ level }) => {
+                        if (level === "CUSTOM") {
+                          return [
+                            {
+                              title: "自定义部门",
+                              dataIndex: "departments",
+                              valueType: "department" as any,
+                              formItemProps: {
+                                tooltip:
+                                  "在访问级别为自定义时，可以设置该数据范围对那些部门有效",
+                              },
+                              fieldProps: {
+                                tenant,
+                                mode: "multiple",
+                              },
+                            },
+                          ];
+                        } else {
+                          return [];
+                        }
+                      },
+                    },
+                  ],
+                },
               ],
             },
-            colProps: {
-              xs: 24,
-              lg: 12,
-            },
-          },
-          {
-            title: "备注",
-            dataIndex: "remark",
-            align: "center",
-            formItemProps: {
-              rules: [{ max: 64, message: "备注长度不能超过64个字符" }],
-            },
-            colProps: {
-              xs: 24,
-              lg: 12,
-            },
-          },
-          {
-            title: "权限组数量",
-            dataIndex: "permissionGroups",
-            valueType: "permissionGroup" as any,
-            search: false,
-            align: "right",
-            formItemProps: {
-              label: "权限组列表",
-            },
-            fieldProps: {
-              mode: "multiple",
-              scope: "TENANT",
-              tenant,
-            },
-          },
-          {
-            title: "权限数量",
-            dataIndex: "permissions",
-            valueType: "permission" as any,
-            search: false,
-            align: "right",
-            formItemProps: {
-              label: "权限列表",
-            },
-            fieldProps: {
-              scope: "TENANT",
-            },
-          },
-          {
-            title: "权限列表",
-            dataIndex: "aggregatedPermissions",
-            align: "center",
-            hideInForm: true,
-            search: false,
-            render: (_, record) => {
-              return <RolePermissionPreviewer scope="TENANT" role={record} />;
-            },
-          },
-          {
-            title: "数据范围",
-            dataIndex: "dataScopes",
-            valueType: "formList",
-            search: false,
-            align: "center",
-            formItemProps: {
-              tooltip:
-                "数据范围定义了该角色可以访问的实体和部门，一个角色可以有多个数据范围",
-            },
-            fieldProps: {
-              creatorButtonProps: {
-                creatorButtonText: "新增数据范围",
-              },
-            },
-            renderText: (dataScopes: DataScopeResponse[]) => {
-              return dataScopes.map((item) => (
-                <Tag key={item.level}>{DataScopeLevel[item.level].text}</Tag>
-              ));
-            },
-            columns: [
-              {
-                valueType: "group",
-                columns: [
-                  {
-                    title: "访问级别",
-                    dataIndex: "level",
-                    valueType: "select",
-                    valueEnum: DataScopeLevel,
-                    formItemProps: {
-                      tooltip: "访问级别定义了该角色可以访问的部门信息",
-                    },
-                    colProps: {
-                      xs: 24,
-                      lg: 10,
-                    },
+          ]}
+          rowActions={() => [
+            {
+              action: "update",
+              permission: "system.role:update",
+              columns: [
+                {
+                  dataIndex: "id",
+                  formItemProps: {
+                    hidden: true,
                   },
-                  {
-                    title: "实体列表",
-                    dataIndex: "entities",
-                    valueType: "select",
-                    formItemProps: {
-                      tooltip:
-                        "设置该数据范围对那些实体有效，不选择表示该数据范围对所有实体有效",
-                    },
-                    fieldProps: {
-                      options: scopeEntities,
-                      mode: "multiple",
-                    },
-                    colProps: {
-                      xs: 24,
-                      lg: 14,
-                    },
-                  },
-                ],
-              },
-              {
-                valueType: "dependency",
-                name: ["level"],
-                columns: ({ level }) => {
-                  if (level === "CUSTOM") {
-                    return [
-                      {
-                        title: "自定义部门",
-                        dataIndex: "departments",
-                        valueType: "department" as any,
-                        formItemProps: {
-                          tooltip:
-                            "在访问级别为自定义时，可以设置该数据范围对那些部门有效",
-                        },
-                        fieldProps: {
-                          tenant,
-                          mode: "multiple",
-                        },
-                      },
-                    ];
-                  } else {
-                    return [];
-                  }
                 },
+                {
+                  dataIndex: "scope",
+                  formItemProps: {
+                    hidden: true,
+                  },
+                },
+                {
+                  dataIndex: "tenant",
+                  formItemProps: {
+                    hidden: true,
+                  },
+                },
+                {
+                  dataIndex: "department",
+                  formItemProps: {
+                    hidden: true,
+                  },
+                },
+                {
+                  title: "名称",
+                  dataIndex: "name",
+                  formItemProps: {
+                    rules: [
+                      { required: true, message: "请输入名称" },
+                      { max: 32, message: "名称长度不能超过32个字符" },
+                    ],
+                  },
+                  colProps: {
+                    xs: 24,
+                    lg: 12,
+                  },
+                },
+                {
+                  title: "备注",
+                  dataIndex: "remark",
+                  formItemProps: {
+                    rules: [{ max: 64, message: "备注长度不能超过64个字符" }],
+                  },
+                  colProps: {
+                    xs: 24,
+                    lg: 12,
+                  },
+                },
+                {
+                  title: "权限组",
+                  dataIndex: "permissionGroups",
+                  valueType: "permissionGroup" as any,
+                  fieldProps: {
+                    mode: "multiple",
+                    scope: "TENANT",
+                    tenant,
+                  },
+                },
+                {
+                  title: "权限",
+                  dataIndex: "permissions",
+                  valueType: "permission" as any,
+                  fieldProps: {
+                    scope: "TENANT",
+                  },
+                },
+                {
+                  title: "数据范围",
+                  dataIndex: "dataScopes",
+                  valueType: "formList",
+                  search: false,
+                  align: "center",
+                  formItemProps: {
+                    tooltip:
+                      "数据范围定义了该角色可以访问的实体和部门，一个角色可以有多个数据范围",
+                  },
+                  fieldProps: {
+                    creatorButtonProps: {
+                      creatorButtonText: "新增数据范围",
+                    },
+                  },
+                  renderText: (dataScopes: DataScopeResponse[]) => {
+                    return dataScopes.map((item) => (
+                      <Tag key={item.level}>
+                        {DataScopeLevel[item.level].text}
+                      </Tag>
+                    ));
+                  },
+                  columns: [
+                    {
+                      valueType: "group",
+                      columns: [
+                        {
+                          title: "访问级别",
+                          dataIndex: "level",
+                          valueType: "select",
+                          valueEnum: DataScopeLevel,
+                          formItemProps: {
+                            tooltip: "访问级别定义了该角色可以访问的部门信息",
+                          },
+                          colProps: {
+                            xs: 24,
+                            lg: 10,
+                          },
+                        },
+                        {
+                          title: "实体列表",
+                          dataIndex: "entities",
+                          valueType: "select",
+                          formItemProps: {
+                            tooltip:
+                              "设置该数据范围对那些实体有效，不选择表示该数据范围对所有实体有效",
+                          },
+                          fieldProps: {
+                            options: scopeEntities,
+                            mode: "multiple",
+                          },
+                          colProps: {
+                            xs: 24,
+                            lg: 14,
+                          },
+                        },
+                      ],
+                    },
+                    {
+                      valueType: "dependency",
+                      name: ["level"],
+                      columns: ({ level }) => {
+                        if (level === "CUSTOM") {
+                          return [
+                            {
+                              title: "自定义部门",
+                              dataIndex: "departments",
+                              valueType: "department" as any,
+                              formItemProps: {
+                                tooltip:
+                                  "在访问级别为自定义时，可以设置该数据范围对那些部门有效",
+                              },
+                              fieldProps: {
+                                tenant,
+                                mode: "multiple",
+                              },
+                            },
+                          ];
+                        } else {
+                          return [];
+                        }
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              action: "delete",
+              permission: "system.role:delete",
+            },
+          ]}
+          batchOptionActions={() => [
+            {
+              action: "batch-delete",
+              permission: "system.role:delete",
+            },
+          ]}
+          columns={[
+            {
+              title: "名称",
+              dataIndex: "name",
+              align: "center",
+            },
+            {
+              title: "备注",
+              dataIndex: "remark",
+              align: "center",
+            },
+            {
+              title: "权限组数量",
+              dataIndex: "permissionGroups",
+              valueType: "permissionGroup" as any,
+              search: false,
+              align: "right",
+            },
+            {
+              title: "权限数量",
+              dataIndex: "permissions",
+              valueType: "permission" as any,
+              search: false,
+              align: "right",
+            },
+            {
+              title: "权限列表",
+              dataIndex: "aggregatedPermissions",
+              align: "center",
+              search: false,
+              render: (_, record) => {
+                return <RolePermissionPreviewer scope="TENANT" role={record} />;
               },
-            ],
-          },
-        ]}
-      />
-    </PageContainer>
+            },
+            {
+              title: "数据范围",
+              dataIndex: "dataScopes",
+              valueType: "formList",
+              search: false,
+              align: "center",
+              renderText: (dataScopes: DataScopeResponse[]) => {
+                return dataScopes.map((item) => (
+                  <Tag key={item.level}>{DataScopeLevel[item.level].text}</Tag>
+                ));
+              },
+            },
+          ]}
+        />
+      }
+    />
   );
 }

@@ -194,7 +194,6 @@ export default function TenantPermissionGroupPage({
               >
                 角色管理
               </Button>
-              ,
             </Authorization>,
             {
               action: "update",
