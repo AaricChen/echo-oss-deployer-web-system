@@ -1,6 +1,5 @@
 import type { BoolStatus, SecurityScope } from "~/types/common";
 import type {
-  EntityConfig,
   EntityCreateRequest,
   EntityDeleteRequest,
   EntityQuery,
@@ -14,17 +13,6 @@ export interface PermissionResponse extends EntityResponse<string> {
   name: string;
   children: PermissionResponse[];
 }
-
-export const PermissionGroupEntity: EntityConfig = {
-  name: "权限组",
-  baseUrl: "/permission/group",
-  permissions: {
-    query: "system.permission-group:query",
-    create: "system.permission-group:create",
-    update: "system.permission-group:update",
-    delete: "system.permission-group:delete",
-  },
-};
 
 export interface PermissionGroupQuery extends EntityQuery {
   name?: string;
