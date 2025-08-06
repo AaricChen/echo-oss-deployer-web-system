@@ -23,8 +23,8 @@ export interface DistrictQuery extends EntityQuery {
   root?: boolean;
 }
 
-export interface DistrictResponse extends EntityResponse<number> {
-  id: number;
+export interface DistrictResponse extends EntityResponse<string> {
+  parent?: string;
   name: string;
   path: string;
   level: number;
@@ -32,9 +32,9 @@ export interface DistrictResponse extends EntityResponse<number> {
 }
 
 export interface DistrictCreateRequest extends EntityCreateRequest {
-  id: number;
+  id: string;
   name: string;
-  parent?: number;
+  parent?: string;
   disabled: boolean;
 }
 

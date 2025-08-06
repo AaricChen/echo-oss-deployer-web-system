@@ -16,6 +16,7 @@ import EntityRowActionForm from "~/components/table/EntityRowActionForm";
 import EntityToolbarActionForm from "~/components/table/EntityToolbarActionForm";
 import { useTableRequest } from "~/hooks/http";
 import type {
+  EntityIdType,
   EntityQuery,
   EntityRequest,
   EntityResponse,
@@ -169,7 +170,7 @@ export interface EntityTableRef<Query extends EntityQuery = EntityQuery> {
 }
 
 export interface EntityTableProps<
-  Entity extends EntityResponse = EntityResponse,
+  Entity extends EntityResponse<EntityIdType> = EntityResponse,
   Query extends EntityQuery = EntityQuery,
   Request = Record<string, EntityRequest>,
 > {
@@ -242,7 +243,7 @@ export interface EntityTableProps<
 }
 
 const EntityTable = <
-  Entity extends EntityResponse = EntityResponse,
+  Entity extends EntityResponse<EntityIdType> = EntityResponse,
   Query extends EntityQuery = EntityQuery,
   Request = Record<string, EntityRequest>,
 >(
@@ -689,7 +690,7 @@ const EntityTable = <
 };
 
 export default forwardRef(EntityTable) as <
-  Entity extends EntityResponse = EntityResponse,
+  Entity extends EntityResponse<EntityIdType> = EntityResponse,
   Query extends EntityQuery = EntityQuery,
   Request = Record<string, EntityRequest>,
 >(
