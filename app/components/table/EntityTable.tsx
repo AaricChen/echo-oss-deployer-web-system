@@ -187,6 +187,7 @@ export interface EntityTableProps<
   search?: ProTableProps<Entity, Query>["search"]; // 表格搜索表单配置
   columnsState?: ProTableProps<Entity, Query>["columnsState"]; // 表格列状态配置
   options?: ProTableProps<Entity, Query>["options"]; // 表格选项配置
+  rowActionWidth?: number; // 行级操作宽度
   tableExtraRender?: ProTableProps<Entity, Query>["tableExtraRender"]; // 表格额外渲染
   onLoad?: (dataSource: Entity[]) => void; // 表格加载完成回调
   beforeSearchSubmit?: (params: Partial<Query>) => Partial<Query>; // 表格搜索表单提交前回调
@@ -275,6 +276,7 @@ const EntityTable = <
     rowActions,
     batchActions,
     batchOptionActions,
+    rowActionWidth = 96,
   } = props;
   const tableAction = useRef<ActionType>(null);
   const searchForm = useRef<ProFormInstance<Query> | undefined>(undefined);
@@ -306,6 +308,7 @@ const EntityTable = <
           dataIndex: "action",
           valueType: "option",
           align: "center",
+          width: rowActionWidth,
           fixed: "right",
           render: (_, record: Entity) => {
             if (rowActions && tableAction.current && searchForm.current) {
@@ -407,7 +410,7 @@ const EntityTable = <
                   }
                 });
                 return (
-                  <div className="flex items-center justify-start gap-1">
+                  <div className="flex items-center justify-center gap-1">
                     {content}
                   </div>
                 );

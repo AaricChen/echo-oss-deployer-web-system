@@ -1,14 +1,14 @@
 import type { EntityQuery, EntityResponse } from "~/types/entity";
 
 export interface SystemLogQuery extends EntityQuery {
-  type: "ACTIVITY" | "OPERATION";
-  requestId: string;
-  accountName: string;
-  description: string;
-  method: string;
-  url: string;
-  ip: string;
-  success: boolean;
+  type: "AUDIT" | "ACTIVITY" | "SYSTEM" | "SECURITY";
+  requestId?: string;
+  accountName?: string;
+  description?: string;
+  method?: string;
+  url?: string;
+  ip?: string;
+  success?: boolean;
 }
 
 export interface SystemLogResponse extends EntityResponse<string> {
