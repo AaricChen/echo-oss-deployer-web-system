@@ -1,23 +1,17 @@
-import { PageContainer, ProTable } from "@ant-design/pro-components";
-import { useState } from "react";
+import { PageContainer } from "@ant-design/pro-components";
 import Authorization from "~/components/security/Authorization";
-import { useTableRequest } from "~/hooks/http";
-import type { SmsRecordResponse } from "~/types/log";
+import EntityTable from "~/components/table/EntityTable";
+import type { SmsRecordQuery, SmsRecordResponse } from "~/types/log";
 
 export default function SmsLogPage() {
-  const { mutateAsync: getLogs } =
-    useTableRequest<SmsRecordResponse>("/sms/record");
-  const [open, setOpen] = useState(false);
-  const [log, setLog] = useState<SmsRecordResponse | null>(null);
   return (
     <PageContainer
       content={
-        <Authorization permission="system.system-log:query">
-          <ProTable<SmsRecordResponse>
-            rowKey="id"
-            bordered
-            headerTitle="系统活动日志"
-            scroll={{ x: "max-content" }}
+        <Authorization permission="system.sms-record:query">
+          <EntityTable<SmsRecordResponse, SmsRecordQuery>
+            entity="sms-record"
+            name="短信日志"
+            baseUrl="/sms/record"
             columns={[
               {
                 title: "手机号",
@@ -73,9 +67,6 @@ export default function SmsLogPage() {
                 },
               },
             ]}
-            request={async (params, sort, filter) => {
-              return getLogs({ params, sort, filter });
-            }}
           />
         </Authorization>
       }

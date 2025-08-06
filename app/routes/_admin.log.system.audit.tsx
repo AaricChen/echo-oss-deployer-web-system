@@ -47,8 +47,8 @@ export default function AuditLogPage() {
                 render(_, entity) {
                   return (
                     <AccountAvatar
-                      avatar={entity.createBy.avatar}
-                      nickname={entity.createBy.nickname}
+                      avatar={entity.createBy?.avatar}
+                      nickname={entity.createBy?.nickname}
                     />
                   );
                 },

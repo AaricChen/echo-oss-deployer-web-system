@@ -1,23 +1,17 @@
-import { PageContainer, ProTable } from "@ant-design/pro-components";
-import { useState } from "react";
+import { PageContainer } from "@ant-design/pro-components";
 import Authorization from "~/components/security/Authorization";
-import { useTableRequest } from "~/hooks/http";
-import type { EmailRecordResponse } from "~/types/log";
+import EntityTable from "~/components/table/EntityTable";
+import type { EmailRecordQuery, EmailRecordResponse } from "~/types/log";
 
 export default function EmailLogPage() {
-  const { mutateAsync: getLogs } =
-    useTableRequest<EmailRecordResponse>("/email/record");
-  const [open, setOpen] = useState(false);
-  const [log, setLog] = useState<EmailRecordResponse | null>(null);
   return (
     <PageContainer
       content={
-        <Authorization permission="system.system-log:query">
-          <ProTable<EmailRecordResponse>
-            rowKey="id"
-            bordered
-            headerTitle="系统活动日志"
-            scroll={{ x: "max-content" }}
+        <Authorization permission="system.email-record:query">
+          <EntityTable<EmailRecordResponse, EmailRecordQuery>
+            entity="email-record"
+            name="邮件日志"
+            baseUrl="/email/record"
             columns={[
               {
                 title: "邮箱",
@@ -67,9 +61,6 @@ export default function EmailLogPage() {
                 search: false,
               },
             ]}
-            request={async (params, sort, filter) => {
-              return getLogs({ params, sort, filter });
-            }}
           />
         </Authorization>
       }

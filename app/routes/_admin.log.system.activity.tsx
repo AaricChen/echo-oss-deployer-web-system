@@ -1,25 +1,36 @@
-import { PageContainer, ProTable } from "@ant-design/pro-components";
+import { PageContainer } from "@ant-design/pro-components";
 import { Button } from "antd";
 import { useState } from "react";
+import AccountAvatar from "~/components/common/AccountAvatar";
 import LogDetails from "~/components/log/LogDetails";
 import Authorization from "~/components/security/Authorization";
-import { useTableRequest } from "~/hooks/http";
-import type { SystemLogResponse } from "~/types/log";
+import EntityTable from "~/components/table/EntityTable";
+import type { SystemLogQuery, SystemLogResponse } from "~/types/log";
 
 export default function ActivityLogPage() {
-  const { mutateAsync: getLogs } =
-    useTableRequest<SystemLogResponse>("/log/system");
   const [open, setOpen] = useState(false);
   const [log, setLog] = useState<SystemLogResponse | null>(null);
   return (
     <PageContainer
       content={
         <Authorization permission="system.system-log:query">
-          <ProTable<SystemLogResponse>
-            rowKey="id"
-            bordered
-            headerTitle="系统活动日志"
-            scroll={{ x: "max-content" }}
+          <EntityTable<SystemLogResponse, SystemLogQuery>
+            entity="system-log"
+            name="活动日志"
+            baseUrl="/log/system"
+            query={{ type: "ACTIVITY" }}
+            rowActions={({}, { entity }) => [
+              <Button
+                key="view"
+                type="link"
+                onClick={() => {
+                  setLog(entity);
+                  setOpen(true);
+                }}
+              >
+                查看
+              </Button>,
+            ]}
             columns={[
               {
                 title: "描述",
@@ -28,22 +39,24 @@ export default function ActivityLogPage() {
                 align: "center",
               },
               {
+                title: "操作账户",
+                dataIndex: "createBy",
+                fixed: "left",
+                align: "center",
+                search: false,
+                render(_, entity) {
+                  return (
+                    <AccountAvatar
+                      avatar={entity.createBy?.avatar}
+                      nickname={entity.createBy?.nickname}
+                    />
+                  );
+                },
+              },
+              {
                 title: "请求ID",
                 dataIndex: "requestId",
-              },
-              {
-                title: "头像",
-                dataIndex: ["createBy", "avatar"],
-                valueType: "avatar",
-                search: false,
-                width: 48,
                 align: "center",
-              },
-              {
-                title: "昵称",
-                dataIndex: ["createBy", "nickname"],
-                align: "center",
-                search: false,
               },
               {
                 title: "请求地址",
@@ -83,6 +96,7 @@ export default function ActivityLogPage() {
               {
                 title: "移动端",
                 dataIndex: "mobile",
+                align: "center",
                 valueEnum: {
                   true: {
                     text: "是",
@@ -129,32 +143,7 @@ export default function ActivityLogPage() {
                 dataIndex: "osVersion",
                 search: false,
               },
-              {
-                title: "操作",
-                key: "action",
-                valueType: "option",
-                width: 50,
-                render: (_, record) => {
-                  return (
-                    <Button
-                      type="link"
-                      onClick={() => {
-                        setLog(record);
-                        setOpen(true);
-                      }}
-                    >
-                      查看
-                    </Button>
-                  );
-                },
-                fixed: "right",
-                align: "center",
-              },
             ]}
-            params={{ type: "ACTIVITY" }}
-            request={async (params, sort, filter) => {
-              return getLogs({ params, sort, filter });
-            }}
           />
           {log && (
             <LogDetails
