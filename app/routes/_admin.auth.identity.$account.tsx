@@ -3,8 +3,11 @@ import { PageContainer } from "@ant-design/pro-components";
 import { Button } from "antd";
 import { useNavigate } from "react-router";
 import { useSearchParam } from "react-use";
+import AccountAvatar from "~/components/common/AccountAvatar";
 import StatusBadge from "~/components/common/StatusBadge";
 import EntityTable from "~/components/table/EntityTable";
+import { useGet } from "~/hooks/http";
+import type { AccountResponse } from "~/types/account";
 import {
   AuthIdentityType,
   type AuthIdentityCreateRequest,
@@ -19,9 +22,17 @@ export default function AuthIdentityAccountPage({
   const { account } = params;
   const navigate = useNavigate();
   const redirect = useSearchParam("redirect");
+
+  const { data, isSuccess } = useGet<AccountResponse>({
+    queryKey: ["account", account],
+    url: `/account/${account}`,
+  });
+
   return (
     <PageContainer
-      title="账户认证凭据管理"
+      title={
+        isSuccess ? <AccountAvatar {...data.accountInfo} /> : "账户认证凭据管理"
+      }
       extra={
         redirect && <Button onClick={() => navigate(redirect)}>返回</Button>
       }
