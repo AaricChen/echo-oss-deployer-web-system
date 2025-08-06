@@ -33,6 +33,7 @@ export default function SystemDictItemsPage({ params }: Route.ComponentProps) {
           toolbarActions={() => [
             {
               action: "create",
+              permission: "system.system-dict-item:create",
               initialValues: {
                 dict: dict ?? "",
                 name: "",
@@ -79,6 +80,7 @@ export default function SystemDictItemsPage({ params }: Route.ComponentProps) {
           rowActions={() => [
             {
               action: "update",
+              permission: "system.system-dict-item:update",
               columns: [
                 {
                   dataIndex: "id",
@@ -124,11 +126,13 @@ export default function SystemDictItemsPage({ params }: Route.ComponentProps) {
             },
             {
               action: "delete",
+              permission: "system.system-dict-item:delete",
             },
           ]}
           batchOptionActions={() => [
             {
               action: "batch-delete",
+              permission: "system.system-dict-item:delete",
             },
           ]}
           columns={[

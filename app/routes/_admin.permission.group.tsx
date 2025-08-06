@@ -32,6 +32,7 @@ export default function PermissionGroupPage() {
           toolbarActions={() => [
             {
               action: "create",
+              permission: "system.permission-group:create",
               initialValues: {
                 tenant: "",
                 name: "",
@@ -98,6 +99,7 @@ export default function PermissionGroupPage() {
           rowActions={({ entity }) => [
             {
               action: "update",
+              permission: "system.permission-group:update",
               buttonProps: {
                 disabled: entity.type === "SYSTEM",
               },
@@ -168,6 +170,7 @@ export default function PermissionGroupPage() {
             },
             {
               action: "delete",
+              permission: "system.permission-group:delete",
               buttonProps: {
                 disabled: entity.type === "SYSTEM",
               },
@@ -176,6 +179,7 @@ export default function PermissionGroupPage() {
           batchOptionActions={({ selectedRows }) => [
             {
               action: "batch-delete",
+              permission: "system.permission-group:delete",
               buttonProps: {
                 disabled:
                   !selectedRows ||

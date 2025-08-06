@@ -65,6 +65,7 @@ export default function DistrictPage({ params }: Route.ComponentProps) {
             ),
             {
               action: "create",
+              permission: "system.district:create",
               initialValues: {
                 parent: district,
                 disabled: false,

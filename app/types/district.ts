@@ -1,20 +1,10 @@
 import type {
-  EntityConfig,
   EntityCreateRequest,
   EntityDeleteRequest,
   EntityQuery,
   EntityResponse,
   EntityUpdateRequest,
 } from "~/types/entity";
-
-export const DistrictEntity: EntityConfig = {
-  name: "行政区",
-  baseUrl: "/district",
-  permissions: {
-    query: "system.district:query",
-    create: "system.district:create",
-  },
-};
 
 export interface DistrictQuery extends EntityQuery {
   name?: string;

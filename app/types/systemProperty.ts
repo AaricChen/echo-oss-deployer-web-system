@@ -1,15 +1,8 @@
 import type {
-  EntityConfig,
   EntityQuery,
   EntityResponse,
   EntityUpdateRequest,
 } from "~/types/entity";
-
-export const SystemPropertyEntity: EntityConfig = {
-  name: "系统属性",
-  baseUrl: "/system/property",
-  permissions: {},
-};
 
 export interface SystemPropertyQuery extends EntityQuery {
   content?: string;

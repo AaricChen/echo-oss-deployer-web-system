@@ -42,6 +42,7 @@ export default function SystemPropertyPage() {
             </Authorization>,
             {
               action: "update",
+              permission: "system.system-property:update",
               buttonProps: {
                 disabled: !entity.editable,
               },

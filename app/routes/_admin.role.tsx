@@ -29,6 +29,7 @@ export default function RolePage() {
         toolbarActions={() => [
           {
             action: "create",
+            permission: "system.role:create",
             initialValues: {
               scope: "SYSTEM",
               name: "",
@@ -90,6 +91,7 @@ export default function RolePage() {
         rowActions={() => [
           {
             action: "update",
+            permission: "system.role:update",
             columns: [
               {
                 dataIndex: "id",
@@ -149,11 +151,13 @@ export default function RolePage() {
           },
           {
             action: "delete",
+            permission: "system.role:delete",
           },
         ]}
         batchOptionActions={() => [
           {
             action: "batch-delete",
+            permission: "system.role:delete",
           },
         ]}
         columns={[
