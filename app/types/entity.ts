@@ -20,17 +20,21 @@ export interface EntityQuery {
   [key: string]: EntityQueryFieldType;
 }
 
-export interface EntityResponse<Id extends EntityIdType> {
+export interface EntityResponse<Id extends EntityIdType = string> {
   id: Id;
 }
 
-export interface EntityCreateRequest {}
+export interface EntityRequest {}
 
-export interface EntityUpdateRequest<Id extends EntityIdType> {
+export interface EntityCreateRequest extends EntityRequest {}
+
+export interface EntityUpdateRequest<Id extends EntityIdType>
+  extends EntityRequest {
   id: Id;
 }
 
-export interface EntityDeleteRequest<Id extends EntityIdType> {
+export interface EntityDeleteRequest<Id extends EntityIdType>
+  extends EntityRequest {
   id?: Id;
   ids?: Id[];
 }
