@@ -1,22 +1,10 @@
 import type {
-  EntityConfig,
   EntityCreateRequest,
   EntityDeleteRequest,
   EntityQuery,
   EntityResponse,
   EntityUpdateRequest,
 } from "~/types/entity";
-
-export const DepartmentEntity: EntityConfig = {
-  name: "部门",
-  baseUrl: "/department",
-  permissions: {
-    query: "system.department:query",
-    create: "system.department:create",
-    update: "system.department:update",
-    delete: "system.department:delete",
-  },
-};
 
 export interface DepartmentQuery extends EntityQuery {
   root?: boolean;

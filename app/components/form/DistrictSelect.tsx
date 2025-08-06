@@ -9,7 +9,7 @@ import type { DistrictQuery, DistrictResponse } from "~/types/district";
 
 export interface DistrictSelectProps extends ProFormItemProps {
   maxLevel?: number; // 行政区最大层级 默认3级 支持1-5级
-  value?: number;
+  value?: string;
 }
 
 export default function DistrictSelect({
@@ -22,7 +22,7 @@ export default function DistrictSelect({
   const [options, setOptions] = useState<
     {
       label: string;
-      value: number;
+      value: string;
       isLeaf: boolean;
     }[]
   >([]);

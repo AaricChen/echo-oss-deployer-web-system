@@ -2,7 +2,7 @@ import { Typography } from "antd";
 import { useDistrict } from "~/apis/district";
 
 export interface DistrictTextProps {
-  value?: number;
+  value?: string;
 }
 
 export default function DistrictText({ value }: DistrictTextProps) {

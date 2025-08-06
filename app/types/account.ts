@@ -2,7 +2,6 @@ import type { SecurityScope } from "~/types/common";
 import type { DepartmentResponse } from "~/types/department";
 import type { DistrictResponse } from "~/types/district";
 import type {
-  EntityConfig,
   EntityCreateRequest,
   EntityDeleteRequest,
   EntityQuery,
@@ -18,16 +17,6 @@ export type DataScope =
   | "DEPARTMENT_ONLY"
   | "CUSTOM"
   | "SELF";
-
-export const AccountEntity: EntityConfig = {
-  name: "账户",
-  baseUrl: "/account",
-  permissions: {
-    query: "system.account:query",
-    create: "system.account:create",
-    update: "system.account:update",
-  },
-};
 
 export interface AccountQuery extends EntityQuery {
   /** 所属租户 */

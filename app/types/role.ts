@@ -1,23 +1,11 @@
 import type { SecurityScope } from "~/types/common";
 import type {
-  EntityConfig,
   EntityCreateRequest,
   EntityDeleteRequest,
   EntityQuery,
   EntityResponse,
   EntityUpdateRequest,
 } from "~/types/entity";
-
-export const RoleEntity: EntityConfig = {
-  name: "角色",
-  baseUrl: "/role",
-  permissions: {
-    query: "system.role:query",
-    create: "system.role:create",
-    update: "system.role:update",
-    delete: "system.role:delete",
-  },
-};
 
 export interface RoleQuery extends EntityQuery {
   tenant?: string;
