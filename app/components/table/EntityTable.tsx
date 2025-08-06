@@ -201,7 +201,7 @@ export interface EntityTableProps<
   toolbarActions?: (
     {}: {
       tableAction: ActionType;
-      searchForm: ProFormInstance<Query>;
+      searchForm?: ProFormInstance<Query>;
       selectedRowKeys?: React.Key[];
       selectedRows?: Entity[];
     },
@@ -210,7 +210,7 @@ export interface EntityTableProps<
   rowActions?: (
     {}: {
       tableAction: ActionType;
-      searchForm: ProFormInstance<Query>;
+      searchForm?: ProFormInstance<Query>;
       entity: Entity;
     },
     // @ts-ignore
@@ -218,7 +218,7 @@ export interface EntityTableProps<
   batchActions?: (
     {}: {
       tableAction: ActionType;
-      searchForm: ProFormInstance<Query>;
+      searchForm?: ProFormInstance<Query>;
       selectedRowKeys?: React.Key[];
       selectedRows?: Entity[];
     },
@@ -227,7 +227,7 @@ export interface EntityTableProps<
   batchOptionActions?: (
     {}: {
       tableAction: ActionType;
-      searchForm: ProFormInstance<Query>;
+      searchForm?: ProFormInstance<Query>;
       selectedRowKeys?: React.Key[];
       selectedRows?: Entity[];
     },
@@ -305,7 +305,7 @@ const EntityTable = <
           width: rowActionWidth,
           fixed: "right",
           render: (_, record: Entity) => {
-            if (rowActions && tableAction.current && searchForm.current) {
+            if (rowActions && tableAction.current) {
               const actions = rowActions({
                 entity: record,
                 tableAction: tableAction.current,
@@ -450,7 +450,7 @@ const EntityTable = <
         onSubmit={onSearchSubmit}
         onReset={onSearchReset}
         toolBarRender={(_, { selectedRowKeys, selectedRows }) => {
-          if (toolbarActions && tableAction.current && searchForm.current) {
+          if (toolbarActions && tableAction.current) {
             const actions = toolbarActions({
               tableAction: tableAction.current,
               searchForm: searchForm.current,
@@ -522,7 +522,7 @@ const EntityTable = <
         }}
         tableAlertRender={({ selectedRowKeys, selectedRows }) => {
           let content: React.ReactNode[] = [];
-          if (batchActions && tableAction.current && searchForm.current) {
+          if (batchActions && tableAction.current) {
             const actions = batchActions({
               tableAction: tableAction.current,
               searchForm: searchForm.current,
@@ -602,7 +602,7 @@ const EntityTable = <
           );
         }}
         tableAlertOptionRender={({ selectedRowKeys, selectedRows }) => {
-          if (batchOptionActions && tableAction.current && searchForm.current) {
+          if (batchOptionActions && tableAction.current) {
             const actions = batchOptionActions({
               tableAction: tableAction.current,
               searchForm: searchForm.current,

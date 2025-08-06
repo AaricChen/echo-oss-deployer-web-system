@@ -1,4 +1,4 @@
-import type { Route } from ".react-router/types/app/routes/+types/_admin.tenant.$tenant..department.$department.role";
+import type { Route } from ".react-router/types/app/routes/+types/_admin.tenant.$tenant.department.$department.role";
 import { PageContainer } from "@ant-design/pro-components";
 import { Button, Tag } from "antd";
 import { useNavigate } from "react-router";

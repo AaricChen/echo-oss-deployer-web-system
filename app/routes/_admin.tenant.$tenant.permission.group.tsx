@@ -208,6 +208,10 @@ export default function TenantPermissionGroupPage({
           ]}
           columns={[
             {
+              width: 1,
+              search: false,
+            },
+            {
               title: "名称",
               dataIndex: "name",
               align: "center",
