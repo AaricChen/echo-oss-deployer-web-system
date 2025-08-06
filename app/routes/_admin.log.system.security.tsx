@@ -3,7 +3,6 @@ import { Button } from "antd";
 import { useState } from "react";
 import AccountAvatar from "~/components/common/AccountAvatar";
 import LogDetails from "~/components/log/LogDetails";
-import Authorization from "~/components/security/Authorization";
 import EntityTable from "~/components/table/EntityTable";
 import type { SystemLogQuery, SystemLogResponse } from "~/types/log";
 
@@ -13,11 +12,12 @@ export default function SecurityLogPage() {
   return (
     <PageContainer
       content={
-        <Authorization permission="system.system-log:query">
+        <>
           <EntityTable<SystemLogResponse, SystemLogQuery>
             entity="system-log"
             name="安全日志"
             baseUrl="/log/system"
+            permission="system.system-log:query"
             query={{ type: "SECURITY" }}
             rowActions={({}, { entity }) => [
               <Button
@@ -154,7 +154,7 @@ export default function SecurityLogPage() {
               }}
             />
           )}
-        </Authorization>
+        </>
       }
     />
   );
