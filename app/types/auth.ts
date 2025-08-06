@@ -1,6 +1,5 @@
 import type { SecurityScope } from "~/types/common";
 import type {
-  EntityConfig,
   EntityCreateRequest,
   EntityDeleteRequest,
   EntityQuery,
@@ -60,17 +59,6 @@ export interface AuthCaptchaResponse {
   /** 验证码发送结果 */
   success: boolean;
 }
-
-export const AuthIdentityEntity: EntityConfig = {
-  name: "认证凭据",
-  baseUrl: "/auth/identity",
-  permissions: {
-    query: "system.auth-identity:query",
-    create: "system.auth-identity:create",
-    update: "system.auth-identity:update",
-    delete: "system.auth-identity:delete",
-  },
-};
 
 export interface AuthIdentityQuery extends EntityQuery {
   account?: string; // 所属账户
