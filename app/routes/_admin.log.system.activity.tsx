@@ -19,7 +19,7 @@ export default function ActivityLogPage() {
             baseUrl="/log/system"
             permission="system.system-log:query"
             query={{ type: "ACTIVITY" }}
-            rowActions={({}, { entity }) => [
+            rowActions={({ entity }) => [
               <Button
                 key="view"
                 type="link"

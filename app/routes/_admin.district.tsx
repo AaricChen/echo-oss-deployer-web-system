@@ -113,7 +113,7 @@ export default function DistrictPage({ params }: Route.ComponentProps) {
               ],
             },
           ]}
-          rowActions={(_, { entity }) => [
+          rowActions={({ entity }) => [
             <Button
               key="children"
               type="link"

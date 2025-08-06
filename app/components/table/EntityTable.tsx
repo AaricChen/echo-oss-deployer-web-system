@@ -199,42 +199,35 @@ export interface EntityTableProps<
 
   // 实体表格操作定义
   toolbarActions?: (
-    tableRef: EntityTableRef<Query>,
-    {
-      selectedRowKeys,
-      selectedRows,
-    }: {
+    {}: {
+      tableAction: ActionType;
+      searchForm: ProFormInstance<Query>;
       selectedRowKeys?: React.Key[];
       selectedRows?: Entity[];
     },
     // @ts-ignore
   ) => EntityToolbarTableActionType<Request[keyof Request], Entity>[]; // 表级操作配置
   rowActions?: (
-    tableRef: EntityTableRef<Query>,
-    {
-      entity,
-    }: {
+    {}: {
+      tableAction: ActionType;
+      searchForm: ProFormInstance<Query>;
       entity: Entity;
     },
     // @ts-ignore
   ) => EntityRowTableActionType<Request[keyof Request], Entity>[]; // 行级操作配置
   batchActions?: (
-    tableRef: EntityTableRef<Query>,
-    {
-      selectedRowKeys,
-      selectedRows,
-    }: {
+    {}: {
+      tableAction: ActionType;
+      searchForm: ProFormInstance<Query>;
       selectedRowKeys?: React.Key[];
       selectedRows?: Entity[];
     },
     // @ts-ignore
   ) => EntityBatchTableActionType<Request[keyof Request], Entity>[]; // 批量操作配置
   batchOptionActions?: (
-    tableRef: EntityTableRef<Query>,
-    {
-      selectedRowKeys,
-      selectedRows,
-    }: {
+    {}: {
+      tableAction: ActionType;
+      searchForm: ProFormInstance<Query>;
       selectedRowKeys?: React.Key[];
       selectedRows?: Entity[];
     },
@@ -313,13 +306,11 @@ const EntityTable = <
           fixed: "right",
           render: (_, record: Entity) => {
             if (rowActions && tableAction.current && searchForm.current) {
-              const actions = rowActions(
-                {
-                  tableAction: tableAction.current,
-                  searchForm: searchForm.current,
-                },
-                { entity: record },
-              );
+              const actions = rowActions({
+                entity: record,
+                tableAction: tableAction.current,
+                searchForm: searchForm.current,
+              });
               if (actions) {
                 const content = actions.map((action, index) => {
                   if (
@@ -361,14 +352,14 @@ const EntityTable = <
                               name: "编辑",
                               columns: action.columns,
                               permission: action.permission,
-                              initialValues: action.initialValues,
+                              initialValues: action.initialValues ?? record,
                               buttonProps: {
                                 type: "link",
                                 ...action.buttonProps,
                               },
-                              resetOnFinish: true,
-                              onFinish: () => {
-                                tableAction.current?.reload();
+                              resetOnFinish: false,
+                              onFinish: async () => {
+                                await tableAction.current?.reload();
                               },
                             })}
                           />
@@ -394,8 +385,8 @@ const EntityTable = <
                                 ...action.buttonProps,
                               },
                             }}
-                            onFinish={() => {
-                              tableAction.current?.reload();
+                            onFinish={async () => {
+                              await tableAction.current?.reload();
                             }}
                           />
                         );
@@ -460,13 +451,12 @@ const EntityTable = <
         onReset={onSearchReset}
         toolBarRender={(_, { selectedRowKeys, selectedRows }) => {
           if (toolbarActions && tableAction.current && searchForm.current) {
-            const actions = toolbarActions(
-              {
-                tableAction: tableAction.current,
-                searchForm: searchForm.current,
-              },
-              { selectedRowKeys, selectedRows },
-            );
+            const actions = toolbarActions({
+              tableAction: tableAction.current,
+              searchForm: searchForm.current,
+              selectedRowKeys,
+              selectedRows,
+            });
             return actions.map((action, index) => {
               if (action && typeof action === "object" && "action" in action) {
                 switch (action.action) {
@@ -509,8 +499,8 @@ const EntityTable = <
                             ...action.buttonProps,
                           },
                           resetOnFinish: true,
-                          onFinish: () => {
-                            tableAction.current?.reload();
+                          onFinish: async () => {
+                            await tableAction.current?.reload();
                           },
                         })}
                       />
@@ -533,16 +523,12 @@ const EntityTable = <
         tableAlertRender={({ selectedRowKeys, selectedRows }) => {
           let content: React.ReactNode[] = [];
           if (batchActions && tableAction.current && searchForm.current) {
-            const actions = batchActions(
-              {
-                tableAction: tableAction.current,
-                searchForm: searchForm.current,
-              },
-              {
-                selectedRowKeys,
-                selectedRows,
-              },
-            );
+            const actions = batchActions({
+              tableAction: tableAction.current,
+              searchForm: searchForm.current,
+              selectedRowKeys,
+              selectedRows,
+            });
             content = actions.map((action, index) => {
               if (action && typeof action === "object" && "action" in action) {
                 switch (action.action) {
@@ -579,9 +565,9 @@ const EntityTable = <
                             ...action.buttonProps,
                           },
                         }}
-                        onFinish={() => {
+                        onFinish={async () => {
                           tableAction.current?.clearSelected?.();
-                          tableAction.current?.reload();
+                          await tableAction.current?.reload();
                         }}
                       />
                     );
@@ -617,16 +603,12 @@ const EntityTable = <
         }}
         tableAlertOptionRender={({ selectedRowKeys, selectedRows }) => {
           if (batchOptionActions && tableAction.current && searchForm.current) {
-            const actions = batchOptionActions(
-              {
-                tableAction: tableAction.current,
-                searchForm: searchForm.current,
-              },
-              {
-                selectedRowKeys,
-                selectedRows,
-              },
-            );
+            const actions = batchOptionActions({
+              tableAction: tableAction.current,
+              searchForm: searchForm.current,
+              selectedRowKeys,
+              selectedRows,
+            });
             return actions.map((action, index) => {
               if (action && typeof action === "object" && "action" in action) {
                 switch (action.action) {
@@ -663,9 +645,9 @@ const EntityTable = <
                             ...action.buttonProps,
                           },
                         }}
-                        onFinish={() => {
+                        onFinish={async () => {
                           tableAction.current?.clearSelected?.();
-                          tableAction.current?.reload();
+                          await tableAction.current?.reload();
                         }}
                       />
                     );

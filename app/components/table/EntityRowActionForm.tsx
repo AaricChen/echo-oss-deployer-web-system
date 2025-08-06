@@ -5,7 +5,6 @@ import { usePut } from "~/hooks/http";
 import type { EntityRequest, EntityResponse } from "~/types/entity";
 
 export interface EntityRowActionFormProps<
-  Request extends EntityRequest = EntityRequest,
   Response extends EntityResponse = EntityResponse,
 > {
   name: string; // 实体名称
@@ -23,7 +22,7 @@ export default function EntityRowActionForm<
   idField,
   entity,
   render,
-}: EntityRowActionFormProps<Request, Response> &
+}: EntityRowActionFormProps<Response> &
   Pick<EntityRowAction<Request, Response>, "render">) {
   const action = useMemo(() => {
     return render();

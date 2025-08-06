@@ -5,7 +5,6 @@ import { usePost } from "~/hooks/http";
 import type { EntityRequest, EntityResponse } from "~/types/entity";
 
 export interface EntityToolbarActionFormProps<
-  Request extends EntityRequest = EntityRequest,
   Response extends EntityResponse = EntityResponse,
 > {
   name: string; // 实体名称
@@ -23,7 +22,7 @@ export default function EntityToolbarActionForm<
   selectedRowKeys,
   selectedRows,
   render,
-}: EntityToolbarActionFormProps<Request, Response> &
+}: EntityToolbarActionFormProps<Response> &
   Pick<EntityToolbarAction<Request, Response>, "render">) {
   const action = useMemo(() => {
     return render();

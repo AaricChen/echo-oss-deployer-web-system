@@ -17,7 +17,7 @@ export default function SystemDictPage() {
           name="系统字典"
           baseUrl="/system/dict"
           permission="system.system-dict:query"
-          rowActions={(_, { entity }) => [
+          rowActions={({ entity }) => [
             <Button
               type="link"
               key="items"

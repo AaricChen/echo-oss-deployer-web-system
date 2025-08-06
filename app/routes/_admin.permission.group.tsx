@@ -1,11 +1,9 @@
 import { PageContainer } from "@ant-design/pro-components";
-import EntityTable from "~/components/entity/EntityTable";
+import EntityTable from "~/components/table/EntityTable";
 import {
-  PermissionGroupEntity,
   PermissionGroupStatus,
   PermissionGroupType,
   type PermissionGroupCreateRequest,
-  type PermissionGroupDeleteRequest,
   type PermissionGroupQuery,
   type PermissionGroupResponse,
   type PermissionGroupUpdateRequest,
@@ -18,59 +16,178 @@ export default function PermissionGroupPage() {
         <EntityTable<
           PermissionGroupResponse,
           PermissionGroupQuery,
-          PermissionGroupCreateRequest,
-          PermissionGroupUpdateRequest,
-          PermissionGroupDeleteRequest
+          {
+            create: PermissionGroupCreateRequest;
+            update: PermissionGroupUpdateRequest;
+          }
         >
+          entity="permission-group"
+          name="权限组"
+          baseUrl="/permission/group"
+          permission="system.permission-group:query"
           query={{
             root: true,
             scope: "SYSTEM",
           }}
-          entityConfig={PermissionGroupEntity}
-          updateButtonProps={(entity) => ({
-            disabled: entity.type === "SYSTEM",
-          })}
-          deleteButtonProps={(entity) => ({
-            disabled: entity.type === "SYSTEM",
-          })}
-          createInitialValues={{
-            tenant: "",
-            name: "",
-            scope: "SYSTEM",
-            status: "Y",
-            permissions: [],
-          }}
+          toolbarActions={() => [
+            {
+              action: "create",
+              initialValues: {
+                tenant: "",
+                name: "",
+                scope: "SYSTEM",
+                status: "Y",
+                permissions: [],
+              },
+              columns: [
+                {
+                  dataIndex: "scope",
+                  formItemProps: {
+                    hidden: true,
+                  },
+                },
+                {
+                  dataIndex: "status",
+                  formItemProps: {
+                    hidden: true,
+                  },
+                },
+                {
+                  title: "权限组名称",
+                  dataIndex: "name",
+                  formItemProps: {
+                    rules: [
+                      { required: true, message: "请输入名称" },
+                      { max: 32, message: "名称长度不能超过32个字符" },
+                    ],
+                  },
+                  colProps: {
+                    xs: 24,
+                    lg: 12,
+                  },
+                },
+                {
+                  title: "父权限组",
+                  dataIndex: "parent",
+                  align: "center",
+                  valueType: "permissionGroup" as any,
+                  search: false,
+                  hideInTable: true,
+                  fieldProps: {
+                    scope: "SYSTEM",
+                  },
+                  colProps: {
+                    xs: 24,
+                    lg: 12,
+                  },
+                },
+                {
+                  title: "权限列表",
+                  dataIndex: "permissions",
+                  valueType: "permission" as any,
+                  fieldProps: {
+                    scope: "SYSTEM",
+                  },
+                  colProps: {
+                    xs: 24,
+                  },
+                },
+              ],
+            },
+          ]}
+          rowActions={({ entity }) => [
+            {
+              action: "update",
+              buttonProps: {
+                disabled: entity.type === "SYSTEM",
+              },
+              columns: [
+                {
+                  dataIndex: "id",
+                  formItemProps: {
+                    hidden: true,
+                  },
+                },
+                {
+                  dataIndex: "scope",
+                  formItemProps: {
+                    hidden: true,
+                  },
+                },
+                {
+                  title: "权限组名称",
+                  dataIndex: "name",
+                  formItemProps: {
+                    rules: [
+                      { required: true, message: "请输入名称" },
+                      { max: 32, message: "名称长度不能超过32个字符" },
+                    ],
+                  },
+                  colProps: {
+                    xs: 24,
+                    lg: 8,
+                  },
+                },
+                {
+                  title: "父权限组",
+                  dataIndex: "parent",
+                  align: "center",
+                  valueType: "permissionGroup" as any,
+                  search: false,
+                  hideInTable: true,
+                  fieldProps: {
+                    scope: "SYSTEM",
+                  },
+                  colProps: {
+                    xs: 24,
+                    lg: 8,
+                  },
+                },
+                {
+                  title: "状态",
+                  dataIndex: "status",
+                  valueType: "select",
+                  valueEnum: PermissionGroupStatus,
+                  colProps: {
+                    xs: 24,
+                    lg: 8,
+                  },
+                },
+                {
+                  title: "权限列表",
+                  dataIndex: "permissions",
+                  valueType: "permission" as any,
+                  fieldProps: {
+                    scope: "SYSTEM",
+                  },
+                  colProps: {
+                    xs: 24,
+                  },
+                },
+              ],
+            },
+            {
+              action: "delete",
+              buttonProps: {
+                disabled: entity.type === "SYSTEM",
+              },
+            },
+          ]}
+          batchOptionActions={({ selectedRows }) => [
+            {
+              action: "batch-delete",
+              buttonProps: {
+                disabled:
+                  !selectedRows ||
+                  selectedRows.some((item) => item.type === "SYSTEM"),
+              },
+            },
+          ]}
           columns={[
-            {
-              dataIndex: "id",
-              search: false,
-              hideInTable: true,
-              formItemProps: {
-                hidden: true,
-              },
-            },
-            {
-              dataIndex: "scope",
-              search: false,
-              hideInTable: true,
-              formItemProps: {
-                hidden: true,
-              },
-            },
             {
               title: "名称",
               dataIndex: "name",
               align: "center",
-              formItemProps: {
-                rules: [
-                  { required: true, message: "请输入名称" },
-                  { max: 32, message: "名称长度不能超过32个字符" },
-                ],
-              },
-              colProps: {
-                xs: 24,
-                lg: 8,
-              },
             },
             {
               title: "类型",
@@ -78,7 +195,6 @@ export default function PermissionGroupPage() {
               align: "center",
               valueType: "select",
               valueEnum: PermissionGroupType,
-              hideInForm: true,
             },
             {
               title: "状态",
@@ -86,31 +202,11 @@ export default function PermissionGroupPage() {
               align: "center",
               valueType: "select",
               valueEnum: PermissionGroupStatus,
-              colProps: {
-                xs: 24,
-                lg: 8,
-              },
-            },
-            {
-              title: "父权限组",
-              dataIndex: "parent",
-              align: "center",
-              valueType: "permissionGroup" as any,
-              search: false,
-              hideInTable: true,
-              fieldProps: {
-                scope: "SYSTEM",
-              },
-              colProps: {
-                xs: 24,
-                lg: 8,
-              },
             },
             {
               title: "子权限组",
               dataIndex: "children",
               align: "center",
-              hideInForm: true,
               search: false,
               renderText(text: PermissionGroupResponse[]) {
                 return text.map((item) => item.name).join(",");
@@ -121,12 +217,6 @@ export default function PermissionGroupPage() {
               dataIndex: "permissions",
               valueType: "permission" as any,
               align: "right",
-              formItemProps: {
-                label: "权限列表",
-              },
-              fieldProps: {
-                scope: "SYSTEM",
-              },
             },
           ]}
         />

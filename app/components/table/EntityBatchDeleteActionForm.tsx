@@ -43,6 +43,7 @@ export default function EntityBatchDeleteActionForm({
         key="batchDelete"
         type="link"
         danger
+        {...action.buttonProps}
         onClick={() => {
           modal.confirm({
             title: `确定删除选中的 ${selectedRowKeys.length} 条${name ?? "数据"}吗？`,

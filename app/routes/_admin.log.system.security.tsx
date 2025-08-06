@@ -19,7 +19,7 @@ export default function SecurityLogPage() {
             baseUrl="/log/system"
             permission="system.system-log:query"
             query={{ type: "SECURITY" }}
-            rowActions={({}, { entity }) => [
+            rowActions={({ entity }) => [
               <Button
                 key="view"
                 type="link"

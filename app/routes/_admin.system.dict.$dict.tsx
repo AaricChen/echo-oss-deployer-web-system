@@ -76,10 +76,9 @@ export default function SystemDictItemsPage({ params }: Route.ComponentProps) {
               ],
             },
           ]}
-          rowActions={(_, { entity }) => [
+          rowActions={() => [
             {
               action: "update",
-              initialValues: entity,
               columns: [
                 {
                   dataIndex: "id",

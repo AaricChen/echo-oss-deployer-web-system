@@ -25,7 +25,7 @@ export default function SystemPropertyPage() {
           name="系统属性"
           baseUrl="/system/property"
           permission="system.system-property:query"
-          rowActions={({ tableAction }, { entity }) => [
+          rowActions={({ tableAction, entity }) => [
             <Authorization permission="system.system-property:update">
               <Popconfirm
                 title="确定要重置系统属性吗？"
@@ -42,10 +42,6 @@ export default function SystemPropertyPage() {
             </Authorization>,
             {
               action: "update",
-              initialValues: {
-                id: entity.id,
-                value: entity.value,
-              },
               buttonProps: {
                 disabled: !entity.editable,
               },

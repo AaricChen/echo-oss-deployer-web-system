@@ -23,6 +23,7 @@ export default function PermissionSelect({
       loading={isFetching}
       fieldNames={{ label: "name", value: "id" }}
       options={data}
+      maxTagCount={5}
       {...fieldProps}
     />
   );
