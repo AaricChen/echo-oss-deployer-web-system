@@ -31,6 +31,28 @@ export const EnableValueEnum = {
   },
 };
 
+export const PublishedValueEnum = {
+  true: {
+    text: "已发布",
+    status: "success",
+  },
+  false: {
+    text: "未发布",
+    status: "default",
+  },
+};
+
+export const PinedValueEnum = {
+  true: {
+    text: "已置顶",
+    status: "success",
+  },
+  false: {
+    text: "未置顶",
+    status: "default",
+  },
+};
+
 export const SecurityScope = {
   SYSTEM: {
     text: "系统端",
