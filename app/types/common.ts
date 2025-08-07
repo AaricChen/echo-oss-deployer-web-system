@@ -10,44 +10,44 @@ export const BoolStatus = {
 };
 
 export const DisableValueEnum = {
-  true: {
+  Y: {
     text: "禁用",
     status: "error",
   },
-  false: {
+  N: {
     text: "启用",
     status: "success",
   },
 };
 
 export const EnableValueEnum = {
-  true: {
+  Y: {
     text: "启用",
     status: "success",
   },
-  false: {
+  N: {
     text: "禁用",
     status: "error",
   },
 };
 
 export const PublishedValueEnum = {
-  true: {
+  Y: {
     text: "已发布",
     status: "success",
   },
-  false: {
+  N: {
     text: "未发布",
     status: "default",
   },
 };
 
 export const PinedValueEnum = {
-  true: {
+  Y: {
     text: "已置顶",
     status: "success",
   },
-  false: {
+  N: {
     text: "未置顶",
     status: "default",
   },
