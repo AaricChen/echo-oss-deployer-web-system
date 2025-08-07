@@ -101,7 +101,10 @@ export type EntityCreateAction<
       "columns" | "permission" | "initialValues" | "buttonProps"
     >,
     "name" | "title"
-  >;
+  > & {
+    baseUrl?: string; // 操作接口路径 如果为空 则使用实体的baseUrl
+    suffix?: string; // 操作后缀
+  };
 
 export type EntityUpdateAction<
   Request extends EntityRequest = EntityRequest,
@@ -114,7 +117,10 @@ export type EntityUpdateAction<
       "columns" | "permission" | "initialValues" | "buttonProps"
     >,
     "name" | "title"
-  >;
+  > & {
+    baseUrl?: string; // 操作接口路径 如果为空 则使用实体的baseUrl
+    suffix?: string; // 操作后缀
+  };
 
 export type EntityDeleteAction = EntityAction & {
   action: "delete";
@@ -350,6 +356,8 @@ const EntityTable = <
                             entity={record}
                             render={() => ({
                               name: "编辑",
+                              baseUrl: action.baseUrl,
+                              suffix: action.suffix,
                               columns: action.columns,
                               permission: action.permission,
                               initialValues: action.initialValues ?? record,
@@ -491,6 +499,8 @@ const EntityTable = <
                         selectedRows={selectedRows}
                         render={() => ({
                           name: "新增",
+                          baseUrl: action.baseUrl,
+                          suffix: action.suffix,
                           columns: action.columns,
                           permission: action.permission,
                           initialValues: action.initialValues,
