@@ -201,8 +201,8 @@ export default function TenantRolePage({ params }: Route.ComponentProps) {
                                   "在访问级别为自定义时，可以设置该数据范围对那些部门有效",
                               },
                               fieldProps: {
+                                multiple: true,
                                 tenant,
-                                mode: "multiple",
                               },
                             },
                           ];
@@ -361,8 +361,8 @@ export default function TenantRolePage({ params }: Route.ComponentProps) {
                                   "在访问级别为自定义时，可以设置该数据范围对那些部门有效",
                               },
                               fieldProps: {
+                                multiple: true,
                                 tenant,
-                                mode: "multiple",
                               },
                             },
                           ];
