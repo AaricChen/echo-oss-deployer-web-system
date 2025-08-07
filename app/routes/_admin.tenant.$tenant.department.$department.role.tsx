@@ -1,11 +1,13 @@
 import type { Route } from ".react-router/types/app/routes/+types/_admin.tenant.$tenant.department.$department.role";
 import { PageContainer } from "@ant-design/pro-components";
 import { Button, Tag } from "antd";
+import { useMemo } from "react";
 import { useNavigate } from "react-router";
 import { useTenantBasicInfo } from "~/apis/tenant";
 import RolePermissionPreviewer from "~/components/role/RolePermissionPreviewer";
 import EntityTable from "~/components/table/EntityTable";
 import { useGet } from "~/hooks/http";
+import type { DepartmentResponse } from "~/types/department";
 import {
   DataScopeLevel,
   type DataScopeEntity,
@@ -23,6 +25,18 @@ export default function TenantRolePage({ params }: Route.ComponentProps) {
   const { data: tenantBasicInfo, isPending } = useTenantBasicInfo({
     code: tenant,
   });
+
+  const { data: departmentInfo } = useGet<DepartmentResponse>({
+    queryKey: ["department", department],
+    url: "/department/" + department,
+    options: {
+      enabled: !!department,
+    },
+  });
+
+  const departmentName = useMemo(() => {
+    return (departmentInfo?.departmentInfo.name ?? "部门") + "角色";
+  }, [departmentInfo]);
 
   const { data: scopeEntities } = useGet<DataScopeEntity[]>({
     queryKey: ["role", "scope-entities"],
@@ -48,7 +62,7 @@ export default function TenantRolePage({ params }: Route.ComponentProps) {
           }
         >
           entity="role"
-          name="角色"
+          name={departmentName}
           baseUrl="/role"
           query={{
             tenant,
