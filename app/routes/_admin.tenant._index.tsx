@@ -44,6 +44,15 @@ export default function TenantPage() {
               },
               columns: [
                 {
+                  title: "租户Logo",
+                  dataIndex: ["tenantInfo", "logo"],
+                  valueType: "image",
+                  colProps: {
+                    xs: 24,
+                    lg: 24,
+                  },
+                },
+                {
                   title: "编码",
                   dataIndex: "code",
                   formItemProps: {
@@ -196,6 +205,15 @@ export default function TenantPage() {
                   },
                 },
                 {
+                  title: "租户Logo",
+                  dataIndex: ["tenantInfo", "logo"],
+                  valueType: "image",
+                  colProps: {
+                    xs: 24,
+                    lg: 24,
+                  },
+                },
+                {
                   title: "编码",
                   dataIndex: "code",
                   formItemProps: {
@@ -308,6 +326,16 @@ export default function TenantPage() {
             },
           ]}
           columns={[
+            {
+              dataIndex: ["tenantInfo", "logo"],
+              title: "Logo",
+              align: "center",
+              search: false,
+              valueType: "image",
+              fieldProps: {
+                width: 96,
+              },
+            },
             {
               title: "租户编码",
               dataIndex: "code",
