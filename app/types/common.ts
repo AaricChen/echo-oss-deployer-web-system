@@ -9,6 +9,28 @@ export const BoolStatus = {
   },
 };
 
+export const DisableStatus = {
+  true: {
+    text: "禁用",
+    status: "error",
+  },
+  false: {
+    text: "启用",
+    status: "success",
+  },
+};
+
+export const EnableStatus = {
+  true: {
+    text: "启用",
+    status: "success",
+  },
+  false: {
+    text: "禁用",
+    status: "error",
+  },
+};
+
 export const SecurityScope = {
   SYSTEM: {
     text: "系统端",
