@@ -1,6 +1,7 @@
 import type { ProRenderFieldPropsType } from "@ant-design/pro-components";
 import ImagePreview from "~/components/common/ImagePreview";
 import DepartmentSelect from "~/components/form/DepartmentSelect";
+import DepartmentText from "~/components/form/DepartmentText";
 import DistrictSelect from "~/components/form/DistrictSelect";
 import DistrictText from "~/components/form/DistrictText";
 import ImageUpload from "~/components/form/ImageUpload";
@@ -43,7 +44,7 @@ export const commonTypes: Record<string, ProRenderFieldPropsType> = {
   },
   department: {
     render: (value) => {
-      return value.length;
+      return <DepartmentText value={value} />;
     },
     renderFormItem: (_, { fieldProps }) => {
       return (

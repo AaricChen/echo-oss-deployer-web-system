@@ -491,17 +491,9 @@ export default function TenantAccountPage({ params }: Route.ComponentProps) {
             {
               title: "所在部门",
               dataIndex: "departments",
+              valueType: "department" as any,
               align: "center",
               search: false,
-              hideInForm: true,
-              renderText: (departments: DepartmentResponse[]) => {
-                const content = departments.map((department) => (
-                  <Tag key={department.id}>
-                    {department.departmentInfo.name}
-                  </Tag>
-                ));
-                return <div>{content}</div>;
-              },
             },
             {
               title: "账户角色",
