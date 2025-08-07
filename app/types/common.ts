@@ -9,7 +9,7 @@ export const BoolStatus = {
   },
 };
 
-export const DisableStatus = {
+export const DisableValueEnum = {
   true: {
     text: "禁用",
     status: "error",
@@ -20,7 +20,7 @@ export const DisableStatus = {
   },
 };
 
-export const EnableStatus = {
+export const EnableValueEnum = {
   true: {
     text: "启用",
     status: "success",
