@@ -11,7 +11,6 @@ import type {
   AccountUpdateRequest,
 } from "~/types/account";
 import { AccountStatus } from "~/types/account";
-import type { RoleResponse } from "~/types/role";
 
 export default function AccountPage() {
   const { token } = useToken();
@@ -394,14 +393,9 @@ export default function AccountPage() {
             {
               title: "账户角色",
               dataIndex: "roles",
+              valueType: "role" as any,
               align: "center",
               search: false,
-              renderText: (roles: RoleResponse[]) => {
-                const content = roles.map((role) => (
-                  <Tag key={role.id}>{role.name}</Tag>
-                ));
-                return <div>{content}</div>;
-              },
             },
             {
               title: "状态",

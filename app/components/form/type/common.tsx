@@ -8,6 +8,7 @@ import ImageUpload from "~/components/form/ImageUpload";
 import PermissionGroupSelect from "~/components/form/PermissionGroupSelect";
 import PermissionSelect from "~/components/form/PermissionSelect";
 import RoleSelect from "~/components/form/RoleSelect";
+import RoleText from "~/components/form/RoleText";
 import SystemDictSelect from "~/components/form/SystemDictSelect";
 import SystemDictText from "~/components/form/SystemDictText";
 
@@ -54,7 +55,7 @@ export const commonTypes: Record<string, ProRenderFieldPropsType> = {
   },
   role: {
     render: (value) => {
-      return value.length;
+      return <RoleText value={value} />;
     },
     renderFormItem: (_, { fieldProps }) => {
       return (

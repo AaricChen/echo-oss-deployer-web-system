@@ -498,14 +498,9 @@ export default function TenantAccountPage({ params }: Route.ComponentProps) {
             {
               title: "账户角色",
               dataIndex: "roles",
+              valueType: "role" as any,
               align: "center",
               search: false,
-              renderText: (roles: RoleResponse[]) => {
-                const content = roles.map((role) => (
-                  <Tag key={role.id}>{role.name}</Tag>
-                ));
-                return <div>{content}</div>;
-              },
             },
             {
               title: "状态",
