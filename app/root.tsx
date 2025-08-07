@@ -9,15 +9,17 @@ import {
 
 import { ProConfigProvider } from "@ant-design/pro-components";
 import "@ant-design/v5-patch-for-react-19";
-import { createAppKit } from "@reown/appkit/react";
 import { WagmiAdapter } from "@reown/appkit-adapter-wagmi";
 import { mainnet, type AppKitNetwork } from "@reown/appkit/networks";
+import { createAppKit } from "@reown/appkit/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { App, ConfigProvider } from "antd";
 import React from "react";
 import { WagmiProvider } from "wagmi";
 import Logo from "~/assets/logo.png";
-import { valueTypeMap } from "~/components/form/valueType";
+import { appTypes } from "~/components/form/type/app";
+import { commonTypes } from "~/components/form/type/common";
+import { systemTypes } from "~/components/form/type/system";
 import { appConfig } from "~/configs/app";
 import type { Route } from "./+types/root";
 import "./app.css";
@@ -89,7 +91,13 @@ export default function Application() {
       <WagmiProvider config={wagmiAdapter.wagmiConfig}>
         <QueryClientProvider client={queryClient}>
           <ConfigProvider theme={{}}>
-            <ProConfigProvider valueTypeMap={valueTypeMap}>
+            <ProConfigProvider
+              valueTypeMap={{
+                ...commonTypes,
+                ...systemTypes,
+                ...appTypes,
+              }}
+            >
               <App>
                 <Outlet />
               </App>

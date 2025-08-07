@@ -10,7 +10,10 @@ import RoleSelect from "~/components/form/RoleSelect";
 import SystemDictSelect from "~/components/form/SystemDictSelect";
 import SystemDictText from "~/components/form/SystemDictText";
 
-export const valueTypeMap: Record<string, ProRenderFieldPropsType> = {
+/**
+ * 定义公共表单字段组件
+ */
+export const commonTypes: Record<string, ProRenderFieldPropsType> = {
   permission: {
     render: (value) => {
       return value.length;
