@@ -1,7 +1,14 @@
 import type React from "react";
 
 export type EntityIdType = React.Key;
-export type EntityQueryFieldType = string | number | boolean | undefined | null;
+export type EntityQueryFieldType =
+  | string
+  | number
+  | boolean
+  | string[]
+  | number[]
+  | undefined
+  | null;
 
 export interface EntityQuery {
   [key: string]: EntityQueryFieldType;
