@@ -18,6 +18,7 @@ export interface PermissionGroupQuery extends EntityQuery {
   name?: string;
   scope?: keyof typeof SecurityScope;
   tenant?: string;
+  type?: keyof typeof PermissionGroupType;
   status?: keyof typeof BoolStatus;
   root?: boolean;
 }
