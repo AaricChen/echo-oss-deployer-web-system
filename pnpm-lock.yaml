@@ -44,6 +44,9 @@ importers:
       dayjs:
         specifier: ^1.11.13
         version: 1.11.13
+      filesize:
+        specifier: ^11.0.2
+        version: 11.0.2
       isbot:
         specifier: ^5.1.27
         version: 5.1.27
@@ -2293,6 +2296,10 @@ packages:
     peerDependenciesMeta:
       picomatch:
         optional: true
+
+  filesize@11.0.2:
+    resolution: {integrity: sha512-s/iAeeWLk5BschUIpmdrF8RA8lhFZ/xDZgKw1Tan72oGws1/dFGB06nYEiyyssWUfjKNQTNRlrwMVjO9/hvXDw==}
+    engines: {node: '>= 10.4.0'}
 
   filter-obj@1.1.0:
     resolution: {integrity: sha512-8rXg1ZnX7xzy2NGDVkBVaAy+lSlPNwad13BtgSlLuxfIslyt5Vg64U7tFcCt4WS1R0hvtnQybT/IyCkGZ3DpXQ==}
@@ -7707,6 +7714,8 @@ snapshots:
   fdir@6.4.4(picomatch@4.0.2):
     optionalDependencies:
       picomatch: 4.0.2
+
+  filesize@11.0.2: {}
 
   filter-obj@1.1.0: {}
 
