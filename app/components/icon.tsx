@@ -16,6 +16,7 @@ import {
   TagsOutlined,
   TeamOutlined,
   ZoomInOutlined,
+  UploadOutlined,
 } from "@ant-design/icons";
 
 export const iconMap = {
@@ -36,6 +37,7 @@ export const iconMap = {
   AuditOutlined: AuditOutlined,
   BlockOutlined: BlockOutlined,
   ZoomInOutlined: ZoomInOutlined,
+  SiteOutlined: UploadOutlined,
 };
 
 export interface IconProps {

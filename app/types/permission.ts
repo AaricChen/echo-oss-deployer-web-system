@@ -78,6 +78,10 @@ export const PermissionGroupStatus = {
 export type Permission = keyof typeof SystemPermissions;
 
 export const SystemPermissions = {
+  "system.site:query": "查询网站",
+  "system.site:create": "创建网站",
+  "system.site:update": "修改网站",
+  "system.site:delete": "删除网站",
   "system.role:delete": "删除角色",
   "system.sms-record:create": "创建短信发送记录",
   "system.role:update": "修改角色",
