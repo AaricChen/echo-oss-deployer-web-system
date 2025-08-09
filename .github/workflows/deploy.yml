@@ -29,5 +29,15 @@ jobs:
         run: pnpm install
       - name: Build
         run: pnpm build
+      - name: Zip
+        run: zip -r dist.zip dist
       - name: Deploy
-        run: "curl -X POST 'https://${DEPLOY_SERVER}/site/deploy?id=${SITE_ID}&token=${SITE_TOKEN}' -H 'accept: */*' -H 'Content-Type: multipart/form-data' -F 'file=@dist.zip;type=application/zip'"
+        run: |
+          curl -X POST "https://oss-deployer.cdqxtech.com/site/deploy?id=${{ secrets.SITE_ID }}&token=${{ secrets.SITE_TOKEN }}" \
+            -H "accept: */*" \
+            -H "Content-Type: multipart/form-data" \
+            -F "file=@dist.zip;type=application/zip"
+          if [ $? -ne 0 ]; then
+            echo "部署失败"
+            exit 1
+          fi
