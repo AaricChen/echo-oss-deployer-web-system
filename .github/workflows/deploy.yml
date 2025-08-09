@@ -1,0 +1,33 @@
+name: CI/CD Pipeline
+
+# 部署步骤
+# 1. 检出代码
+# 2. 构建静态包
+# 3. 调用请求部署服务进行复述
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - name: Set up NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install
+      - name: Build
+        run: pnpm build
+      - name: Deploy
+        run: "curl -X POST 'https://${DEPLOY_SERVER}/site/deploy?id=${SITE_ID}&token=${SITE_TOKEN}' -H 'accept: */*' -H 'Content-Type: multipart/form-data' -F 'file=@dist.zip;type=application/zip'"
