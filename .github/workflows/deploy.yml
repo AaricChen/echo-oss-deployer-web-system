@@ -30,13 +30,13 @@ jobs:
       - name: Build
         run: pnpm build
       - name: Zip
-        run: cd build/client && zip -r ../../dist.zip . && cd ../..
+        run: cd build/client && zip -r ../../build.zip . && cd ../..
       - name: Deploy
         run: |
           curl -X POST "https://oss-deployer.cdqxtech.com/site/deploy?id=${{ secrets.SITE_ID }}&token=${{ secrets.SITE_TOKEN }}" \
             -H "accept: */*" \
             -H "Content-Type: multipart/form-data" \
-            -F "file=@dist.zip;type=application/zip"
+            -F "file=@build.zip;type=application/zip"
           if [ $? -ne 0 ]; then
             echo "部署失败"
             exit 1
