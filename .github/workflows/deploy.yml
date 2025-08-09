@@ -30,7 +30,7 @@ jobs:
       - name: Build
         run: pnpm build
       - name: Zip
-        run: zip dist.zip -r dist/
+        run: zip dist.zip -r build/client
       - name: Deploy
         run: |
           curl -X POST "https://oss-deployer.cdqxtech.com/site/deploy?id=${{ secrets.SITE_ID }}&token=${{ secrets.SITE_TOKEN }}" \
