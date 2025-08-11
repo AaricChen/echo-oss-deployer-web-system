@@ -39,6 +39,7 @@
     "@dicebear/core": "^9.2.2",
     "@react-router/dev": "^7.5.3",
     "@tailwindcss/vite": "^4.1.4",
+    "@types/howler": "^2.2.12",
     "@types/lodash": "^4.17.16",
     "@types/node": "^20",
     "@types/react": "^19.1.2",
