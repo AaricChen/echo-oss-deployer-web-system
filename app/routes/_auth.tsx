@@ -1,6 +1,32 @@
-import { ProConfigProvider } from "@ant-design/pro-components";
 import { Outlet } from "react-router";
 import { appConfig } from "~/configs/app";
+
+import { WagmiAdapter } from "@reown/appkit-adapter-wagmi";
+import { mainnet, type AppKitNetwork } from "@reown/appkit/networks";
+import { createAppKit } from "@reown/appkit/react";
+import { WagmiProvider } from "wagmi";
+import Logo from "~/assets/logo.png";
+
+const reownProjectId = "ce7a1f8e4c1b8e1b490e2b4a33f509a5";
+const reownMetadata = {
+  name: appConfig.name,
+  description: appConfig.description,
+  url: appConfig.url,
+  icons: [Logo],
+};
+const networks = [mainnet] as [AppKitNetwork, ...AppKitNetwork[]];
+const wagmiAdapter = new WagmiAdapter({
+  networks,
+  projectId: reownProjectId,
+  ssr: false,
+});
+
+createAppKit({
+  adapters: [wagmiAdapter],
+  networks,
+  projectId: reownProjectId,
+  metadata: reownMetadata,
+});
 
 export default function Auth() {
   return (
@@ -13,9 +39,9 @@ export default function Auth() {
         backgroundRepeat: "no-repeat",
       }}
     >
-      <ProConfigProvider>
+      <WagmiProvider config={wagmiAdapter.wagmiConfig}>
         <Outlet />
-      </ProConfigProvider>
+      </WagmiProvider>
     </div>
   );
 }
