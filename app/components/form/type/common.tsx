@@ -4,6 +4,7 @@ import DepartmentSelect from "~/components/form/DepartmentSelect";
 import DepartmentText from "~/components/form/DepartmentText";
 import DistrictSelect from "~/components/form/DistrictSelect";
 import DistrictText from "~/components/form/DistrictText";
+import FileUpload from "~/components/form/FileUpload";
 import ImageUpload from "~/components/form/ImageUpload";
 import PermissionGroupSelect from "~/components/form/PermissionGroupSelect";
 import PermissionSelect from "~/components/form/PermissionSelect";
@@ -95,6 +96,11 @@ export const commonTypes: Record<string, ProRenderFieldPropsType> = {
     },
     renderFormItem: (value, { fieldProps }) => {
       return <ImageUpload value={value} {...fieldProps} />;
+    },
+  },
+  file: {
+    renderFormItem: (value, { fieldProps }) => {
+      return <FileUpload value={value} {...fieldProps} />;
     },
   },
 };
