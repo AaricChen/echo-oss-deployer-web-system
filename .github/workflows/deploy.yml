@@ -16,6 +16,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Dump GitHub Event Payload
+        run: |
+          echo "GitHub Event Payload:"
+          echo "${{ toJson(github.event) }}"
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
         with:

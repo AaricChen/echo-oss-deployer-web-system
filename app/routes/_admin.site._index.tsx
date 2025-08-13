@@ -56,6 +56,14 @@ export default function SitePage() {
                 {
                   title: "最大版本数量",
                   dataIndex: "maxVersionCount",
+                  valueType: "digit",
+                  fieldProps: {
+                    min: 1,
+                    max: 100,
+                    style: {
+                      width: "100%",
+                    },
+                  },
                   formItemProps: {
                     rules: [
                       { required: true, message: "请输入最大版本数量" },
@@ -143,6 +151,14 @@ export default function SitePage() {
                 {
                   title: "最大版本数量",
                   dataIndex: "maxVersionCount",
+                  valueType: "digit",
+                  fieldProps: {
+                    min: 1,
+                    max: 100,
+                    style: {
+                      width: "100%",
+                    },
+                  },
                   formItemProps: {
                     rules: [
                       { required: true, message: "请输入最大版本数量" },
