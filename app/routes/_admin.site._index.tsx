@@ -313,19 +313,6 @@ export default function SitePage() {
               ),
             },
             {
-              title: "OSS配置",
-              dataIndex: "endpoint",
-              align: "center",
-              search: false,
-              width: 300,
-              renderText: (text: string, record: SiteResponse) => (
-                <div className="flex flex-col items-start gap-2">
-                  <Typography.Text>Endpoint: {text}</Typography.Text>
-                  <Typography.Text>Bucket: {record.bucket}</Typography.Text>
-                </div>
-              ),
-            },
-            {
               title: "文件数量",
               dataIndex: ["version", "fileCount"],
               align: "center",
