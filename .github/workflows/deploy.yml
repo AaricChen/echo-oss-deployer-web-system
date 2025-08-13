@@ -32,10 +32,8 @@ jobs:
       - name: Zip
         run: cd build/ && zip -r ../build.zip . && cd ..
       - name: Deploy
-        env:
-          MESSAGE: ${{ github.event.head_commit.message }}
         run: |
-          curl -X POST https://oss-deployer.cdqxtech.com/site/deploy?id=${{ secrets.SITE_ID }}&token=${{ secrets.SITE_TOKEN }}&version=${{ github.sha }}Ø \
+          curl -X POST "https://oss-deployer.cdqxtech.com/site/deploy?id=${{ secrets.SITE_ID }}&token=${{ secrets.SITE_TOKEN }}&version=${{ github.sha }}" \
             -H "accept: */*" \
             -H "Content-Type: multipart/form-data" \
             -F "file=@build.zip;type=application/zip"
