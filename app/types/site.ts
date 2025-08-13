@@ -16,12 +16,12 @@ export interface SiteResponse extends EntityResponse<string> {
   name: string;
   endpoint: string;
   bucket: string;
-  fileCount: number;
   deployAt: string;
   siteUrl: string;
   githubUrl: string;
   maxVersionCount: number;
   versions: number;
+  version?: SiteVersionResponse;
 }
 
 export interface SiteCreateRequest extends EntityCreateRequest {
@@ -36,3 +36,19 @@ export interface SiteCreateRequest extends EntityCreateRequest {
 export type SiteUpdateRequest = SiteCreateRequest & EntityUpdateRequest<string>;
 
 export interface SiteDeleteRequest extends EntityDeleteRequest<string> {}
+
+export interface SiteVersionQuery extends EntityQuery {
+  site: string;
+}
+
+export interface SiteVersionResponse extends EntityResponse<string> {
+  id: string;
+  endpoint: string;
+  bucket: string;
+  commitUrl: string;
+  deployAt: string;
+}
+
+export interface SiteRollbackRequest {
+  version: string;
+}

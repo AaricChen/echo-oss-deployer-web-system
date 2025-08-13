@@ -9,6 +9,7 @@ export const appConfig = {
   loginBackground: BACKGROUND,
   url: "http://localhost:5173",
   api: {
+    // endpoint: "http://localhost:8080",
     endpoint: "https://oss-deployer.cdqxtech.com",
     timeout: 10000,
     retry: 3,

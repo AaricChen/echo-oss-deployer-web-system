@@ -115,7 +115,7 @@ export default function SitePage() {
               ],
             },
           ]}
-          rowActions={({ entity }) => [
+          rowActions={({ entity, tableAction }) => [
             {
               action: "update",
               permission: "system.site:update",
@@ -202,6 +202,7 @@ export default function SitePage() {
               ],
             },
             <Button
+              key="site-url"
               disabled={!entity.siteUrl}
               type="link"
               href={entity.siteUrl}
@@ -210,6 +211,7 @@ export default function SitePage() {
               打开网站
             </Button>,
             <Button
+              key="github-url"
               disabled={!entity.githubUrl}
               type="link"
               href={entity.githubUrl}
@@ -218,8 +220,9 @@ export default function SitePage() {
               打开代码库
             </Button>,
             <Button
+              key="versions"
               type="link"
-              onClick={() => navigate(`/site/${entity.id}/history`)}
+              onClick={() => navigate(`/site/${entity.id}/versions`)}
             >
               历史版本
             </Button>,
@@ -232,13 +235,27 @@ export default function SitePage() {
                 buttonProps: {
                   type: "link",
                 },
+                onFinish: async () => {
+                  tableAction.reload();
+                },
                 columns: [
+                  {
+                    title: "网站版本",
+                    dataIndex: "version",
+                    formItemProps: {
+                      rules: [{ required: true, message: "请选择网站版本" }],
+                    },
+                    colProps: {
+                      xs: 24,
+                    },
+                  },
                   {
                     title: "部署文件",
                     dataIndex: "file",
                     valueType: "file" as any,
-                    formItemProps: {
-                      rules: [{ required: true, message: "请选择部署文件" }],
+                    fieldProps: {
+                      accept: ".zip",
+                      desc: "请选择部署的.zip文件",
                     },
                     colProps: {
                       xs: 24,
@@ -310,7 +327,7 @@ export default function SitePage() {
             },
             {
               title: "文件数量",
-              dataIndex: "fileCount",
+              dataIndex: ["version", "fileCount"],
               align: "center",
               search: false,
             },
