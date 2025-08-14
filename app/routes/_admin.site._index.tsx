@@ -65,11 +65,7 @@ export default function SitePage() {
                     },
                   },
                   formItemProps: {
-                    rules: [
-                      { required: true, message: "请输入最大版本数量" },
-                      { min: 1, message: "最大版本数量不能小于1" },
-                      { max: 100, message: "最大版本数量不能超过100" },
-                    ],
+                    rules: [{ required: true, message: "请输入最大版本数量" }],
                   },
                   colProps: {
                     xs: 24,
@@ -160,11 +156,7 @@ export default function SitePage() {
                     },
                   },
                   formItemProps: {
-                    rules: [
-                      { required: true, message: "请输入最大版本数量" },
-                      { min: 1, message: "最大版本数量不能小于1" },
-                      { max: 100, message: "最大版本数量不能超过100" },
-                    ],
+                    rules: [{ required: true, message: "请输入最大版本数量" }],
                   },
                   colProps: {
                     xs: 24,
